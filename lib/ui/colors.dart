@@ -1,0 +1,1 @@
+const int GREY_LINE = 0xFFCCCCCCC;

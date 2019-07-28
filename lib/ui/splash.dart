@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../blocs/onbording_bloc.dart';
+import '../blocs/login_bloc.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -12,9 +12,8 @@ class SplashState extends State<SplashPage> {
   void initState() {
     super.initState();
 
-    bloc.isOnbordingSeen
-        .delay(Duration(seconds: 3))
-        .doOnData((data) => bloc.setOnbordingSeen())
+    bloc.isLoggedIn
+        .delay(Duration(seconds: 2))
         .listen((seen) => _moveNext(seen), onError: (e) => print(e));
   }
 
@@ -32,11 +31,10 @@ class SplashState extends State<SplashPage> {
   }
 
   void _moveNext(bool seen) {
-    print(seen);
     if (seen)
       _showMain();
     else
-      _showOnBording();
+      _login();
   }
 
   void _showMain() {
@@ -44,8 +42,7 @@ class SplashState extends State<SplashPage> {
     Navigator.pushNamed(context, '/main');
   }
 
-  void _showOnBording() {
-    print("to onbording");
-    Navigator.pushNamed(context, '/onbording');
+  void _login() {
+    Navigator.pushNamed(context, '/login');
   }
 }

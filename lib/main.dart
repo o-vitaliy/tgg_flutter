@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tgg/ui/home.dart';
+import 'package:tgg/ui/sign_in.dart';
 
 import 'ui/onbording.dart';
 import 'ui/splash.dart';
@@ -17,6 +18,7 @@ class App extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => SplashPage(),
+        '/login': (context) => LogInPage(),
         '/onbording': (context) => OnBoardingPage(),
         '/main': (context) => HomePage(),
       },
