@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tgg/blocs/userprefs_bloc.dart';
 
-import '../blocs/login_bloc.dart';
 
 class SplashPage extends StatefulWidget {
   @override

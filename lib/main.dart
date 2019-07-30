@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tgg/ui/home.dart';
 import 'package:tgg/ui/log_in.dart';
 
+import 'blocs/login_provider.dart';
 import 'ui/onbording.dart';
 import 'ui/splash.dart';
 
@@ -18,7 +19,7 @@ class App extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => SplashPage(),
-        '/login': (context) => LogInPage(),
+        '/login': (context) => LoginProvider(child: LogInPage()),
         '/onbording': (context) => OnBoardingPage(),
         '/main': (context) => HomePage(),
       },

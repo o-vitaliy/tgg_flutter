@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tgg/blocs/login_bloc.dart';
+import 'package:tgg/blocs/login_provider.dart';
 
 import 'colors.dart';
 
@@ -12,10 +14,12 @@ class SignInState extends State<LogInPage> {
 
   @override
   Widget build(BuildContext context) {
+    final LoginBloc bloc = LoginProvider.of(context);
+    bloc.loaded.listen(navigateNext);
     return Scaffold(
         body: SafeArea(
             child: Column(
-      children: <Widget>[buildToolbar(), buildLoginForm()],
+      children: <Widget>[buildToolbar(), buildLoginForm(bloc)],
     )));
   }
 
@@ -28,7 +32,7 @@ class SignInState extends State<LogInPage> {
         child: Image.asset("assets/logo-nav-highlight.png"));
   }
 
-  Widget buildLoginForm() {
+  Widget buildLoginForm(LoginBloc bloc) {
     return Padding(
         padding: EdgeInsets.all(8.0),
         child: Form(
@@ -37,30 +41,46 @@ class SignInState extends State<LogInPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              TextFormField(
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                  width: double.infinity,
-                  child: new RaisedButton(
-                    onPressed: () {
-                      // Validate returns true if the form is valid, or false
-                      // otherwise.
-                      if (_formKey.currentState.validate()) {
-                        // If the form is valid, display a Snackbar.
-                        Scaffold.of(context).showSnackBar(
-                            SnackBar(content: Text('Processing Data')));
-                      }
-                    },
-                    child: Text('Submit'),
-                  )),
+              buildCodeTextField(bloc),
+              buildSubmitButton(bloc)
             ],
           ),
         ));
+  }
+
+  Widget buildCodeTextField(LoginBloc bloc) {
+    return StreamBuilder(
+      stream: bloc.code,
+      builder: (context, snapshot) {
+        return TextField(
+          onChanged: bloc.changeCode,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            hintText: 'Game code',
+            errorText: snapshot.error,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget buildSubmitButton(LoginBloc bloc) {
+    return StreamBuilder(
+        stream: bloc.submitValid,
+        builder: (context, snapshot) {
+          return SizedBox(
+              width: double.infinity,
+              child: new RaisedButton(
+                onPressed: snapshot.hasData ? bloc.submit : null,
+                child: Text('Submit'),
+              ));
+        });
+  }
+
+  void navigateNext(result) {
+    if (result)
+      Navigator.pushNamed(context, '/main');
+    else
+      print(result);
   }
 }
