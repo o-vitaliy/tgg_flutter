@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tgg/ui/camera/camera.dart';
 import 'package:tgg/ui/home.dart';
 import 'package:tgg/ui/log_in.dart';
 
@@ -6,7 +7,10 @@ import 'blocs/login_provider.dart';
 import 'ui/onbording.dart';
 import 'ui/splash.dart';
 
-void main() => runApp(App());
+Future<void> main() async {
+  CameraExampleHome.loadCameras();
+  runApp(App());
+}
 
 class App extends StatelessWidget {
   @override
@@ -22,6 +26,7 @@ class App extends StatelessWidget {
         '/login': (context) => LoginProvider(child: LogInPage()),
         '/onbording': (context) => OnBoardingPage(),
         '/main': (context) => HomePage(),
+        '/camera': (context) => CameraExampleHome(),
       },
     );
   }

@@ -39,10 +39,10 @@ class SplashState extends State<SplashPage> {
 
   void _showMain() {
     print("to main");
-    Navigator.pushNamed(context, '/main');
+    Navigator.pushNamed(context, '/camera');
   }
 
   void _login() {
-    Navigator.pushNamed(context, '/login');
+    Navigator.pushNamed(context, '/camera');
   }
 }
