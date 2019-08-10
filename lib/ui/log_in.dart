@@ -79,7 +79,7 @@ class SignInState extends State<LogInPage> {
 
   void navigateNext(result) {
     if (result)
-      Navigator.pushNamed(context, '/main');
+      Navigator.pushReplacementNamed(context, '/main');
     else
       print(result);
   }

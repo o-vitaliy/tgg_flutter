@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tgg/blocs/userprefs_bloc.dart';
+import 'package:tgg/ui/colors.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -10,6 +11,7 @@ class SplashState extends State<SplashPage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    startTimer();
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -18,20 +20,25 @@ class SplashState extends State<SplashPage> with WidgetsBindingObserver {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (AppLifecycleState.resumed == state) {
-      bloc.isLoggedIn
-          .delay(Duration(seconds: 2))
-          .listen((seen) => _moveNext(seen), onError: (e) => print(e));
+      startTimer();
     }
+  }
+
+  void startTimer() {
+    bloc.isLoggedIn
+        .delay(Duration(seconds: 2))
+        .listen((seen) => _moveNext(seen), onError: (e) => print(e));
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Color(0XFFF47421),
+        color: Color(ORANGE),
         child: DecoratedBox(
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -50,10 +57,10 @@ class SplashState extends State<SplashPage> with WidgetsBindingObserver {
 
   void _showMain() {
     print("to main");
-    Navigator.pushNamed(context, '/main');
+    Navigator.pushReplacementNamed(context, '/main');
   }
 
   void _login() {
-    Navigator.pushNamed(context, '/login');
+    Navigator.pushReplacementNamed(context, '/login');
   }
 }
