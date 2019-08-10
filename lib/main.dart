@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tgg/ui/colors.dart';
 import 'package:tgg/ui/home.dart';
 import 'package:tgg/ui/log_in.dart';
 
@@ -14,7 +15,12 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'PageViewIndicators Demo',
       theme: ThemeData(
-        primarySwatch: Colors.orange,
+        primarySwatch: ORANGE_COLORS,
+        buttonTheme: ButtonThemeData(
+          shape: RoundedRectangleBorder(),
+          textTheme: ButtonTextTheme.normal,
+          disabledColor: Colors.orange.shade100,
+        ),
       ),
       initialRoute: '/',
       routes: {
