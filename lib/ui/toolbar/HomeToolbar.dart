@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tgg/blocs/blueprint_bloc.dart';
 import 'package:tgg/models/routing.dart';
 import 'package:tgg/ui/helpers/icon_mapper.dart';
+import 'package:tgg/ui/widgets/collapsible_tabbar.dart';
 
 class HomeToolbar extends StatefulWidget {
   @override
@@ -31,6 +32,17 @@ class HomeToolbarState extends State<HomeToolbar> {
   }
 
   Widget buildPage(Routing routing) {
+    final items = routing.modes.map((route) =>
+        CollapsibleTabBarItemData(
+            data: route,
+            title: route.title,
+            icon: route.icon,
+            clickCallback: (d) => print(d)
+        )).toList();
+
+    return CollapsibleTabBar(children: items);
+  }
+/*Widget buildPage(Routing routing) {
     return Container(
         height: 56.0,
         alignment: Alignment.center,
@@ -60,5 +72,5 @@ class HomeToolbarState extends State<HomeToolbar> {
                     )
                   ],
                 ))));
-  }
+  }*/
 }

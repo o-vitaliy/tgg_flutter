@@ -44,9 +44,10 @@ class HomeState extends State<HomePage> {
   }
 
   Widget buildPage(AsyncSnapshot<BlueprintModel> snapshot) {
-    return Column(children: <Widget>[
-      HomeToolbar(),
-      Text(snapshot.data.toJson().toString())
-    ]);
+    return Column(
+        children: <Widget>[
+          HomeToolbar(),
+          Text(snapshot.data.toJson().toString())
+        ]);
   }
 }
