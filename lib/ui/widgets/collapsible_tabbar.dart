@@ -1,38 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:tgg/models/modes.dart';
 import 'package:tgg/ui/helpers/icon_mapper.dart';
+import 'package:tgg/ui/home.dart';
 
-typedef void TabItemClickCallback(data);
-
-class CollapsibleTabBar extends StatefulWidget {
-  CollapsibleTabBar({
-    maxItemsInRow = 2,
-    children = const <CollapsibleTabBarItemData>[],
-  })  : maxItemsInRow = maxItemsInRow,
-        children = children;
+class CollapsibleTabBar extends StatelessWidget {
+  CollapsibleTabBar(this.children, this.selected,
+      {this.maxItemsInRaw = 4, this.maxItemsInRow});
 
   final int maxItemsInRow;
   final List<CollapsibleTabBarItemData> children;
-
-  @override
-  State<StatefulWidget> createState() =>
-      CollapsibleTabBarState(maxItemsInRow, children);
-}
-
-class CollapsibleTabBarState extends State<CollapsibleTabBar> {
-  CollapsibleTabBarState(this.maxItemsInRaw, this.children);
+  final RouteMode selected;
 
   final int maxItemsInRaw;
-  final List<CollapsibleTabBarItemData> children;
-  CollapsibleTabBarItemData selected;
   final GlobalKey _moreKey = new GlobalKey();
-  PopupMenuButton button;
-
-  @override
-  void initState() {
-    super.initState();
-    selected = children.first;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +26,7 @@ class CollapsibleTabBarState extends State<CollapsibleTabBar> {
       childList.addAll(children.sublist(0, maxItemsInRaw - 1));
       childList.add(createMoreItem());
     }
-    button = new PopupMenuButton(
+    PopupMenuButton button = new PopupMenuButton(
         key: _moreKey, itemBuilder: (_) => _getMenuItems(), onSelected: (_) {});
 
     final items = childList
@@ -53,7 +34,7 @@ class CollapsibleTabBarState extends State<CollapsibleTabBar> {
             icon: data.icon,
             data: data.data,
             clickCallback: data.clickCallback,
-            selected: data == selected))
+            selected: data.data == selected))
         .toList();
     return Stack(children: <Widget>[
       Container(

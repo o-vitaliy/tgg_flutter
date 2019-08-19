@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tgg/models/blueprint_model.dart';
+import 'package:tgg/models/modes.dart';
 import 'package:tgg/ui/toolbar/HomeToolbar.dart';
+import 'package:tgg/ui/widgets/stream_loading_page.dart';
 
 import '../blocs/blueprint_bloc.dart';
+import 'helpers/route_tab_mapper.dart';
+
+typedef void TabItemClickCallback(RouteMode data);
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,6 +17,8 @@ class HomePage extends StatefulWidget {
 }
 
 class HomeState extends State<HomePage> {
+  RouteMode selectedMode;
+
   @override
   void initState() {
     super.initState();
@@ -29,25 +36,21 @@ class HomeState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-            child: StreamBuilder(
-      stream: bloc.blueprint,
-      builder: (context, AsyncSnapshot<BlueprintModel> snapshot) {
-        if (snapshot.hasData) {
-          return buildPage(snapshot);
-        } else if (snapshot.hasError) {
-          return Text(snapshot.error.toString());
-        }
-
-        return Center(child: CircularProgressIndicator());
-      },
-    )));
+            child:
+                StreamLoadingPage(bloc.blueprint, (data) => buildPage(data))));
   }
 
-  Widget buildPage(AsyncSnapshot<BlueprintModel> snapshot) {
-    return Column(
-        children: <Widget>[
-          HomeToolbar(),
-          Text(snapshot.data.toJson().toString())
-        ]);
+  Widget buildPage(BlueprintModel blueprint) {
+    if (selectedMode == null) selectedMode = blueprint.routing.modes.first;
+    return Column(children: <Widget>[
+      HomeToolbar(pageSelected, blueprint.routing, selectedMode),
+      RouteTabMapper.map(selectedMode.name)
+    ]);
+  }
+
+  void pageSelected(RouteMode mode) {
+    setState(() {
+      selectedMode = mode;
+    });
   }
 }
