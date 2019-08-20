@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tgg/models/blueprint_model.dart';
 import 'package:tgg/models/modes.dart';
+import 'package:tgg/ui/tabs/home_tab.dart';
 import 'package:tgg/ui/toolbar/HomeToolbar.dart';
 import 'package:tgg/ui/widgets/stream_loading_page.dart';
 
@@ -42,9 +43,12 @@ class HomeState extends State<HomePage> {
 
   Widget buildPage(BlueprintModel blueprint) {
     if (selectedMode == null) selectedMode = blueprint.routing.modes.first;
+    RouteTabMapper mapper =
+        RouteTabMapper(() => HomeTab(blueprint.routing, pageSelected));
+
     return Column(children: <Widget>[
       HomeToolbar(pageSelected, blueprint.routing, selectedMode),
-      RouteTabMapper.map(selectedMode.name)
+      mapper.map(selectedMode.name)
     ]);
   }
 

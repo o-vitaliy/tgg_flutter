@@ -1,12 +1,18 @@
 import 'package:flutter/widgets.dart';
-import 'package:tgg/ui/tabs/home_tab.dart';
 import 'package:tgg/ui/tabs/stub_tab.dart';
 
+typedef TabBuilder = Widget Function();
+
 class RouteTabMapper {
-  static Widget map(String name) {
+  final TabBuilder homeTabBuilder;
+
+  RouteTabMapper(this.homeTabBuilder);
+
+  Widget map(String name) {
+    print(name);
     switch (name) {
-      case 'home':
-        return HomeTab();
+      case 'main':
+        return homeTabBuilder();
       default:
         return StubTab(title: name);
     }
