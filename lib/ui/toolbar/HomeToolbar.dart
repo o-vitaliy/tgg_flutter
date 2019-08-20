@@ -1,16 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:tgg/blocs/blueprint_bloc.dart';
+import 'package:tgg/models/modes.dart';
 import 'package:tgg/models/routing.dart';
-import 'package:tgg/ui/helpers/icon_mapper.dart';
+import 'package:tgg/ui/home.dart';
+import 'package:tgg/ui/widgets/collapsible_tabbar.dart';
 
-class HomeToolbar extends StatefulWidget {
+class HomeToolbar extends StatelessWidget {
+  final TabItemClickCallback _tabItemClickCallback;
+  final RouteMode _selected;
+  final Routing _routing;
+
+  const HomeToolbar(this._tabItemClickCallback, this._routing, this._selected,
+      {Key key})
+      : super(key: key);
+
   @override
-  State<StatefulWidget> createState() {
-    return HomeToolbarState();
+  Widget build(BuildContext context) {
+    final items = _routing.modes
+        .map((route) => CollapsibleTabBarItemData(
+            data: route,
+            title: route.title,
+            icon: route.icon,
+            clickCallback: (d) => _tabItemClickCallback(d)))
+        .toList();
+
+    return CollapsibleTabBar(items, _selected);
   }
 }
+/*
 
 class HomeToolbarState extends State<HomeToolbar> {
+  final TabItemClickCallback _tabItemClickCallback;
+  final RouteMode _selected;
+
+  HomeToolbarState(this._tabItemClickCallback, this._selected);
+
   @override
   void dispose() {
     bloc.dispose();
@@ -30,7 +53,10 @@ class HomeToolbarState extends State<HomeToolbar> {
     );
   }
 
-  Widget buildPage(Routing routing) {
+  Widget buildPage() {
+   
+  }
+Widget buildPage(Routing routing) {
     return Container(
         height: 56.0,
         alignment: Alignment.center,
@@ -62,3 +88,4 @@ class HomeToolbarState extends State<HomeToolbar> {
                 ))));
   }
 }
+*/

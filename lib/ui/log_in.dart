@@ -73,13 +73,14 @@ class SignInState extends State<LogInPage> {
               child: new RaisedButton(
                 onPressed: snapshot.hasData ? bloc.submit : null,
                 child: Text('Submit'),
+                textColor: Colors.white
               ));
         });
   }
 
   void navigateNext(result) {
     if (result)
-      Navigator.pushNamed(context, '/main');
+      Navigator.pushReplacementNamed(context, '/main');
     else
       print(result);
   }
