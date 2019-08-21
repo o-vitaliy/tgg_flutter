@@ -12,6 +12,8 @@ class RouteMode {
   Sorting sorting;
   List<String> categories;
 
+  RouteMode();
+
   RouteMode.fromJsonMap(Map<String, dynamic> map)
       : name = map["name"],
         title = map["title"],

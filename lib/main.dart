@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tgg/ui/home.dart';
 import 'package:tgg/ui/log_in.dart';
+import 'package:tgg/ui/pages/camera_page.dart';
+import 'package:tgg/ui/routes.dart';
 
 import 'blocs/login_provider.dart';
 import 'blocs/theme_bloc.dart';
@@ -41,7 +43,8 @@ class AppState extends State<App> {
           '/': (context) => SplashPage(),
           '/login': (context) => LoginProvider(child: LogInPage()),
           '/onbording': (context) => OnBoardingPage(),
-          '/main': (context) => HomePage(),
+          ROUTE_MAIN: (context) => HomePage(),
+          ROUTE_BONUS_CAMERA :(context) => CameraPage();
         },
       ),
     );

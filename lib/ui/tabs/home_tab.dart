@@ -13,12 +13,21 @@ class HomeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final buttons = routing.modes.map(buildButton).toList();
+    buttons.add(buildBonus());
     return Align(
       widthFactor: 0.8,
       child: Column(
-        children: routing.modes.map(buildButton).toList(),
+        children: buttons,
       ),
     );
+  }
+
+  Widget buildBonus() {
+    RouteMode mode = RouteMode();
+    mode.icon = "icon-camera";
+    mode.title = "Bonus camera";
+    return buildButton(mode);
   }
 
   Widget buildButton(RouteMode mode) => RaisedButton(

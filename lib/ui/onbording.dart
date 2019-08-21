@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:page_view_indicators/circle_page_indicator.dart';
+import 'package:tgg/ui/routes.dart';
 
 class OnBoardingPage extends StatefulWidget {
   @override
@@ -74,7 +75,6 @@ class OnBoardingState extends State<OnBoardingPage> {
   }
 
   void onCloseOnbording() {
-    print("close onbording");
-    Navigator.pushNamed(context, '/main');
+    Navigator.pushNamed(context, ROUTE_MAIN);
   }
 }
