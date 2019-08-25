@@ -6,7 +6,7 @@ import 'package:tgg/ui/toolbar/HomeToolbar.dart';
 import 'package:tgg/ui/widgets/stream_loading_page.dart';
 
 import '../blocs/blueprint_bloc.dart';
-import 'helpers/route_tab_mapper.dart';
+import 'package:tgg/ui/tabs/route_tab_mapper.dart';
 
 typedef void TabItemClickCallback(RouteMode data);
 

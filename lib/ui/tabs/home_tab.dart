@@ -4,6 +4,7 @@ import 'package:tgg/models/modes.dart';
 import 'package:tgg/models/routing.dart';
 import 'package:tgg/ui/helpers/icon_mapper.dart';
 import 'package:tgg/ui/home.dart';
+import 'package:tgg/ui/routes.dart';
 
 class HomeTab extends StatelessWidget {
   final Routing routing;
@@ -27,6 +28,7 @@ class HomeTab extends StatelessWidget {
     RouteMode mode = RouteMode();
     mode.icon = "icon-camera";
     mode.title = "Bonus camera";
+    mode.name = TAB_ROUTE_BONUS_CAMERA;
     return buildButton(mode);
   }
 

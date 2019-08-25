@@ -44,7 +44,7 @@ class AppState extends State<App> {
           '/login': (context) => LoginProvider(child: LogInPage()),
           '/onbording': (context) => OnBoardingPage(),
           ROUTE_MAIN: (context) => HomePage(),
-          ROUTE_BONUS_CAMERA :(context) => CameraPage();
+          ROUTE_BONUS_CAMERA :(context) => CameraPage(),
         },
       ),
     );

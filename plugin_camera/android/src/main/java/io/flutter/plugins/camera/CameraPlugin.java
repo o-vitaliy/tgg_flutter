@@ -453,7 +453,7 @@ public class CameraPlugin implements MethodCallHandler {
             modeValue = CameraMetadata.FLASH_MODE_OFF;
             break;
           case "single":
-            modeValue = CameraMetadata.CONTROL_AE_MODE_ON_;
+            modeValue = CameraMetadata.FLASH_MODE_SINGLE;
             break;
           case "torch":
             modeValue = CameraMetadata.FLASH_MODE_TORCH;
