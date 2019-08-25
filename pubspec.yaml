@@ -30,6 +30,8 @@ dependencies:
   camera:
     path: ./plugin_camera
   path_provider: ^1.2.0
+  countdown: ^0.1.0
+  intl: ^0.15.8
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
