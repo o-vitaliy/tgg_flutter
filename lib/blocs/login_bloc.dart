@@ -12,7 +12,7 @@ class LoginBloc with Validators {
   Function(String) get changeCode => _codeController.sink.add;
 
   Stream<String> get code =>
-      _codeController.stream.transform(gameCodeValidator);
+      _codeController.stream;
 
   Stream<bool> get submitValid => Observable(code).map((v) => v.length > 0);
 

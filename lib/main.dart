@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tgg/ui/home.dart';
-import 'package:tgg/ui/log_in.dart';
 import 'package:tgg/ui/pages/camera_page.dart';
 import 'package:tgg/ui/routes.dart';
 

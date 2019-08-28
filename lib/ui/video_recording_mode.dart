@@ -1,0 +1,1 @@
+enum VideoRecordingMode { single, multi }
