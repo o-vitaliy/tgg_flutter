@@ -3,7 +3,7 @@ import 'package:tgg/data/providers/api_provider.dart';
 import 'package:tgg/data/providers/prefs_provider.dart';
 import 'package:tgg/models/game/game_info.dart';
 
-class GameRepository {
+class GameRepo {
   GameInfo _gameInfoCache;
 
   Future<GameInfo> getGame() async {

@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' show Client;
 import 'package:tgg/models/game/game_info.dart';
-import 'package:tgg/models/game/game_response.dart';
 
 class ApiProvider {
   Client client = Client();

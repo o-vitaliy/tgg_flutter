@@ -25,7 +25,6 @@ dependencies:
 
   page_view_indicators: ^1.2.0
   font_awesome_flutter: ^8.5.0
-  bloc: ^0.15.0
   flutter_bloc: ^0.21.0
   equatable: ^0.2.0
   video_player: ^0.10.0

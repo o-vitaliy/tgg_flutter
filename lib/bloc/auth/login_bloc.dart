@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:tgg/bloc/auth/authentication_bloc.dart';
+import 'package:tgg/bloc/auth/authentication_event.dart';
+import 'package:tgg/bloc/auth/login_event.dart';
+import 'package:tgg/bloc/auth/login_state.dart';
 import 'package:tgg/data/game_repository.dart';
-import 'package:tgg/ui/auth/authentication_bloc.dart';
-import 'package:tgg/ui/auth/authentication_event.dart';
-import 'package:tgg/ui/auth/login_event.dart';
-import 'package:tgg/ui/auth/login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final GameRepository gameRepository;
+  final GameRepo gameRepository;
   final AuthenticationBloc authenticationBloc;
 
   LoginBloc({
@@ -26,9 +26,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginLoading();
 
       try {
-        await gameRepository.loadGame(code: event.code);
+        final game = await gameRepository.loadGame(code: event.code);
 
-        authenticationBloc.dispatch(LoggedIn());
+        authenticationBloc.dispatch(LoggedIn(game));
         yield LoginInitial();
       } catch (error) {
         yield LoginFailure(error: error.toString());

@@ -1,51 +1,59 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tgg/data/game_repository.dart';
+import 'package:tgg/data/simple_bloc_delegate.dart';
+import 'package:tgg/ui/auth/login_page.dart';
 import 'package:tgg/ui/home.dart';
 import 'package:tgg/ui/pages/camera_page.dart';
 import 'package:tgg/ui/routes.dart';
 
-import 'blocs/login_provider.dart';
-import 'blocs/theme_bloc.dart';
+import 'bloc/auth/authentication.dart';
+import 'bloc/theme/theme.dart';
 import 'ui/onbording.dart';
 import 'ui/splash.dart';
 
-void main() => runApp(App());
+void main() {
+  BlocSupervisor.delegate = SimpleBlocDelegate();
+  final gameRepo = GameRepo();
 
-class App extends StatefulWidget {
-  @override
-  AppState createState() => AppState();
+  final themeBloc = ThemeBloc(gameRepository: gameRepo);
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthenticationBloc>(builder: (context) {
+          return AuthenticationBloc(gameRepo: gameRepo, themeBloc: themeBloc)
+            ..dispatch(AppStarted());
+        }),
+        BlocProvider<ThemeBloc>(builder: (context) => themeBloc),
+      ],
+      child: App(gameRepo: gameRepo),
+    ),
+  );
 }
 
-class AppState extends State<App> {
-  ThemeBloc _themeBloc;
+class App extends StatelessWidget {
+  final GameRepo gameRepo;
 
-  @override
-  void initState() {
-    super.initState();
-    _themeBloc = bloc;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _themeBloc.dispose();
-  }
+  const App({Key key, this.gameRepo})
+      : assert(gameRepo != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: _themeBloc.outTheme,
-      builder: (context, AsyncSnapshot<ThemeData> snapshot) => MaterialApp(
+    return BlocBuilder<ThemeBloc, ThemeChangeState>(builder: (context, state) {
+      return MaterialApp(
         title: 'Tgg Demo',
-        theme: snapshot.hasData ? snapshot.data : ThemeData(),
+        theme: (state is ThemeChangedState) ? state.theme : ThemeData(),
         initialRoute: '/',
         routes: {
           '/': (context) => SplashPage(),
-          '/login': (context) => LoginProvider(child: LogInPage()),
+          '/login': (context) => LoginPage(gameRepository: gameRepo),
           '/onbording': (context) => OnBoardingPage(),
           ROUTE_MAIN: (context) => HomePage(),
-          ROUTE_BONUS_CAMERA :(context) => CameraPage(),
+          ROUTE_BONUS_CAMERA: (context) => CameraPage(),
         },
-      ),
-    );
+      );
+    });
   }
 }

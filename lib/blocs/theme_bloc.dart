@@ -3,7 +3,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:tgg/ui/colors.dart';
 
 class ThemeBloc {
-  final _theme = BehaviorSubject<ThemeData>(seedValue: _default());
+  final _theme = BehaviorSubject<ThemeData>.seeded(_default());
 
   Function(ThemeData) get inTheme => _theme.sink.add;
 

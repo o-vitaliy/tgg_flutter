@@ -1,15 +1,18 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:tgg/bloc/auth/authentication_event.dart';
+import 'package:tgg/bloc/auth/authentication_state.dart';
+import 'package:tgg/bloc/theme/theme.dart';
 import 'package:tgg/data/game_repository.dart';
-import 'package:tgg/ui/auth/authentication_event.dart';
-import 'package:tgg/ui/auth/authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final GameRepository gameRepository;
+  final GameRepo gameRepo;
+  final ThemeBloc themeBloc;
 
-  AuthenticationBloc({@required this.gameRepository})
-      : assert(gameRepository != null);
+  AuthenticationBloc({@required this.gameRepo, @required this.themeBloc})
+      : assert(gameRepo != null);
 
   @override
   AuthenticationState get initialState => AuthenticationUninitialized();
@@ -18,10 +21,11 @@ class AuthenticationBloc
   Stream<AuthenticationState> mapEventToState(
       AuthenticationEvent event) async* {
     if (event is AppStarted) {
-      final game = await gameRepository.getGame();
+      final game = await gameRepo.getGame();
 
       if (game != null) {
         yield AuthenticationAuthenticated();
+        updateTheme();
       } else {
         yield AuthenticationUnauthenticated();
       }
@@ -29,8 +33,14 @@ class AuthenticationBloc
 
     if (event is LoggedIn) {
       yield AuthenticationLoading();
-      await gameRepository.getGame();
+      await gameRepo.getGame();
       yield AuthenticationAuthenticated();
+      updateTheme();
     }
+  }
+
+  void updateTheme() {
+    themeBloc.dispatch(ThemeChanged(
+        theme: ThemeBloc.buildTheme(Colors.green, Colors.green.shade100)));
   }
 }

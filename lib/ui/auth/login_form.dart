@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tgg/ui/auth/login_bloc.dart';
-import 'package:tgg/ui/auth/login_event.dart';
-import 'package:tgg/ui/auth/login_state.dart';
+import 'package:tgg/bloc/auth/login.dart';
+import 'package:tgg/bloc/auth/login_event.dart';
+import 'package:tgg/bloc/auth/login_state.dart';
 import 'package:tgg/ui/colors.dart';
 
 class LoginForm extends StatefulWidget {
