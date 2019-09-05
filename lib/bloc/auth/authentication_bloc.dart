@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
@@ -21,6 +23,7 @@ class AuthenticationBloc
   Stream<AuthenticationState> mapEventToState(
       AuthenticationEvent event) async* {
     if (event is AppStarted) {
+      yield AuthenticationUninitialized();
       final game = await gameRepo.getGame();
 
       if (game != null) {
@@ -36,6 +39,12 @@ class AuthenticationBloc
       await gameRepo.getGame();
       yield AuthenticationAuthenticated();
       updateTheme();
+    }
+
+    if (event is LoggedOut) {
+      yield AuthenticationUninitialized();
+      sleep(Duration(seconds: 1));
+      yield AuthenticationUnauthenticated();
     }
   }
 

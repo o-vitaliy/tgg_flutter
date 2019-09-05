@@ -18,3 +18,9 @@ class LoggedIn extends AuthenticationEvent {
   @override
   String toString() => 'LoggedIn {game: $game}';
 }
+
+
+class LoggedOut extends AuthenticationEvent{
+  @override
+  String toString() => 'LoggedOut';
+}

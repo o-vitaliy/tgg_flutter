@@ -29,7 +29,6 @@ class HomeState extends State<HomePage> {
   @override
   void dispose() {
     bloc.dispose();
-
     super.dispose();
   }
 

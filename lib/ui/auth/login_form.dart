@@ -20,6 +20,12 @@ class _LoginFormState extends State<LoginForm> {
       _loginBloc.dispatch(LoginButtonPressed(code: _gameCodeController.text));
     }
 
+    void _validateFormValues() {
+      bool hasError = false;
+      hasError |= _gameCodeController.text.isEmpty;
+      _loginBloc.dispatch(LoginFormHasError(hasError: hasError));
+    }
+
     return BlocListener<LoginBloc, LoginState>(
       bloc: _loginBloc,
       listener: (context, state) {
@@ -44,10 +50,19 @@ class _LoginFormState extends State<LoginForm> {
                 TextFormField(
                   decoration: InputDecoration(labelText: 'code'),
                   controller: _gameCodeController,
+                  autovalidate: true,
+                  validator: (value) {
+                    _validateFormValues();
+                    if (value.isEmpty) {
+                      return 'Please enter game code';
+                    }
+                    return null;
+                  },
                 ),
                 RaisedButton(
-                  onPressed:
-                      state is! LoginLoading ? _onLoginButtonPressed : null,
+                  onPressed: state is! LoginLoading && state is! LoginFormError
+                      ? _onLoginButtonPressed
+                      : null,
                   child: Text('Login'),
                 ),
                 Container(
@@ -71,13 +86,4 @@ class _LoginFormState extends State<LoginForm> {
             border: new Border(bottom: BorderSide(color: Color(GREY_LINE)))),
         child: Image.asset("assets/logo-nav-highlight.png"));
   }
-
-
-  void navigateNext(result) {
-    if (result)
-      Navigator.pushReplacementNamed(context, '/main');
-    else
-      print(result);
-  }
 }
-

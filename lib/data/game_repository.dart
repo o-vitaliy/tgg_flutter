@@ -20,4 +20,8 @@ class GameRepo {
     await prefsProvider.setGameCode(code);
     return _gameInfoCache;
   }
+
+  Future removeGame() async{
+    await prefsProvider.setGameCode(null);
+  }
 }

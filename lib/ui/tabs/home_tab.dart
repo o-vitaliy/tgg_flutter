@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tgg/bloc/auth/login.dart';
 import 'package:tgg/models/modes.dart';
 import 'package:tgg/models/routing.dart';
 import 'package:tgg/ui/helpers/icon_mapper.dart';
@@ -17,6 +19,7 @@ class HomeTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final buttons = routing.modes.map(buildButton).toList();
     buttons.add(buildBonus());
+    buttons.add(logoutButton(context));
     return Align(
       widthFactor: 0.8,
       child: Stack(children: [
@@ -24,7 +27,10 @@ class HomeTab extends StatelessWidget {
           children: buttons,
         ),
         Column(
-          children: <Widget>[CountDownTimer(Duration(seconds: 3), clockwise: true), CountDownTimer(Duration(seconds: 3), clockwise:false)],
+          children: <Widget>[
+            CountDownTimer(Duration(seconds: 3), clockwise: true),
+            CountDownTimer(Duration(seconds: 3), clockwise: false)
+          ],
         )
       ]),
     );
@@ -36,6 +42,15 @@ class HomeTab extends StatelessWidget {
     mode.title = "Bonus camera";
     mode.name = TAB_ROUTE_BONUS_CAMERA;
     return buildButton(mode);
+  }
+
+  Widget logoutButton(BuildContext context) {
+    final LoginBloc authenticationBloc = BlocProvider.of<LoginBloc>(context);
+    return RaisedButton(
+        onPressed: () => authenticationBloc.dispatch(Logout()),
+        child:
+            Padding(padding: EdgeInsets.only(left: 8), child: Text("Logout")),
+        textColor: Colors.white);
   }
 
   Widget buildButton(RouteMode mode) => RaisedButton(
