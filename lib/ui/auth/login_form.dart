@@ -20,12 +20,6 @@ class _LoginFormState extends State<LoginForm> {
       _loginBloc.dispatch(LoginButtonPressed(code: _gameCodeController.text));
     }
 
-    void _validateFormValues() {
-      bool hasError = false;
-      hasError |= _gameCodeController.text.isEmpty;
-      _loginBloc.dispatch(LoginFormHasError(hasError: hasError));
-    }
-
     return BlocListener<LoginBloc, LoginState>(
       bloc: _loginBloc,
       listener: (context, state) {
@@ -52,7 +46,7 @@ class _LoginFormState extends State<LoginForm> {
                   controller: _gameCodeController,
                   autovalidate: true,
                   validator: (value) {
-                    _validateFormValues();
+                    _validateFormValues(_loginBloc);
                     if (value.isEmpty) {
                       return 'Please enter game code';
                     }
@@ -76,6 +70,12 @@ class _LoginFormState extends State<LoginForm> {
         },
       ),
     );
+  }
+
+  void _validateFormValues(LoginBloc bloc) {
+    bool hasError = false;
+    hasError |= _gameCodeController.text.isEmpty;
+    bloc.dispatch(LoginFormHasError(hasError: hasError));
   }
 
   Widget buildToolbar() {

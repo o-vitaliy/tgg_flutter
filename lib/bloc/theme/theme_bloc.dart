@@ -14,7 +14,7 @@ class ThemeBloc extends Bloc<ThemeChangeEvent, ThemeChangeState> {
   ThemeBloc({@required this.gameRepository}) : assert(gameRepository != null);
 
   @override
-  ThemeChangeState get initialState => ThemeChangedState(theme: _default());
+  ThemeChangeState get initialState => ThemeChangedState(theme: defaultTheme());
 
   @override
   Stream<ThemeChangeState> mapEventToState(ThemeChangeEvent event) async* {
@@ -23,7 +23,7 @@ class ThemeBloc extends Bloc<ThemeChangeEvent, ThemeChangeState> {
     }
   }
 
-  static ThemeData _default() => buildTheme(ORANGE_COLORS, Colors.orange.shade100);
+  static ThemeData defaultTheme() => buildTheme(ORANGE_COLORS, Colors.orange.shade100);
 
   static ThemeData buildTheme(primarySwatch, disabledColor) => ThemeData(
         primarySwatch: primarySwatch,

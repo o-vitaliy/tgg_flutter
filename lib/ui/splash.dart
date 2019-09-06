@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tgg/blocs/userprefs_bloc.dart';
 import 'package:tgg/ui/colors.dart';
 
 class SplashPage extends StatelessWidget {
