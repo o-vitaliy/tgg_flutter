@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tgg/bloc/game/game.dart';
 import 'package:tgg/models/blueprint_model.dart';
 import 'package:tgg/models/modes.dart';
 import 'package:tgg/ui/tabs/home_tab.dart';
-import 'package:tgg/ui/toolbar/HomeToolbar.dart';
-import 'package:tgg/ui/widgets/stream_loading_page.dart';
-
-import '../blocs/blueprint_bloc.dart';
 import 'package:tgg/ui/tabs/route_tab_mapper.dart';
+import 'package:tgg/ui/toolbar/HomeToolbar.dart';
+import 'package:tgg/ui/widgets/loading_indicator.dart';
 
 typedef void TabItemClickCallback(RouteMode data);
 
@@ -21,23 +21,22 @@ class HomeState extends State<HomePage> {
   RouteMode selectedMode;
 
   @override
-  void initState() {
-    super.initState();
-    bloc.fetchBlueprint();
-  }
-
-  @override
-  void dispose() {
-    bloc.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SafeArea(
-            child:
-                StreamLoadingPage(bloc.blueprint, (data) => buildPage(data))));
+    final gameBloc = BlocProvider.of<GameBloc>(context);
+    return SafeArea(
+      child: Scaffold(
+        body: BlocBuilder(
+          bloc: gameBloc,
+          builder: (BuildContext context, GameState state) {
+            if (state is GameLoadedState) {
+              return buildPage(state.game.blueprint);
+            } else {
+              return LoadingIndicator();
+            }
+          },
+        ),
+      ),
+    );
   }
 
   Widget buildPage(BlueprintModel blueprint) {

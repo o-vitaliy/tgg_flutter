@@ -1,17 +1,19 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:tgg/models/game/game.dart';
+import 'package:tgg/models/models.dart';
 
-import 'blueprint.dart';
+import 'game.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
-  Game game;
+  Game _game;
+
+  Game get game => _game;
 
   @override
   Stream<GameState> mapEventToState(GameEvent event) async* {
     if (event is GameLoadedEvent) {
-      game = event.game;
+      _game = event.game;
       yield GameLoadedState(game: event.game);
     }
   }

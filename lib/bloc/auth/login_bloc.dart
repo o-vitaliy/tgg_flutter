@@ -6,17 +6,21 @@ import 'package:tgg/bloc/auth/authentication_bloc.dart';
 import 'package:tgg/bloc/auth/authentication_event.dart';
 import 'package:tgg/bloc/auth/login_event.dart';
 import 'package:tgg/bloc/auth/login_state.dart';
+import 'package:tgg/bloc/game/game.dart';
 import 'package:tgg/data/game_repository.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final GameRepo gameRepo;
   final AuthenticationBloc authenticationBloc;
+  final GameBloc gameBloc;
 
   LoginBloc({
     @required this.gameRepo,
     @required this.authenticationBloc,
+    @required this.gameBloc,
   })  : assert(gameRepo != null),
-        assert(authenticationBloc != null);
+        assert(authenticationBloc != null),
+        assert(gameBloc != null);
 
   LoginState get initialState => LoginInitial();
 
@@ -32,13 +36,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         final game = await gameRepo.loadGame(code: event.code);
 
         authenticationBloc.dispatch(LoggedIn(game));
+        gameBloc.dispatch(GameLoadedEvent(game: game));
         yield LoginInitial();
       } catch (error) {
         yield LoginFailure(error: error.toString());
       }
     }
 
-    if (event is Logout){
+    if (event is Logout) {
       await gameRepo.removeGame();
 
       authenticationBloc.dispatch(LoggedOut());

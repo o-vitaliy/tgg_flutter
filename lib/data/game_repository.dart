@@ -1,27 +1,32 @@
 import 'package:meta/meta.dart';
 import 'package:tgg/data/providers/api_provider.dart';
 import 'package:tgg/data/providers/prefs_provider.dart';
-import 'package:tgg/models/game/game_info.dart';
+import 'package:tgg/models/models.dart';
 
 class GameRepo {
-  GameInfo _gameInfoCache;
+  Game _gameCache;
 
-  Future<GameInfo> getGame() async {
-    if (_gameInfoCache == null) {
-      _gameInfoCache = await prefsProvider
+  Future<Game> getGame() async {
+    if (_gameCache == null) {
+      _gameCache = await prefsProvider
           .getGameCode()
           .then((code) => code != null ? loadGame(code: code) : null);
     }
-    return _gameInfoCache;
+    return _gameCache;
   }
 
-  Future<GameInfo> loadGame({@required String code}) async {
-    _gameInfoCache = await apiProvider.fetchGameInfo(code);
-    await prefsProvider.setGameCode(code);
-    return _gameInfoCache;
+  Future<Game> loadGame({@required String code}) async {
+    final login = await apiProvider.login(code);
+    if (login != null) {
+      _gameCache = login.team.playthrough.game;
+      await prefsProvider.setGameCode(code);
+      return _gameCache;
+    } else {
+      return null;
+    }
   }
 
-  Future removeGame() async{
+  Future removeGame() async {
     await prefsProvider.setGameCode(null);
   }
 }

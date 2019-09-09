@@ -108,14 +108,16 @@ class _CollapsibleTabBarItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        child: InkWell(
-            onTap: () => clickCallback(data),
-            child: Container(
-              color: selected
-                  ? Theme.of(context).primaryColorDark
-                  : Theme.of(context).primaryColor,
-              height: 56,
-              child: Icon(IconMapper.map(icon)),
-            )));
+        child: Material(
+            color: Color.fromARGB(0, 0, 0, 0),
+            child: InkWell(
+                onTap: () => clickCallback(data),
+                child: Container(
+                  color: selected
+                      ? Theme.of(context).primaryColorDark
+                      : Theme.of(context).primaryColor,
+                  height: 56,
+                  child: Icon(IconMapper.map(icon)),
+                ))));
   }
 }

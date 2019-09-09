@@ -8,6 +8,7 @@ import 'package:tgg/ui/home.dart';
 
 import 'bloc/auth/authentication.dart';
 import 'bloc/auth/login.dart';
+import 'bloc/game/game.dart';
 import 'bloc/theme/theme.dart';
 import 'ui/splash.dart';
 
@@ -16,8 +17,17 @@ void main() {
   final gameRepo = GameRepo();
 
   final themeBloc = ThemeBloc(gameRepository: gameRepo);
-  final authBloc = AuthenticationBloc(gameRepo: gameRepo, themeBloc: themeBloc);
-  final loginBloc = LoginBloc(gameRepo: gameRepo, authenticationBloc: authBloc);
+  final gameBloc = GameBloc();
+  final authBloc = AuthenticationBloc(
+    gameRepo: gameRepo,
+    themeBloc: themeBloc,
+    gameBloc: gameBloc,
+  );
+  final loginBloc = LoginBloc(
+    gameRepo: gameRepo,
+    authenticationBloc: authBloc,
+    gameBloc: gameBloc,
+  );
   runApp(
     MultiBlocProvider(
       providers: [
@@ -26,6 +36,7 @@ void main() {
         }),
         BlocProvider<ThemeBloc>(builder: (context) => themeBloc),
         BlocProvider<LoginBloc>(builder: (context) => loginBloc),
+        BlocProvider<GameBloc>(builder: (context) => gameBloc),
       ],
       child: App(gameRepo: gameRepo),
     ),

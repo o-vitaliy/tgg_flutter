@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:tgg/bloc/auth/authentication_event.dart';
 import 'package:tgg/bloc/auth/authentication_state.dart';
+import 'package:tgg/bloc/game/game.dart';
 import 'package:tgg/bloc/theme/theme.dart';
 import 'package:tgg/data/game_repository.dart';
 
@@ -12,9 +13,13 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final GameRepo gameRepo;
   final ThemeBloc themeBloc;
+  final GameBloc gameBloc;
 
-  AuthenticationBloc({@required this.gameRepo, @required this.themeBloc})
-      : assert(gameRepo != null);
+  AuthenticationBloc({
+    @required this.gameRepo,
+    @required this.themeBloc,
+    @required this.gameBloc,
+  }) : assert(gameRepo != null);
 
   @override
   AuthenticationState get initialState => AuthenticationUninitialized();
@@ -28,6 +33,7 @@ class AuthenticationBloc
 
       if (game != null) {
         yield AuthenticationAuthenticated();
+        gameBloc.dispatch(GameLoadedEvent(game: game));
         updateTheme();
       } else {
         yield AuthenticationUnauthenticated();

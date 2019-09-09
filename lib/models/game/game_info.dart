@@ -1,4 +1,4 @@
-import 'package:tgg/models/game/game.dart';
+import 'package:tgg/models/game.dart';
 
 class GameInfo {
   List<Game> games;

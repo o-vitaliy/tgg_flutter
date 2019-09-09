@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:tgg/models/game/game.dart';
+import 'package:tgg/models/models.dart';
 
 abstract class GameEvent extends Equatable {
   GameEvent([List props = const []]) : super(props);

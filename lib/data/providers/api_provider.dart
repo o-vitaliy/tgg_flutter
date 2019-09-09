@@ -1,23 +1,41 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' show Client;
-import 'package:tgg/models/game/game_info.dart';
+import 'package:tgg/models/models.dart';
 
 class ApiProvider {
   Client client = Client();
-  final _baseUrl = 'https://test-play.thegogame.com/api';
+  final _baseUrl = 'https://bc2-api-stage.thegogame.com/api/v2.0/playthroughs';
 
-  Future<GameInfo> fetchGameInfo(String code) async {
-    final url =
-        "$_baseUrl/objects/playthroughs?pin=$code&is_active=true&is_archived=false&sideload=game.flavors&_=${DateTime.now().millisecondsSinceEpoch}";
-    final response = await client.get(url);
-    print(url);
-    print(response.body.toString());
-    if (response.statusCode == 200) {
-      return GameInfo.fromJsonMap(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load post');
+  Future<LoginResponse> login(String code) async {
+    final url = "$_baseUrl/login/";
+
+    Map map = {
+      'pin': code,
+    };
+    final response = await apiRequest(url, map);
+    return LoginResponse.fromJsonMap(json.decode(response));
+  }
+
+  Future<String> apiRequest(String url, Map jsonMap) async {
+    HttpClient httpClient = new HttpClient();
+    HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
+    request.headers.set('content-type', 'application/json');
+    request.add(utf8.encode(json.encode(jsonMap)));
+    HttpClientResponse response = await request.close();
+    try {
+      final reply = await response.transform(utf8.decoder).join();
+      if (response.statusCode < 400) {
+        return reply;
+      } else {
+        final List<String> errors = List<String>.from(
+            json.decode(reply)["non_field_errors"].map((e) => e as String));
+        throw ArgumentError(errors.join(", "));
+      }
+    } finally {
+      httpClient.close();
     }
   }
 }
