@@ -30,9 +30,11 @@ class ApiProvider {
       if (response.statusCode < 400) {
         return reply;
       } else {
-        final List<String> errors = List<String>.from(
-            json.decode(reply)["non_field_errors"].map((e) => e as String));
-        throw ArgumentError(errors.join(", "));
+        final String errors = Map<String, dynamic>.from(json.decode(reply))
+            .values
+            .expand((v) => List<String>.from(v.map((e) => e as String)))
+            .join(", ");
+        throw ArgumentError(errors);
       }
     } finally {
       httpClient.close();

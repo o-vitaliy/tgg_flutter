@@ -58,6 +58,7 @@ class _LoginFormState extends State<LoginForm> {
                       ? _onLoginButtonPressed
                       : null,
                   child: Text('Login'),
+                  textColor: Colors.white,
                 ),
                 Container(
                   child: state is LoginLoading
