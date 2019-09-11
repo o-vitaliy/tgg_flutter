@@ -5,11 +5,14 @@ import 'package:tgg/data/game_repository.dart';
 import 'package:tgg/data/simple_bloc_delegate.dart';
 import 'package:tgg/ui/auth/login_page.dart';
 import 'package:tgg/ui/home.dart';
+import 'package:tgg/ui/pages/camera/camera_page.dart';
+import 'package:tgg/ui/pages/preivew_image.dart';
 
 import 'bloc/auth/authentication.dart';
 import 'bloc/auth/login.dart';
 import 'bloc/game/game.dart';
 import 'bloc/theme/theme.dart';
+import 'ui/routes.dart';
 import 'ui/splash.dart';
 
 void main() {
@@ -54,27 +57,23 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeBloc, ThemeChangeState>(builder: (context, state) {
       return MaterialApp(
-          title: 'Tgg Demo',
-          theme: (state is ThemeChangedState) ? state.theme : ThemeData(),
-          home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-              // ignore: missing_return
-              builder: (context, authState) {
-            if (authState is AuthenticationUninitialized)
-              return SplashPage();
-            else if (authState is AuthenticationAuthenticated)
-              return HomePage();
-            else if (authState is AuthenticationUnauthenticated)
-              return LoginPage(gameRepository: gameRepo);
-          })
-          /*initialRoute: '/',
+        title: 'Tgg Demo',
+        theme: (state is ThemeChangedState) ? state.theme : ThemeData(),
+        home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+            // ignore: missing_return
+            builder: (context, authState) {
+          if (authState is AuthenticationUninitialized)
+            return SplashPage();
+          else if (authState is AuthenticationAuthenticated)
+            return HomePage();
+          else if (authState is AuthenticationUnauthenticated)
+            return LoginPage(gameRepository: gameRepo);
+        }),
         routes: {
-          '/': (context) => SplashPage(),
-          '/login': (context) => LoginPage(gameRepository: gameRepo),
-          '/onbording': (context) => OnBoardingPage(),
-          ROUTE_MAIN: (context) => HomePage(),
           ROUTE_BONUS_CAMERA: (context) => CameraPage(),
-        },*/
-          );
+          PreviewImage.routeName: (context) => PreviewImage(),
+        },
+      );
     });
   }
 }

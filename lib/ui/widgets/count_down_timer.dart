@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:countdown/countdown.dart';
@@ -23,38 +24,49 @@ class CountDownTimer extends StatefulWidget {
       : super(key: key);
 
   @override
-  State createState() => _CountDownTimerState(
+  State createState() => CountDownTimerState(
       maxValue, clockwise, startAngle, color, finishedCallback);
 }
 
-class _CountDownTimerState extends State<CountDownTimer> {
+class CountDownTimerState extends State<CountDownTimer> {
   final Duration maxValue;
   final bool _clockwise;
   final double _startAngle;
   final TimerFinishedCallback _finishedCallback;
   final Color _color;
-  final Stream<Duration> _stream;
-
   final millisFormat = NumberFormat("000");
 
   Duration currentValue;
+  StreamSubscription _subscription;
 
-  _CountDownTimerState(this.maxValue, this._clockwise, this._startAngle,
-      this._color, this._finishedCallback)
-      : _stream =
-            CountDown(maxValue, refresh: Duration(milliseconds: 10)).stream;
+  CountDownTimerState(this.maxValue, this._clockwise, this._startAngle,
+      this._color, this._finishedCallback);
 
   @override
   void initState() {
     super.initState();
     currentValue = maxValue;
+  }
 
-    _stream.listen(
-        (onData) => setState(() {
-              currentValue = onData;
-            }), onDone: () {
+  @override
+  void dispose() {
+    stopTimer();
+    super.dispose();
+  }
+
+  void startTimer() {
+    _subscription = CountDown(currentValue, refresh: Duration(milliseconds: 10))
+        .stream
+        .listen(
+            (onData) => setState(() {
+                  currentValue = onData;
+                }), onDone: () {
       if (_finishedCallback != null) _finishedCallback();
     });
+  }
+
+  void stopTimer() {
+    _subscription?.cancel();
   }
 
   @override
