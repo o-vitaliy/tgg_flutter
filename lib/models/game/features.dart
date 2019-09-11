@@ -1,14 +1,14 @@
 
 class Features {
 
-  int route_ahead;
+  int routeAhead;
 
 	Features.fromJsonMap(Map<String, dynamic> map): 
-		route_ahead = map["route_ahead"];
+		routeAhead = map["route_ahead"];
 
 	Map<String, dynamic> toJson() {
 		final Map<String, dynamic> data = new Map<String, dynamic>();
-		data['route_ahead'] = route_ahead;
+		data['route_ahead'] = routeAhead;
 		return data;
 	}
 }

@@ -5,26 +5,26 @@ class Categories {
   String icon;
   String name;
   String title;
-  bool display_percent_correct;
+  bool displayPercentCorrect;
   Defaults defaults;
-  int direct_priority;
+  int directPriority;
 
 	Categories.fromJsonMap(Map<String, dynamic> map): 
 		icon = map["icon"],
 		name = map["name"],
 		title = map["title"],
-		display_percent_correct = map["display_percent_correct"],
+		displayPercentCorrect = map["display_percent_correct"],
 		defaults = Defaults.fromJsonMap(map["defaults"]),
-		direct_priority = map["direct_priority"];
+		directPriority = map["direct_priority"];
 
 	Map<String, dynamic> toJson() {
 		final Map<String, dynamic> data = new Map<String, dynamic>();
 		data['icon'] = icon;
 		data['name'] = name;
 		data['title'] = title;
-		data['display_percent_correct'] = display_percent_correct;
+		data['display_percent_correct'] = displayPercentCorrect;
 		data['defaults'] = defaults == null ? null : defaults.toJson();
-		data['direct_priority'] = direct_priority;
+		data['direct_priority'] = directPriority;
 		return data;
 	}
 }

@@ -11,8 +11,8 @@ class GameMode {
   String type;
   String icon;
   int delay;
-  int max_total;
-  int max_per_team;
+  int maxTotal;
+  int maxPerTeam;
   Sorting sorting;
   Features features;
   List<String> categories;
@@ -27,8 +27,8 @@ class GameMode {
         type = map["type"],
         icon = map["icon"],
         delay = map["delay"],
-        max_total = map["max_total"],
-        max_per_team = map["max_per_team"],
+        maxTotal = map["max_total"],
+        maxPerTeam = map["max_per_team"],
         sorting = map.containsKey("sorting")
             ? Sorting.fromJsonMap(map["sorting"])
             : null,
@@ -52,8 +52,8 @@ class GameMode {
     data['type'] = type;
     data['icon'] = icon;
     data['delay'] = delay;
-    data['max_total'] = max_total;
-    data['max_per_team'] = max_per_team;
+    data['max_total'] = maxTotal;
+    data['max_per_team'] = maxPerTeam;
     data['sorting'] = sorting == null ? null : sorting.toJson();
     data['features'] = features == null ? null : features.toJson();
     data['categories'] = categories;
