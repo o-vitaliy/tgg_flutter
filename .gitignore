@@ -64,7 +64,6 @@
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
 *.lock
-**/ios/Runner.xcodeproj/project.pbxproj
 
 # Exceptions to above rules.
 !**/ios/**/default.mode1v3

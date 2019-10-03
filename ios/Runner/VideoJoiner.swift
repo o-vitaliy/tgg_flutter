@@ -18,7 +18,7 @@ class VideoJoiner {
 
         var insertTime = kCMTimeZero
 
-        for videoAsset in arrayVideos { ß
+        for videoAsset in arrayVideos {
             try compositionVideoTrack?.insertTimeRange(CMTimeRangeMake(kCMTimeZero, videoAsset.duration), of: videoAsset.tracks(withMediaType: .video)[0], at: insertTime)
             try soundtrackTrack?.insertTimeRange(CMTimeRangeMake(kCMTimeZero, videoAsset.duration), of: videoAsset.tracks(withMediaType: .audio)[0], at: insertTime)
 

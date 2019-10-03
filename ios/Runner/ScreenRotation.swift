@@ -23,7 +23,7 @@ struct ScreenRotation {
             default:
                 mask = UIInterfaceOrientationMask.portrait
             }
-            let orientation: UIInterfaceOrientation = UIApplication.shared.windows.first?.windowScene?.interfaceOrientation ?? UIInterfaceOrientation.portrait
+            let orientation: UIInterfaceOrientation = UIApplication.shared.statusBarOrientation //UIApplication.shared.windows.first?.windowScene?.interfaceOrientation ?? UIInterfaceOrientation.portrait
             lockOrientation(mask, andRotateTo: orientation)
         } else {
             lockOrientation(UIInterfaceOrientationMask.all)

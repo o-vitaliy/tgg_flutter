@@ -755,7 +755,8 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
     } else if ([@"stopVideoRecording" isEqualToString:call.method]) {
       [_camera stopVideoRecordingWithResult:result];
     } else if ([@"changeTorchMode" isEqualToString:call.method]) {
-      [_camera changeTorchMode:call.arguments[@"enabled"] ];
+        NSNumber *enabled = call.arguments[@"enabled"];
+        [_camera changeTorchMode: [enabled boolValue] ];
       result(nil);
     } else {
       result(FlutterMethodNotImplemented);

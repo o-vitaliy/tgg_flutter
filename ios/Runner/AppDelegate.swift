@@ -20,7 +20,7 @@ import UIKit
                 print("Bipin - Argument failed")
                 return
             }
-            ifcall.method == "getVideoThumbnail" {
+            if call.method == "getVideoThumbnail" {
                 guard let videoPath = arguments["videoPath"] as? String else {
                     print("Bipin - VideoPath failed")
                     return
@@ -38,7 +38,7 @@ import UIKit
                 } catch {
                     result(FlutterError(code: "UNAVAILABLE", message: "Video thumbnail not found", details: nil))
                 }
-            } else ifcall.method == "createMovie" {
+            } else if call.method == "createMovie" {
                 guard let videoPaths = arguments["videoPaths"] as? [String] else {
                     print("Bipin - Video paths reading failed.")
                     return
@@ -60,12 +60,12 @@ import UIKit
                 } catch {
                     result(FlutterError(code: "UNAVAILABLE", message: "Movie creation failed", details: nil))
                 }
-            } else ifcall.method == "screenRotation" {
+            } else if call.method == "screenRotation" {
                 guard let enabled = arguments["enabled"] as? Bool else {
                     print("Bipin - enabled reading failed.")
                     return
                 }
-                ScreenRotation.enable(enable)
+                ScreenRotation.enable(enabled)
             }
         }
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)

@@ -52,7 +52,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
       cameraTorchButtonBloc.dispatch(
           CameraTorchButtonDisableEvent(controller: cameraController));
       cameraTorchButtonBloc.dispatch(CameraTorchButtonHideEvent());
-      cameraController.changeTorchMode(false);
+      await cameraController.changeTorchMode(false);
       yield PhotoWasTakenState(imagePath);
       nativeProvider.screenRotationEnable(true).then((_) {});
     }
@@ -80,7 +80,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
           CameraTorchButtonDisableEvent(controller: event.cameraController));
       cameraTorchButtonBloc.dispatch(CameraTorchButtonHideEvent());
 
-      event.cameraController.changeTorchMode(false);
+      await event.cameraController.changeTorchMode(false);
       yield* mergeVideos();
       nativeProvider.screenRotationEnable(true).then((_) {});
     }
