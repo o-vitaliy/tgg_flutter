@@ -4,7 +4,6 @@ import 'package:tgg/ui/tabs/bonus_tab.dart';
 import 'package:tgg/ui/tabs/head_to_head_tab.dart';
 import 'package:tgg/ui/tabs/stub_tab.dart';
 
-
 typedef TabBuilder = Widget Function();
 
 class RouteTabMapper {

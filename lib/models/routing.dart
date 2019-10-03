@@ -10,12 +10,12 @@ class Routing {
       : version = map["version"],
         votables = Votables.fromJsonMap(map["votables"]),
         modes = map["modes"] != null
-            ? List<RouteMode>.from(map["modes"].map((it) => RouteMode.fromJsonMap(it)))
-            : List()
-  ;
+            ? List<RouteMode>.from(
+                map["modes"].map((it) => RouteMode.fromJsonMap(it)))
+            : List();
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['version'] = version;
     data['votables'] = votables == null ? null : votables.toJson();
     data['modes'] =

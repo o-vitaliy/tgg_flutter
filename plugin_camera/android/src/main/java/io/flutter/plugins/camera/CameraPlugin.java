@@ -186,11 +186,11 @@ public class CameraPlugin implements MethodCallHandler {
           }
           break;
         }
-      case "changeFlashMode":
+      case "changeTorchMode":
         {
           try {
-            final String flashMode = call.argument("flashMode");
-            camera.changeFlashMode(flashMode);
+            final boolean enabled = call.argument("enabled");
+            camera.changeTorchMode(enabled);
             result.success(null);
           } catch (Exception e) {
             handleException(e, result);
@@ -262,6 +262,7 @@ public class CameraPlugin implements MethodCallHandler {
     private MediaRecorder mediaRecorder;
     private boolean recordingVideo;
     private boolean enableAudio;
+    private boolean torchEnabled = false;
 
     Camera(
         final String cameraName,
@@ -445,22 +446,15 @@ public class CameraPlugin implements MethodCallHandler {
       }
     }
 
-    private void changeFlashMode(String mode) {
+    private void changeTorchMode(boolean enabled) {
       try {
+        torchEnabled = enabled;
         final int modeValue;
-        switch (mode) {
-          case "off":
-            modeValue = CameraMetadata.FLASH_MODE_OFF;
-            break;
-          case "single":
-            modeValue = CameraMetadata.FLASH_MODE_SINGLE;
-            break;
-          case "torch":
-            modeValue = CameraMetadata.FLASH_MODE_TORCH;
-            break;
-          default:
-            throw new IllegalArgumentException("Unknown mode: " + mode);
-        }
+        if(enabled)
+          modeValue = CameraMetadata.FLASH_MODE_TORCH;
+        else
+          modeValue = CameraMetadata.FLASH_MODE_OFF;
+
         captureRequestBuilder.set(CaptureRequest.FLASH_MODE, modeValue);
 
         if (cameraCaptureSession != null) {
@@ -625,8 +619,7 @@ public class CameraPlugin implements MethodCallHandler {
           null);
 
       try {
-        final CaptureRequest.Builder captureBuilder =
-            cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+        final CaptureRequest.Builder captureBuilder = configureCaptureRequestBuilder(CameraDevice.TEMPLATE_STILL_CAPTURE);
         captureBuilder.addTarget(pictureImageReader.getSurface());
         captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getMediaOrientation());
 
@@ -678,7 +671,7 @@ public class CameraPlugin implements MethodCallHandler {
 
         SurfaceTexture surfaceTexture = textureEntry.surfaceTexture();
         surfaceTexture.setDefaultBufferSize(previewSize.getWidth(), previewSize.getHeight());
-        captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
+        captureRequestBuilder = configureCaptureRequestBuilder(CameraDevice.TEMPLATE_RECORD);
 
         List<Surface> surfaces = new ArrayList<>();
 
@@ -747,7 +740,7 @@ public class CameraPlugin implements MethodCallHandler {
 
       SurfaceTexture surfaceTexture = textureEntry.surfaceTexture();
       surfaceTexture.setDefaultBufferSize(previewSize.getWidth(), previewSize.getHeight());
-      captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+      captureRequestBuilder = configureCaptureRequestBuilder(CameraDevice.TEMPLATE_PREVIEW);
 
       List<Surface> surfaces = new ArrayList<>();
 
@@ -791,8 +784,7 @@ public class CameraPlugin implements MethodCallHandler {
       SurfaceTexture surfaceTexture = textureEntry.surfaceTexture();
       surfaceTexture.setDefaultBufferSize(previewSize.getWidth(), previewSize.getHeight());
 
-      captureRequestBuilder =
-          cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+      captureRequestBuilder = configureCaptureRequestBuilder(CameraDevice.TEMPLATE_STILL_CAPTURE);
 
       List<Surface> surfaces = new ArrayList<>();
 
@@ -884,6 +876,12 @@ public class CameraPlugin implements MethodCallHandler {
             }
           },
           null);
+    }
+
+    private CaptureRequest.Builder configureCaptureRequestBuilder(int templateType) throws CameraAccessException{
+      final CaptureRequest.Builder captureRequestBuilder = cameraDevice.createCaptureRequest(templateType);
+      captureRequestBuilder.set(CaptureRequest.FLASH_MODE, torchEnabled ? CameraMetadata.FLASH_MODE_TORCH : CameraMetadata.FLASH_MODE_OFF );
+      return captureRequestBuilder;
     }
 
     private void sendErrorEvent(String errorDescription) {

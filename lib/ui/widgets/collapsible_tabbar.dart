@@ -13,7 +13,7 @@ class CollapsibleTabBar extends StatelessWidget {
   final RouteMode selected;
 
   final int maxItemsInRaw;
-  final GlobalKey _moreKey = new GlobalKey();
+  final GlobalKey _moreKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class CollapsibleTabBar extends StatelessWidget {
       childList.addAll(children.sublist(0, maxItemsInRaw - 1));
       childList.add(createMoreItem());
     }
-    PopupMenuButton button = new PopupMenuButton(
+    PopupMenuButton button = PopupMenuButton(
         key: _moreKey, itemBuilder: (_) => _getMenuItems(), onSelected: (_) {});
 
     final items = childList

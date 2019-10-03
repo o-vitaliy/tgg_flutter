@@ -83,8 +83,8 @@ class _LoginFormState extends State<LoginForm> {
     return Container(
         height: 56.0,
         alignment: Alignment.centerLeft,
-        decoration: new BoxDecoration(
-            border: new Border(bottom: BorderSide(color: Color(GREY_LINE)))),
+        decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: Color(GREY_LINE)))),
         child: Image.asset("assets/logo-nav-highlight.png"));
   }
 }

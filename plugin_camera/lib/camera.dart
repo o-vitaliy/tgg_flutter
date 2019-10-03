@@ -17,8 +17,6 @@ enum CameraLensDirection { front, back, external }
 
 enum ResolutionPreset { low, medium, high }
 
-enum FlashMode { off, single, torch }
-
 typedef onLatestImageAvailable = Function(CameraImage image);
 
 /// Returns the resolution preset as a String.
@@ -32,19 +30,6 @@ String serializeResolutionPreset(ResolutionPreset resolutionPreset) {
       return 'low';
   }
   throw ArgumentError('Unknown ResolutionPreset value');
-}
-
-// Return flash mode as String
-String serializeFlashMode(FlashMode mode) {
-  switch (mode) {
-    case FlashMode.off:
-      return "off";
-    case FlashMode.single:
-      return "single";
-    case FlashMode.torch:
-      return "torch";
-  }
-  throw ArgumentError('Unknown FlashMode value');
 }
 
 CameraLensDirection _parseCameraLensDirection(String string) {
@@ -138,21 +123,22 @@ class CameraPreview extends StatelessWidget {
 
 /// The state of a [CameraController].
 class CameraValue {
-  const CameraValue({
-    this.isInitialized,
-    this.errorDescription,
-    this.previewSize,
-    this.isRecordingVideo,
-    this.isTakingPicture,
-    this.isStreamingImages,
-  });
+  const CameraValue(
+      {this.isInitialized,
+      this.errorDescription,
+      this.previewSize,
+      this.isRecordingVideo,
+      this.isTakingPicture,
+      this.isStreamingImages,
+      this.torchEnabled});
 
   const CameraValue.uninitialized()
       : this(
             isInitialized: false,
             isRecordingVideo: false,
             isTakingPicture: false,
-            isStreamingImages: false);
+            isStreamingImages: false,
+            torchEnabled: false);
 
   /// True after [CameraController.initialize] has completed successfully.
   final bool isInitialized;
@@ -180,14 +166,17 @@ class CameraValue {
 
   bool get hasError => errorDescription != null;
 
-  CameraValue copyWith({
-    bool isInitialized,
-    bool isRecordingVideo,
-    bool isTakingPicture,
-    bool isStreamingImages,
-    String errorDescription,
-    Size previewSize,
-  }) {
+  /// True if camera's torch is enabled
+  final bool torchEnabled;
+
+  CameraValue copyWith(
+      {bool isInitialized,
+      bool isRecordingVideo,
+      bool isTakingPicture,
+      bool isStreamingImages,
+      String errorDescription,
+      Size previewSize,
+      bool torchEnabled}) {
     return CameraValue(
       isInitialized: isInitialized ?? this.isInitialized,
       errorDescription: errorDescription,
@@ -195,6 +184,7 @@ class CameraValue {
       isRecordingVideo: isRecordingVideo ?? this.isRecordingVideo,
       isTakingPicture: isTakingPicture ?? this.isTakingPicture,
       isStreamingImages: isStreamingImages ?? this.isStreamingImages,
+      torchEnabled: torchEnabled ?? this.torchEnabled,
     );
   }
 
@@ -288,9 +278,10 @@ class CameraController extends ValueNotifier<CameraValue> {
     await _channel.invokeMethod<void>('prepareForVideoRecording');
   }
 
-  Future<void> changeFlashMode(FlashMode mode) async {
-    await _channel.invokeMethod<void>('changeFlashMode',
-        <String, dynamic>{'flashMode': serializeFlashMode(mode)});
+  Future<void> changeTorchMode(bool enabled) async {
+    await _channel.invokeMethod<void>(
+        'changeTorchMode', <String, dynamic>{'enabled': enabled});
+    value = value.copyWith(torchEnabled: enabled);
   }
 
   /// Listen to events from the native plugins.

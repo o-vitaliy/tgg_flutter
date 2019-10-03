@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
-typedef void TimerFinishedCallback();
+typedef TimerFinishedCallback = void Function();
 
 class CountDownTimer extends StatefulWidget {
   final Duration maxValue;
@@ -58,11 +58,13 @@ class CountDownTimerState extends State<CountDownTimer> {
     _subscription = CountDown(currentValue, refresh: Duration(milliseconds: 10))
         .stream
         .listen(
-            (onData) => setState(() {
-                  currentValue = onData;
-                }), onDone: () {
-      if (_finishedCallback != null) _finishedCallback();
-    });
+      (onData) => setState(() {
+        currentValue = onData;
+      }),
+      onDone: () {
+        if (_finishedCallback != null) _finishedCallback();
+      },
+    );
   }
 
   void stopTimer() {
@@ -127,7 +129,8 @@ class _TimerBorderPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final rect = Rect.fromLTWH(0, 0, 50, 50);
     final startAngle = this._startAngle - math.pi / 2.0;
-    final sweepAngle = math.pi * 2.0 * _progress * (_clockwise ? 1.0 : -1.0);
+    final sweepAngle =
+        math.pi * 2.0 - math.pi * 2.0 * _progress * (_clockwise ? 1.0 : -1.0);
     final useCenter = false;
     final paint = Paint()
       ..color = _color

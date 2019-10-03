@@ -8,7 +8,7 @@ import 'package:tgg/ui/tabs/route_tab_mapper.dart';
 import 'package:tgg/ui/toolbar/HomeToolbar.dart';
 import 'package:tgg/ui/widgets/loading_indicator.dart';
 
-typedef void TabItemClickCallback(RouteMode data);
+typedef TabItemClickCallback = void Function(RouteMode data);
 
 class HomePage extends StatefulWidget {
   @override

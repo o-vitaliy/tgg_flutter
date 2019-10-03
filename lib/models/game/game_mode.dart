@@ -43,7 +43,7 @@ class GameMode {
             : List();
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['category'] = category;
     data['name'] = name;
     data['title'] = title;

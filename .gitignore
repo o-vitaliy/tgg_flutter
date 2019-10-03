@@ -63,6 +63,8 @@
 **/ios/Flutter/flutter_assets/
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
+*.lock
+**/ios/Runner.xcodeproj/project.pbxproj
 
 # Exceptions to above rules.
 !**/ios/**/default.mode1v3
@@ -70,3 +72,9 @@
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+.project
+.classpath
+.settings
+flutter_export_environment.sh
+

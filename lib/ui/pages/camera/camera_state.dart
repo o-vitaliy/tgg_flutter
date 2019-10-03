@@ -5,48 +5,41 @@ abstract class CameraState extends Equatable {}
 class InitialState extends CameraState {
   @override
   String toString() => 'InitialState';
-}
-
-class TakePhotoState extends CameraState {
 
   @override
-  String toString() => 'TakePhotoState';
+  List<Object> get props => [];
 }
 
-class PhotoWasTakenState extends CameraState{
+class PhotoWasTakenState extends CameraState {
   final String imagePath;
 
   PhotoWasTakenState(this.imagePath);
-
+  @override
+  List<Object> get props => [imagePath];
   @override
   String toString() => 'PhotoWasTakenState { imageUrl: $imagePath}';
-
 }
 
-class TakeVideoState extends CameraState {
-  String imagePath;
+class VideoWasTakenState extends CameraState {
+  final String videoPath;
 
+  VideoWasTakenState(this.videoPath);
   @override
-  String toString() => 'TakeVideoState { imagePath: $imagePath}';
+  List<Object> get props => [videoPath];
+  @override
+  String toString() => 'VideoWasTakenState { videoPath: $videoPath}';
 }
 
 class VideoRecordingState extends CameraState {
-  String videoPath;
-
   @override
-  String toString() => 'StartVideoRecordingState { imagePath: $videoPath}';
-}
-
-class VideoRecordingStoppedState extends CameraState {
-  String videoPath;
-
+  List<Object> get props => [];
   @override
-  String toString() => 'StopVideoRecordingState { imagePath: $videoPath}';
+  String toString() => 'StartVideoRecordingState {}';
 }
 
 class VideoRecordingPausedState extends CameraState {
-  String videoPath;
-
   @override
-  String toString() => 'PauseVideoRecordingState { imagePath: $videoPath}';
+  List<Object> get props => [];
+  @override
+  String toString() => 'PauseVideoRecordingState {}';
 }

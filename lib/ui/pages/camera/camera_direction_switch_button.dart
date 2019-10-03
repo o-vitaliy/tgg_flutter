@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tgg/ui/widgets/base_square_icon_button.dart';
 
-typedef ChangeCameraDirectionCallback(CameraLensDirection cameraLensDirection);
+typedef ChangeCameraDirectionCallback = Function(
+    CameraLensDirection cameraLensDirection);
 
 class CameraDirectionSwitchButton extends StatelessWidget {
   final CameraLensDirection direction;
@@ -13,8 +14,7 @@ class CameraDirectionSwitchButton extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      BaseSquareIconButton(
+  Widget build(BuildContext context) => BaseSquareIconButton(
         icon: _getCameraLensIcon(direction),
         onTap: (context) => callback(_getInvertedLensDirection(direction)),
       );

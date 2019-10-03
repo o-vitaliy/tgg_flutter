@@ -1,10 +1,9 @@
-
 import 'models.dart';
 
-class Playthrough{
+class Playthrough {
   Game game;
 
-  Playthrough.fromJsonMap(Map<String, dynamic> map){
+  Playthrough.fromJsonMap(Map<String, dynamic> map) {
     game = Game.fromJsonMap(map["game"]);
   }
 }

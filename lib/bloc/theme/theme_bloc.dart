@@ -23,7 +23,8 @@ class ThemeBloc extends Bloc<ThemeChangeEvent, ThemeChangeState> {
     }
   }
 
-  static ThemeData defaultTheme() => buildTheme(ORANGE_COLORS, Colors.orange.shade100);
+  static ThemeData defaultTheme() =>
+      buildTheme(ORANGE_COLORS, Colors.orange.shade100);
 
   static ThemeData buildTheme(primarySwatch, disabledColor) => ThemeData(
         primarySwatch: primarySwatch,

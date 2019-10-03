@@ -2,29 +2,25 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tgg/ui/widgets/count_down_timer.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tgg/ui/widgets/base_square_icon_button.dart';
 
 import '../navigation_arguments.dart';
-import '../preivew_image.dart';
-import 'camera.dart';
+import '../pages.dart';
 
 const defaultDuration = Duration(seconds: 30);
 
 class CameraPage extends StatefulWidget {
-  final CameraCaptureMode mode;
-
-  const CameraPage({Key key, this.mode = CameraCaptureMode.PHOTO})
-      : super(key: key);
+  static const routeName = '/cameraPage';
 
   @override
-  State createState() => CameraPageState(mode);
+  State createState() => CameraPageState();
 }
 
 class CameraPageState extends State<CameraPage> {
   Stream<List<CameraDescription>> stream;
-  final CameraCaptureMode mode;
 
-  CameraPageState(this.mode);
+  CameraPageState();
 
   @override
   void initState() {
@@ -34,16 +30,34 @@ class CameraPageState extends State<CameraPage> {
 
   @override
   Widget build(BuildContext context) {
+    final CaptureArguments args = ModalRoute.of(context).settings.arguments;
+    final mode = args.mode;
+
+    final ActionButtonBloc actionButtonBloc = ActionButtonBloc();
+    final CameraControlsBloc cameraControlsBloc = CameraControlsBloc();
+    final CameraTorchButtonBloc cameraTorchButtonBloc = CameraTorchButtonBloc();
+    final CameraCountDownTimerBloc cameraCountDownTimerBloc =
+        CameraCountDownTimerBloc();
+    final CameraBloc cameraBloc = CameraBloc(cameraControlsBloc,
+        cameraCountDownTimerBloc, actionButtonBloc, cameraTorchButtonBloc)
+      ..dispatch(InitialCameraCaptureEvent(mode: mode));
+
     return StreamBuilder(
       stream: stream,
       builder: (context, AsyncSnapshot<List<CameraDescription>> snapshot) =>
           snapshot.hasData
-              ? BlocProvider<CameraBloc>(
-                  builder: (context) {
-                    return CameraBloc()
-                      ..dispatch(InitialCameraCaptureEvent(mode: mode));
-                  },
-                  child: _CameraScreen(cameras: snapshot.data))
+              ? MultiBlocProvider(providers: [
+                  BlocProvider<CameraControlsBloc>(
+                      builder: (context) => cameraControlsBloc),
+                  BlocProvider<CameraCountDownTimerBloc>(
+                      builder: (context) => cameraCountDownTimerBloc),
+                  BlocProvider<CameraBloc>(builder: (context) => cameraBloc),
+                  BlocProvider<ActionButtonBloc>(
+                      builder: (context) => actionButtonBloc),
+                  BlocProvider<CameraTorchButtonBloc>(
+                    builder: (context) => cameraTorchButtonBloc,
+                  )
+                ], child: _CameraScreen(cameras: snapshot.data))
               : SizedBox.shrink(),
     );
   }
@@ -82,19 +96,35 @@ class _CameraScreenState extends State<_CameraScreen>
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.inactive) {
+      controller?.dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      if (controller != null) {
+        onNewCameraSelected(controller.description);
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final cameraBloc = BlocProvider.of<CameraBloc>(context);
     return BlocListener<CameraBloc, CameraState>(
+        bloc: cameraBloc,
         listener: (context, state) {
           if (state is PhotoWasTakenState) {
-            Navigator.pushNamed(context, PreviewImage.routeName,
-                arguments: ImagePreviewArguments(state.imagePath));
+            Navigator.popAndPushNamed(context, PreviewPage.routeName,
+                arguments: ImagePreviewArguments(state.imagePath, false));
+          }
+          if (state is VideoWasTakenState) {
+            Navigator.popAndPushNamed(context, PreviewPage.routeName,
+                arguments: ImagePreviewArguments(state.videoPath, true));
           }
         },
         child: Stack(
           children: <Widget>[
             _cameraPreviewWidget(),
-            SafeArea(child: _controlsWidget(cameraBloc))
+            SafeArea(child: _controlsWidget(context, cameraBloc))
           ],
         ));
   }
@@ -102,28 +132,39 @@ class _CameraScreenState extends State<_CameraScreen>
   /// Display the preview from the camera (or a message if the preview is not available).
   Widget _cameraPreviewWidget() {
     if (controller == null || !controller.value.isInitialized) {
-      return const Text(
+      return const Center(
+          child: Text(
         'Initializing',
         style: TextStyle(
           color: Colors.white,
-          fontSize: 24.0,
+          fontSize: 22.0,
           fontWeight: FontWeight.w900,
         ),
-      );
+      ));
     } else {
-      return AspectRatio(
-        aspectRatio: controller.value.aspectRatio,
-        child: CameraPreview(controller),
+      return Center(
+        child: AspectRatio(
+          aspectRatio: controller.value.aspectRatio,
+          child: CameraPreview(controller),
+        ),
       );
     }
   }
 
-  Widget _controlsWidget(CameraBloc cameraBloc) {
+  Widget _controlsWidget(BuildContext context, CameraBloc cameraBloc) {
     return Container(
         width: double.infinity,
         child: Column(
           children: <Widget>[
-            _getCountDownTimer(cameraBloc),
+            Stack(
+              children: <Widget>[
+                _getCameraTorchButton(context),
+                Container(
+                  alignment: Alignment.center,
+                  child: _getCountDownTimer(),
+                ),
+              ],
+            ),
             Spacer(),
             SizedBox(
                 width: double.infinity,
@@ -137,11 +178,11 @@ class _CameraScreenState extends State<_CameraScreen>
                     ),
                     Container(
                       alignment: Alignment.centerRight,
-                      child: CameraDirectionSwitchButton(
-                          direction: currentCamera.lensDirection,
-                          callback: (result) => onNewCameraSelected(cameras
-                              .where((it) => it.lensDirection == result)
-                              .first)),
+                      child: _getCameraSwitchButton(),
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      child: _getStopRecordingButton(),
                     )
                   ],
                 ))
@@ -149,39 +190,65 @@ class _CameraScreenState extends State<_CameraScreen>
         ));
   }
 
-  Widget _getCountDownTimer(CameraBloc cameraBloc) {
-    return BlocListener<CameraBloc, CameraState>(
-        bloc: cameraBloc,
-        listener: (context, state) {
-          if (state is VideoRecordingState) {
-            (countDownTimerKey.currentState as CountDownTimerState)
-                .startTimer();
-          } else if (state is VideoRecordingStoppedState ||
-              state is VideoRecordingPausedState) {
-            (countDownTimerKey.currentState as CountDownTimerState).stopTimer();
-          }
-        },
-        child: CameraBlocWidget(cameraBloc,
-            (BuildContext context, CameraState state) {
-          if (state is TakeVideoState)
-            return CountDownTimer(defaultDuration, key: countDownTimerKey);
-          else
-            return SizedBox.shrink();
-        }));
-  }
+  Widget _getCountDownTimer() => CameraTimerWidget(duration: defaultDuration);
 
   Widget _getCameraActionButton(CameraBloc cameraBloc) {
-    return CameraBlocWidget(cameraBloc,
-        (BuildContext context, CameraState state) {
-      if (state != null) {
-        return CameraActionButton(
-            action: state,
-            callback: (action) => cameraBloc
-                .dispatch(CaptureClickEvent(cameraController: controller)));
-      } else {
-        return SizedBox.shrink();
-      }
-    });
+    return ActionButton(
+      onTakePhotoClick: () =>
+          cameraBloc.dispatch(CaptureClickEvent(cameraController: controller)),
+      onRecordClick: () => cameraBloc
+          .dispatch(StartVideoRecording(cameraController: controller)),
+      onPauseClick: () => cameraBloc
+          .dispatch(PauseVideoRecording(cameraController: controller)),
+      onStopClick: () =>
+          cameraBloc.dispatch(StopVideoRecording(cameraController: controller)),
+    );
+  }
+
+  Widget _getCameraSwitchButton() {
+    return CameraControlsBlocWidget(
+        builder: (context) => CameraDirectionSwitchButton(
+              direction: currentCamera.lensDirection,
+              callback: (result) => onNewCameraSelected(
+                  cameras.where((it) => it.lensDirection == result).first),
+            ));
+  }
+
+  Widget _getCameraTorchButton(BuildContext context) {
+    final cameraBloc = BlocProvider.of<CameraTorchButtonBloc>(context);
+
+    return BlocBuilder<CameraTorchButtonBloc, CameraTorchButtonState>(
+        bloc: cameraBloc,
+        builder: (context, state) {
+          if (state is InitialCameraTorchButtonState ||
+              state is ModeChangedCameraTorchButtonState) {
+            final enabled = controller?.value?.torchEnabled ?? false;
+            return CameraTorchButton(
+              enabled: enabled,
+              callback: (_) => cameraBloc.dispatch(enabled
+                  ? CameraTorchButtonDisableEvent(controller: controller)
+                  : CameraTorchButtonEnableEvent(controller: controller)),
+            );
+          } else {
+            return SizedBox.shrink();
+          }
+        });
+  }
+
+  Widget _getStopRecordingButton() {
+    return CameraBlocWidget(
+      builder: (context, state) {
+        if (state is VideoRecordingPausedState) {
+          return BaseSquareIconButton(
+            icon: FontAwesomeIcons.check,
+            onTap: (context) => BlocProvider.of<CameraBloc>(context)
+                .dispatch(StopVideoRecording(cameraController: controller)),
+          );
+        } else {
+          return SizedBox.shrink();
+        }
+      },
+    );
   }
 
   void onNewCameraSelected(CameraDescription cameraDescription) async {
@@ -192,7 +259,6 @@ class _CameraScreenState extends State<_CameraScreen>
     currentCamera = cameraDescription;
     // If the controller is updated then update the UI.
     controller.addListener(() {
-      if (mounted) setState(() {});
       if (controller.value.hasError) {
         logErrorMessage('Camera error ${controller.value.errorDescription}');
       }
@@ -207,20 +273,6 @@ class _CameraScreenState extends State<_CameraScreen>
     if (mounted) {
       setState(() {});
     }
-  }
-}
-
-class CameraBlocWidget extends StatelessWidget {
-  final CameraBloc cameraBloc;
-  final BlocWidgetBuilder<CameraState> builder;
-
-  const CameraBlocWidget(this.cameraBloc, this.builder, {Key key})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<CameraBloc, CameraState>(
-        bloc: cameraBloc, builder: builder);
   }
 }
 

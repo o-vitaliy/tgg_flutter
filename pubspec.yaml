@@ -32,7 +32,9 @@ dependencies:
   path_provider: ^1.2.0
   countdown: ^0.1.0
   intl: ^0.15.8
-  equatable: ^0.2.0
+  equatable: ^0.6.0
+  package_info: ^0.4.0+6
+  geolocator: ^5.1.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

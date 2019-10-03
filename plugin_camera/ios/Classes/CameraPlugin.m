@@ -155,6 +155,7 @@ static FlutterError *getFlutterError(NSError *error) {
 - (void)startImageStreamWithMessenger:(NSObject<FlutterBinaryMessenger> *)messenger;
 - (void)stopImageStream;
 - (void)captureToFile:(NSString *)filename result:(FlutterResult)result;
+- (void)changeTorchMode: (BOOL)enabled;
 @end
 
 @implementation FLTCam {
@@ -227,6 +228,16 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
                                                                    result:result
                                                             motionManager:_motionManager
                                                            cameraPosition:_captureDevice.position]];
+}
+
+- (void)changeTorchMode: (BOOL) enabled { 
+   [_captureDevice lockForConfiguration:nil];
+  if(enabled){
+    _captureDevice.torchMode = AVCaptureTorchModeOn;
+  }else{
+    _captureDevice.torchMode = AVCaptureTorchModeOff;
+  }
+  [_captureDevice unlockForConfiguration];
 }
 
 - (void)setCaptureSessionPreset:(NSString *)resolutionPreset {
@@ -743,6 +754,9 @@ FourCharCode const videoFormat = kCVPixelFormatType_32BGRA;
       [_camera startVideoRecordingAtPath:call.arguments[@"filePath"] result:result];
     } else if ([@"stopVideoRecording" isEqualToString:call.method]) {
       [_camera stopVideoRecordingWithResult:result];
+    } else if ([@"changeTorchMode" isEqualToString:call.method]) {
+      [_camera changeTorchMode:call.arguments[@"enabled"] ];
+      result(nil);
     } else {
       result(FlutterMethodNotImplemented);
     }

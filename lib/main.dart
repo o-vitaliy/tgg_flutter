@@ -5,14 +5,12 @@ import 'package:tgg/data/game_repository.dart';
 import 'package:tgg/data/simple_bloc_delegate.dart';
 import 'package:tgg/ui/auth/login_page.dart';
 import 'package:tgg/ui/home.dart';
-import 'package:tgg/ui/pages/camera/camera_page.dart';
-import 'package:tgg/ui/pages/preivew_image.dart';
+import 'package:tgg/ui/pages/pages.dart';
 
 import 'bloc/auth/authentication.dart';
 import 'bloc/auth/login.dart';
 import 'bloc/game/game.dart';
 import 'bloc/theme/theme.dart';
-import 'ui/routes.dart';
 import 'ui/splash.dart';
 
 void main() {
@@ -70,8 +68,8 @@ class App extends StatelessWidget {
             return LoginPage(gameRepository: gameRepo);
         }),
         routes: {
-          ROUTE_BONUS_CAMERA: (context) => CameraPage(),
-          PreviewImage.routeName: (context) => PreviewImage(),
+          CameraPage.routeName: (context) => CameraPage(),
+          PreviewPage.routeName: (context) => PreviewPage(),
         },
       );
     });

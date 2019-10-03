@@ -1,11 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:page_view_indicators/circle_page_indicator.dart';
-import 'package:tgg/ui/routes.dart';
 
 class OnBoardingPage extends StatefulWidget {
   @override
-  State createState() => new OnBoardingState();
+  State createState() => OnBoardingState();
 }
 
 class OnBoardingState extends State<OnBoardingPage> {
@@ -14,19 +13,19 @@ class OnBoardingState extends State<OnBoardingPage> {
   }
 
   final List<Widget> _pages = <Widget>[
-    new FlutterLogo(colors: Colors.blue),
-    new FlutterLogo(style: FlutterLogoStyle.stacked, colors: Colors.red),
-    new FlutterLogo(style: FlutterLogoStyle.stacked, colors: Colors.green),
+    FlutterLogo(colors: Colors.blue),
+    FlutterLogo(style: FlutterLogoStyle.stacked, colors: Colors.red),
+    FlutterLogo(style: FlutterLogoStyle.stacked, colors: Colors.green),
   ];
   final _pageController = PageController();
   final _currentPageNotifier = ValueNotifier<int>(0);
 
   @override
   Widget build(BuildContext context) {
-    return new Stack(
+    return Stack(
       children: <Widget>[
-        new PageView.builder(
-            physics: new AlwaysScrollableScrollPhysics(),
+        PageView.builder(
+            physics: AlwaysScrollableScrollPhysics(),
             controller: _pageController,
             itemCount: _pages.length,
             itemBuilder: (BuildContext context, int index) {
@@ -35,14 +34,14 @@ class OnBoardingState extends State<OnBoardingPage> {
             onPageChanged: (int index) {
               _currentPageNotifier.value = index;
             }),
-        new Positioned(
+        Positioned(
           bottom: 0.0,
           left: 0.0,
           right: 0.0,
-          child: new Container(
+          child: Container(
             padding: const EdgeInsets.all(20.0),
-            child: new Center(
-              child: new CirclePageIndicator(
+            child: Center(
+              child: CirclePageIndicator(
                   itemCount: _pages.length,
                   currentPageNotifier: _currentPageNotifier),
             ),
@@ -55,12 +54,12 @@ class OnBoardingState extends State<OnBoardingPage> {
   Widget _buildPage(int index, bool isLast) {
     if (isLast) {
       return Stack(
-        fit : StackFit.expand,
+        fit: StackFit.expand,
         children: <Widget>[
           Container(
             child: _pages[index],
           ),
-          new Align(
+          Align(
             alignment: Alignment.bottomRight,
             child: RaisedButton(
               onPressed: onCloseOnbording,
@@ -75,6 +74,6 @@ class OnBoardingState extends State<OnBoardingPage> {
   }
 
   void onCloseOnbording() {
-    Navigator.pushNamed(context, ROUTE_MAIN);
+    //  Navigator.pushNamed(context, ROUTE_MAIN);
   }
 }

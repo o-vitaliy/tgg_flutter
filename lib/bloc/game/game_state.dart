@@ -6,10 +6,16 @@ abstract class GameState extends Equatable {}
 
 class GameUninitializedState extends GameState {
   GameUninitializedState();
+
+  @override
+  List<Object> get props => [];
 }
 
 class GameLoadedState extends GameState {
   final Game game;
 
   GameLoadedState({@required this.game});
+
+  @override
+  List<Object> get props => [game];
 }

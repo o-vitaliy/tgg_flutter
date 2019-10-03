@@ -16,11 +16,18 @@ class ApiProvider {
       'pin': code,
     };
     final response = await apiRequest(url, map);
-    return LoginResponse.fromJsonMap(json.decode(response));
+    if (response != null) {
+      try {
+        return LoginResponse.fromJsonMap(json.decode(response));
+      } catch (e) {
+        print(e);
+      }
+    }
+    return null;
   }
 
   Future<String> apiRequest(String url, Map jsonMap) async {
-    HttpClient httpClient = new HttpClient();
+    HttpClient httpClient = HttpClient();
     HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
     request.headers.set('content-type', 'application/json');
     request.add(utf8.encode(json.encode(jsonMap)));
