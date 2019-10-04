@@ -1,21 +1,26 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tgg/data/game_repository.dart';
-import 'package:tgg/data/simple_bloc_delegate.dart';
-import 'package:tgg/ui/auth/login_page.dart';
-import 'package:tgg/ui/home.dart';
-import 'package:tgg/ui/pages/pages.dart';
 
 import 'bloc/auth/authentication.dart';
 import 'bloc/auth/login.dart';
 import 'bloc/game/game.dart';
 import 'bloc/theme/theme.dart';
+import 'data/game_repository.dart';
+import 'data/location_repo.dart';
+import 'data/login_repo.dart';
+import 'data/simple_bloc_delegate.dart';
+import 'ui/auth/login_page.dart';
+import 'ui/home.dart';
+import 'ui/pages/pages.dart';
+import 'ui/pages/post_location/bloc.dart';
 import 'ui/splash.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  final gameRepo = GameRepo();
+  final loginRepo = LoginRepo();
+  final gameRepo = GameRepo(loginRepo);
+  final locationRepo = LocationRepo(loginRepo);
 
   final themeBloc = ThemeBloc(gameRepository: gameRepo);
   final gameBloc = GameBloc();
@@ -25,6 +30,7 @@ void main() {
     gameBloc: gameBloc,
   );
   final loginBloc = LoginBloc(
+    loginRepo: loginRepo,
     gameRepo: gameRepo,
     authenticationBloc: authBloc,
     gameBloc: gameBloc,
@@ -38,6 +44,8 @@ void main() {
         BlocProvider<ThemeBloc>(builder: (context) => themeBloc),
         BlocProvider<LoginBloc>(builder: (context) => loginBloc),
         BlocProvider<GameBloc>(builder: (context) => gameBloc),
+        BlocProvider<PostLocationBloc>(
+            builder: (context) => PostLocationBloc(locationRepo)),
       ],
       child: App(gameRepo: gameRepo),
     ),

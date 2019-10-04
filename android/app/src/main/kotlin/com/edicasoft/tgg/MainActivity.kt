@@ -14,6 +14,7 @@ class MainActivity : FlutterActivity() {
         super.onCreate(savedInstanceState)
         GeneratedPluginRegistrant.registerWith(this)
 
+
         val channel = applicationContext.packageName + SUFFIX_CHANNEL
         MethodChannel(flutterView, channel).setMethodCallHandler { call, result ->
             if (call.method == "getVideoThumbnail") {
@@ -38,6 +39,7 @@ class MainActivity : FlutterActivity() {
             } else if (call.method == "screenRotation") {
                 val enabled = checkNotNull(call.argument<Boolean>("enabled"))
                 ScreenRotation.rotation(this, enabled)
+
             } else {
                 result.notImplemented()
             }

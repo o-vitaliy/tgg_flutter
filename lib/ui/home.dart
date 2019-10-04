@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tgg/bloc/game/game.dart';
 import 'package:tgg/models/blueprint_model.dart';
 import 'package:tgg/models/modes.dart';
+import 'package:tgg/ui/pages/post_location/post_location_widget.dart';
 import 'package:tgg/ui/tabs/home_tab.dart';
 import 'package:tgg/ui/tabs/route_tab_mapper.dart';
 import 'package:tgg/ui/toolbar/HomeToolbar.dart';
@@ -12,9 +13,7 @@ typedef TabItemClickCallback = void Function(RouteMode data);
 
 class HomePage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return HomeState();
-  }
+  State<StatefulWidget> createState() => HomeState();
 }
 
 class HomeState extends State<HomePage> {
@@ -23,17 +22,19 @@ class HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final gameBloc = BlocProvider.of<GameBloc>(context);
-    return SafeArea(
-      child: Scaffold(
-        body: BlocBuilder(
-          bloc: gameBloc,
-          builder: (BuildContext context, GameState state) {
-            if (state is GameLoadedState) {
-              return buildPage(state.game.blueprint);
-            } else {
-              return LoadingIndicator();
-            }
-          },
+    return PostLocationWidget(
+      child: SafeArea(
+        child: Scaffold(
+          body: BlocBuilder(
+            bloc: gameBloc,
+            builder: (BuildContext context, GameState state) {
+              if (state is GameLoadedState) {
+                return buildPage(state.game.blueprint);
+              } else {
+                return LoadingIndicator();
+              }
+            },
+          ),
         ),
       ),
     );
