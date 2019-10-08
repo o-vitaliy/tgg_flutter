@@ -1,4 +1,10 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,36 +41,65 @@ void main() {
     authenticationBloc: authBloc,
     gameBloc: gameBloc,
   );
-  runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider<AuthenticationBloc>(builder: (context) {
-          return authBloc..dispatch(AppStarted());
-        }),
-        BlocProvider<ThemeBloc>(builder: (context) => themeBloc),
-        BlocProvider<LoginBloc>(builder: (context) => loginBloc),
-        BlocProvider<GameBloc>(builder: (context) => gameBloc),
-        BlocProvider<PostLocationBloc>(
-            builder: (context) => PostLocationBloc(locationRepo)),
-      ],
-      child: App(gameRepo: gameRepo),
-    ),
-  );
+
+  runZoned<Future<void>>(() async {
+    runApp(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthenticationBloc>(builder: (context) {
+            return authBloc..dispatch(AppStarted());
+          }),
+          BlocProvider<ThemeBloc>(builder: (context) => themeBloc),
+          BlocProvider<LoginBloc>(builder: (context) => loginBloc),
+          BlocProvider<GameBloc>(builder: (context) => gameBloc),
+          BlocProvider<PostLocationBloc>(
+              builder: (context) => PostLocationBloc(locationRepo)),
+        ],
+        child: App(gameRepo: gameRepo),
+      ),
+    );
+  }, onError: Crashlytics.instance.recordError);
 }
 
 class App extends StatelessWidget {
   final GameRepo gameRepo;
+  final FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
+  final FirebaseAnalytics analytics = FirebaseAnalytics();
 
-  const App({Key key, this.gameRepo})
+  App({Key key, this.gameRepo})
       : assert(gameRepo != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Crashlytics.instance.enableInDevMode = true;
+    FlutterError.onError = Crashlytics.instance.recordFlutterError;
+
+    _firebaseMessaging.getToken().then((value)=> print("firebase toekn " + value));
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        //_showItemDialog(message);
+      },
+      onBackgroundMessage: myBackgroundMessageHandler,
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        //_navigateToItemDetail(message);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        // _navigateToItemDetail(message);
+      },
+    );
+
     return BlocBuilder<ThemeBloc, ThemeChangeState>(builder: (context, state) {
       return MaterialApp(
         title: 'Tgg Demo',
         theme: (state is ThemeChangedState) ? state.theme : ThemeData(),
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: analytics),
+        ],
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
             // ignore: missing_return
             builder: (context, authState) {
@@ -82,4 +117,18 @@ class App extends StatelessWidget {
       );
     });
   }
+}
+Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
+  print(message);
+  if (message.containsKey('data')) {
+    // Handle data message
+    final dynamic data = message['data'];
+  }
+
+  if (message.containsKey('notification')) {
+    // Handle notification message
+    final dynamic notification = message['notification'];
+  }
+
+  // Or do other work.
 }

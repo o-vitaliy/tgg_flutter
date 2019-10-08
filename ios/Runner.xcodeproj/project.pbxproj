@@ -22,6 +22,7 @@
 		D17A34DA23467BD10078D784 /* VideoJoiner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17A34D723467BD10078D784 /* VideoJoiner.swift */; };
 		D17A34DB23467BD10078D784 /* VideoThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17A34D823467BD10078D784 /* VideoThumbnail.swift */; };
 		D17A34DC23467BD10078D784 /* ScreenRotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17A34D923467BD10078D784 /* ScreenRotation.swift */; };
+		FE2D6AA7234B43800097CC85 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FE2D6AA6234B43800097CC85 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -62,6 +63,7 @@
 		D17A34D823467BD10078D784 /* VideoThumbnail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoThumbnail.swift; sourceTree = "<group>"; };
 		D17A34D923467BD10078D784 /* ScreenRotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenRotation.swift; sourceTree = "<group>"; };
 		F8421F710ED8F63A4923D3BC /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE2D6AA6234B43800097CC85 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				FE2D6AA6234B43800097CC85 /* GoogleService-Info.plist */,
 				D17A34D923467BD10078D784 /* ScreenRotation.swift */,
 				D17A34D723467BD10078D784 /* VideoJoiner.swift */,
 				D17A34D823467BD10078D784 /* VideoThumbnail.swift */,
@@ -143,7 +146,6 @@
 				B3AFA19863CE020A67DF6659 /* Pods-Runner.release.xcconfig */,
 				658BE884884767948B93A367 /* Pods-Runner.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -170,6 +172,7 @@
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				D3BDC2FDCC7BF2D610B76C68 /* [CP] Embed Pods Frameworks */,
+				FE2D6AA5234B42690097CC85 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -193,6 +196,7 @@
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = X9FC959Y26;
 						LastSwiftMigration = 0910;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -224,6 +228,7 @@
 				9740EEB41CF90195004384FC /* Debug.xcconfig in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+				FE2D6AA7234B43800097CC85 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,7 +283,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
 		};
 		D3BDC2FDCC7BF2D610B76C68 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -294,6 +299,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		FE2D6AA5234B42690097CC85 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/Fabric/run\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -387,6 +409,8 @@
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = X9FC959Y26;
 				ENABLE_BITCODE = NO;
@@ -402,6 +426,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.edicasoft.tgg;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -521,6 +546,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = X9FC959Y26;
 				ENABLE_BITCODE = NO;
@@ -536,6 +563,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.edicasoft.tgg;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
@@ -550,6 +578,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = X9FC959Y26;
 				ENABLE_BITCODE = NO;
@@ -565,6 +595,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.edicasoft.tgg;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
