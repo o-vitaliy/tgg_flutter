@@ -72,10 +72,9 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Crashlytics.instance.enableInDevMode = true;
     FlutterError.onError = Crashlytics.instance.recordFlutterError;
 
-    _firebaseMessaging.getToken().then((value)=> print("firebase toekn " + value));
+    _firebaseMessaging.getToken().then((value)=> print("firebase token " + value));
 
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {

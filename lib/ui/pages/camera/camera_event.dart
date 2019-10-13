@@ -37,17 +37,16 @@ class CaptureClickEvent extends CameraEvent {
 
 class StartVideoRecording extends CameraEvent {
   final CameraController cameraController;
-  final BuildContext context;
 
-  StartVideoRecording({@required this.context, @required this.cameraController})
-      : super([context, cameraController]);
+  StartVideoRecording({@required this.cameraController})
+      : super([cameraController]);
 
   @override
-  List<Object> get props => [context, cameraController];
+  List<Object> get props => [cameraController];
 
   @override
   String toString() =>
-      'StartVideoRecording { context: $context, cameraController: $cameraController }';
+      'StartVideoRecording { cameraController: $cameraController }';
 }
 
 class PauseVideoRecording extends CameraEvent {

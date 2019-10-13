@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tgg/data/providers/providers.dart';
 import 'package:tgg/data/video_data_repository.dart';
@@ -112,10 +110,14 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
 
   //https://github.com/bipinvaylu/MovieMaker-Flutter
   Stream<CameraState> mergeVideos() async* {
-    final videoResult = await getVideoTmpFile();
-    await _videoDataRepository.createMovie(videoResult, _videoList);
+    if (_videoList.length == 1) {
+      yield VideoWasTakenState(_videoList[0]);
+    } else {
+      final videoResult = await getVideoTmpFile();
+      await _videoDataRepository.createMovie(videoResult, _videoList);
 
-    yield VideoWasTakenState(videoResult);
+      yield VideoWasTakenState(videoResult);
+    }
   }
 }
 

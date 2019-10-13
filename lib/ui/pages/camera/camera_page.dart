@@ -42,23 +42,26 @@ class CameraPageState extends State<CameraPage> {
         cameraCountDownTimerBloc, actionButtonBloc, cameraTorchButtonBloc)
       ..dispatch(InitialCameraCaptureEvent(mode: mode));
 
-    return StreamBuilder(
-      stream: stream,
-      builder: (context, AsyncSnapshot<List<CameraDescription>> snapshot) =>
-          snapshot.hasData
-              ? MultiBlocProvider(providers: [
-                  BlocProvider<CameraControlsBloc>(
-                      builder: (context) => cameraControlsBloc),
-                  BlocProvider<CameraCountDownTimerBloc>(
-                      builder: (context) => cameraCountDownTimerBloc),
-                  BlocProvider<CameraBloc>(builder: (context) => cameraBloc),
-                  BlocProvider<ActionButtonBloc>(
-                      builder: (context) => actionButtonBloc),
-                  BlocProvider<CameraTorchButtonBloc>(
-                    builder: (context) => cameraTorchButtonBloc,
-                  )
-                ], child: _CameraScreen(cameras: snapshot.data))
-              : SizedBox.shrink(),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: StreamBuilder(
+        stream: stream,
+        builder: (context, AsyncSnapshot<List<CameraDescription>> snapshot) =>
+            snapshot.hasData
+                ? MultiBlocProvider(providers: [
+                    BlocProvider<CameraControlsBloc>(
+                        builder: (context) => cameraControlsBloc),
+                    BlocProvider<CameraCountDownTimerBloc>(
+                        builder: (context) => cameraCountDownTimerBloc),
+                    BlocProvider<CameraBloc>(builder: (context) => cameraBloc),
+                    BlocProvider<ActionButtonBloc>(
+                        builder: (context) => actionButtonBloc),
+                    BlocProvider<CameraTorchButtonBloc>(
+                      builder: (context) => cameraTorchButtonBloc,
+                    )
+                  ], child: _CameraScreen(cameras: snapshot.data))
+                : SizedBox.shrink(),
+      ),
     );
   }
 }
@@ -255,7 +258,8 @@ class _CameraScreenState extends State<_CameraScreen>
     if (controller != null) {
       await controller.dispose();
     }
-    controller = CameraController(cameraDescription, ResolutionPreset.high);
+    controller = CameraController(cameraDescription, ResolutionPreset.high,
+        enableAudio: false);
     currentCamera = cameraDescription;
     // If the controller is updated then update the UI.
     controller.addListener(() {

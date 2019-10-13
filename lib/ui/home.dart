@@ -11,30 +11,37 @@ import 'package:tgg/ui/widgets/loading_indicator.dart';
 
 typedef TabItemClickCallback = void Function(RouteMode data);
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() => HomeState();
+  Widget build(BuildContext context) {
+    return PostLocationWidget(
+      widgetBuilder: (context) => _HomePageContent(),
+    );
+  }
 }
 
-class HomeState extends State<HomePage> {
+class _HomePageContent extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _HomeStateContent();
+}
+
+class _HomeStateContent extends State<_HomePageContent> {
   RouteMode selectedMode;
 
   @override
   Widget build(BuildContext context) {
     final gameBloc = BlocProvider.of<GameBloc>(context);
-    return PostLocationWidget(
-      child: SafeArea(
-        child: Scaffold(
-          body: BlocBuilder(
-            bloc: gameBloc,
-            builder: (BuildContext context, GameState state) {
-              if (state is GameLoadedState) {
-                return buildPage(state.game.blueprint);
-              } else {
-                return LoadingIndicator();
-              }
-            },
-          ),
+    return SafeArea(
+      child: Scaffold(
+        body: BlocBuilder(
+          bloc: gameBloc,
+          builder: (BuildContext context, GameState state) {
+            if (state is GameLoadedState) {
+              return buildPage(state.game.blueprint);
+            } else {
+              return LoadingIndicator();
+            }
+          },
         ),
       ),
     );

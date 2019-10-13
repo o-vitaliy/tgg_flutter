@@ -14,3 +14,5 @@ const ORANGE_COLORS = MaterialColor(ORANGE, <int, Color>{
   800: Color(0xFFEF6C00),
   900: Color(0xFFE65100),
 });
+
+const defaultTextStyle = TextStyle(fontSize: 14, color: Colors.white);

@@ -4,20 +4,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc.dart';
 
 class PostLocationWidget extends StatefulWidget {
-  final Widget child;
+  final WidgetBuilder widgetBuilder;
 
-  const PostLocationWidget({Key key, this.child}) : super(key: key);
+  const PostLocationWidget({Key key, this.widgetBuilder}) : super(key: key);
 
   @override
-  State createState() => _PostLocationWidgetState(child);
+  State createState() => _PostLocationWidgetState(widgetBuilder);
 }
 
 class _PostLocationWidgetState extends State<PostLocationWidget>
     with WidgetsBindingObserver {
   PostLocationBloc postLocationBloc;
-  final Widget _child;
+  final WidgetBuilder widgetBuilder;
 
-  _PostLocationWidgetState(this._child);
+  _PostLocationWidgetState(this.widgetBuilder);
 
   @override
   void initState() {
@@ -44,5 +44,5 @@ class _PostLocationWidgetState extends State<PostLocationWidget>
   }
 
   @override
-  Widget build(BuildContext context) => _child;
+  Widget build(BuildContext context) => widgetBuilder(context);
 }

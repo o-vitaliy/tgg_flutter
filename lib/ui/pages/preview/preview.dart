@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tgg/ui/pages/navigation_arguments.dart';
+
 import 'bloc.dart';
 
 class PreviewPage extends StatelessWidget {
@@ -18,15 +19,20 @@ class PreviewPage extends StatelessWidget {
   }
 
   Widget buildPreview(PreviewBloc bloc) {
-    return BlocBuilder<PreviewBloc, PreviewState>(
-      bloc: bloc,
-      builder: (context, state) {
-        if (state is ImagePreviewState)
-          return ImagePreview(imageLink: state.link);
-        if (state is VideoPreviewState)
-          return VideoPreview(videoLink: state.link);
-        return Container();
-      },
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: BlocBuilder<PreviewBloc, PreviewState>(
+          bloc: bloc,
+          builder: (context, state) {
+            if (state is ImagePreviewState)
+              return ImagePreview(imageLink: state.link);
+            if (state is VideoPreviewState)
+              return VideoPreview(videoLink: state.link);
+            return Container();
+          },
+        ),
+      ),
     );
   }
 }
