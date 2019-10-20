@@ -8,6 +8,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:178403231374:android:f15c0dea89e24a570c6bdf",
+        "android_client_info": {
+          "package_name": "com.edicasoft.tgg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "178403231374-hrbnalrccd42566a124utvmoqscfl9r1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCoXUplW0CCyMncqwqdMzt_5-kgpe6xgw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "178403231374-hrbnalrccd42566a124utvmoqscfl9r1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "178403231374-8virlsknc9t7dj3evhun098bpsg7v200.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.edicasoft.tgg"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:178403231374:android:6f63339ece8dff590c6bdf",
         "android_client_info": {
           "package_name": "com.edicasoft.tgg.dev"
@@ -30,6 +66,13 @@
             {
               "client_id": "178403231374-hrbnalrccd42566a124utvmoqscfl9r1.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "178403231374-8virlsknc9t7dj3evhun098bpsg7v200.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.edicasoft.tgg"
+              }
             }
           ]
         }
