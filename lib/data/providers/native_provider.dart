@@ -35,10 +35,30 @@ class NativeProvider {
     await channel.invokeMethod('screenRotation', {"enabled": enabled});
   }
 
+  Future upload(String accessKeyId, String secretAccessKey, String bucketId,
+      String url) async {
+    final channel = await _getChannel();
+    channel.invokeMethod('uploadAws', {
+      "accessKeyId": accessKeyId,
+      "secretAccessKey": secretAccessKey,
+      "bucketId": bucketId,
+      "fileUrl": url
+    });
+  }
+
+  Future<dynamic> getEventStream() async {
+    final eventChannel = await _getEventChannel();
+    return eventChannel.receiveBroadcastStream();
+  }
+
   Future<MethodChannel> _getChannel() async {
     final packageInfo = await PackageInfo.fromPlatform();
+    return MethodChannel('${packageInfo.packageName}/methods');
+  }
 
-    return MethodChannel('${packageInfo.packageName}/channel');
+  Future<EventChannel> _getEventChannel() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    return EventChannel('${packageInfo.packageName}/events');
   }
 }
 

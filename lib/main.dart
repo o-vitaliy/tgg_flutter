@@ -7,14 +7,17 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'bloc/auth/authentication.dart';
 import 'bloc/auth/login.dart';
+import 'bloc/aws_upload/bloc.dart';
 import 'bloc/game/game.dart';
 import 'bloc/theme/theme.dart';
 import 'data/game_repository.dart';
 import 'data/location_repo.dart';
 import 'data/login_repo.dart';
+import 'data/providers/remote_config.dart';
 import 'data/simple_bloc_delegate.dart';
 import 'ui/auth/login_page.dart';
 import 'ui/home.dart';
@@ -27,7 +30,9 @@ void main() {
   final loginRepo = LoginRepo();
   final gameRepo = GameRepo(loginRepo);
   final locationRepo = LocationRepo(loginRepo);
+  final config = Config();
 
+  final awsUploadBloc = AwsUploadBloc(config);
   final themeBloc = ThemeBloc(gameRepository: gameRepo);
   final gameBloc = GameBloc();
   final authBloc = AuthenticationBloc(
@@ -52,6 +57,7 @@ void main() {
           BlocProvider<ThemeBloc>(builder: (context) => themeBloc),
           BlocProvider<LoginBloc>(builder: (context) => loginBloc),
           BlocProvider<GameBloc>(builder: (context) => gameBloc),
+          BlocProvider<AwsUploadBloc>(builder: (context) => awsUploadBloc),
           BlocProvider<PostLocationBloc>(
               builder: (context) => PostLocationBloc(locationRepo)),
         ],
@@ -74,8 +80,6 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     FlutterError.onError = Crashlytics.instance.recordFlutterError;
 
-    _firebaseMessaging.getToken().then((value)=> print("firebase token " + value));
-
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
@@ -88,7 +92,6 @@ class App extends StatelessWidget {
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
-        // _navigateToItemDetail(message);
       },
     );
 
@@ -109,14 +112,26 @@ class App extends StatelessWidget {
           else if (authState is AuthenticationUnauthenticated)
             return LoginPage(gameRepository: gameRepo);
         }),
-        routes: {
-          CameraPage.routeName: (context) => CameraPage(),
-          PreviewPage.routeName: (context) => PreviewPage(),
+        onGenerateRoute: (RouteSettings settings) {
+          switch (settings.name) {
+            case CameraPage.routeName:
+              return new MyCustomRoute(
+                builder: (_) => CameraPage(),
+                settings: settings,
+              );
+            case PreviewPage.routeName:
+              return new MyCustomRoute(
+                builder: (_) => PreviewPage(),
+                settings: settings,
+              );
+          }
+          throw AssertionError("unsupported ${settings.name}");
         },
       );
     });
   }
 }
+
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
   print(message);
   if (message.containsKey('data')) {
@@ -130,4 +145,19 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
   }
 
   // Or do other work.
+}
+
+class MyCustomRoute<T> extends MaterialPageRoute<T> {
+  MyCustomRoute({WidgetBuilder builder, RouteSettings settings})
+      : super(builder: builder, settings: settings);
+
+  @override
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
+    return super.buildTransitions(context, animation, secondaryAnimation, child);
+    //if (settings.isInitialRoute) return child;
+    // Fades between routes. (If you don't want any animation,
+    // just return child.)
+   // return child;//new FadeTransition(opacity: animation, child: child);
+  }
 }

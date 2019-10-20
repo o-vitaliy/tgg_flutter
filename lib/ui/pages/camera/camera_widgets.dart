@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'camera.dart';
 
-typedef WidgetBuilder = Widget Function(BuildContext context);
-
 class CameraBlocWidget extends StatelessWidget {
   final BlocWidgetBuilder<CameraState> builder;
   final BlocBuilderCondition<CameraState> condition;

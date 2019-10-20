@@ -7,7 +7,6 @@ import 'package:tgg/models/routing.dart';
 import 'package:tgg/ui/helpers/icon_mapper.dart';
 import 'package:tgg/ui/home.dart';
 import 'package:tgg/ui/routes.dart';
-import 'package:tgg/ui/widgets/count_down_timer.dart';
 
 class HomeTab extends StatelessWidget {
   final Routing routing;
@@ -21,19 +20,10 @@ class HomeTab extends StatelessWidget {
     buttons.add(buildBonus());
     buttons.add(logoutButton(context));
     return Align(
-      widthFactor: 0.8,
-      child: Stack(children: [
-        Column(
+        widthFactor: 0.8,
+        child: Column(
           children: buttons,
-        ),
-        Column(
-          children: <Widget>[
-            CountDownTimer(Duration(seconds: 3), clockwise: true),
-            CountDownTimer(Duration(seconds: 3), clockwise: false)
-          ],
-        )
-      ]),
-    );
+        ));
   }
 
   Widget buildBonus() {

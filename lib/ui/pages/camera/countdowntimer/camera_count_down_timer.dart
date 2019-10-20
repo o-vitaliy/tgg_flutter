@@ -17,6 +17,7 @@ class CameraTimerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<CameraCountDownTimerBloc>(context);
     return BlocListener<CameraCountDownTimerBloc, CameraCountDownTimerState>(
+      condition: (prev, current) => prev != current,
       bloc: bloc,
       child: BlocBuilder<CameraCountDownTimerBloc, CameraCountDownTimerState>(
         condition: (prev, current) => prev != current,

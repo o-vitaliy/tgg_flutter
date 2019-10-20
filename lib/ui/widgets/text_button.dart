@@ -17,10 +17,13 @@ class TextButton extends StatelessWidget {
       color: Color.fromARGB(0, 0, 0, 0),
       child: InkWell(
         onTap: () => onTap(context),
-        child: Text(
-          text,
-          textAlign: TextAlign.center,
-          style: TextStyle(color: color),
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+          child: Text(
+            text,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: color),
+          ),
         ),
       ),
     );

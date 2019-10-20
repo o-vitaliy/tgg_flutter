@@ -10,23 +10,8 @@ import '../pages.dart';
 
 const defaultDuration = Duration(seconds: 30);
 
-class CameraPage extends StatefulWidget {
+class CameraPage extends StatelessWidget {
   static const routeName = '/cameraPage';
-
-  @override
-  State createState() => CameraPageState();
-}
-
-class CameraPageState extends State<CameraPage> {
-  Stream<List<CameraDescription>> stream;
-
-  CameraPageState();
-
-  @override
-  void initState() {
-    super.initState();
-    stream = Stream.fromFuture(availableCameras());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +30,7 @@ class CameraPageState extends State<CameraPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: StreamBuilder(
-        stream: stream,
+        stream: Stream.fromFuture(availableCameras()),
         builder: (context, AsyncSnapshot<List<CameraDescription>> snapshot) =>
             snapshot.hasData
                 ? MultiBlocProvider(providers: [
@@ -277,6 +262,13 @@ class _CameraScreenState extends State<_CameraScreen>
     if (mounted) {
       setState(() {});
     }
+  }
+
+  @override
+  void deactivate() {
+    controller?.dispose();
+    controller = null;
+    super.deactivate();
   }
 }
 

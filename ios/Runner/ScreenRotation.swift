@@ -9,7 +9,7 @@
 import Foundation
 struct ScreenRotation {
     static func enable(_ enable: Bool) {
-        if enable {
+        if !enable {
             var mask: UIInterfaceOrientationMask
             switch UIDevice.current.orientation {
             case .portrait:

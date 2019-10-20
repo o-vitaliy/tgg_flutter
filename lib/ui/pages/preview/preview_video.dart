@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tgg/bloc/aws_upload/bloc.dart';
 import 'package:tgg/ui/colors.dart';
+import 'package:tgg/ui/pages/preview/preview.dart';
 import 'package:tgg/ui/pages/preview/preview_controls/video_preview_widget.dart';
 import 'package:tgg/ui/pages/preview/preview_controls/video_progress_widget.dart';
-import 'package:tgg/ui/widgets/loading_indicator.dart';
 import 'package:tgg/ui/widgets/text_button.dart';
 import 'package:video_player/video_player.dart';
 
 import 'preview_controls/bloc.dart';
 
-const Color _defaultBackground = Colors.black38;
-const double _rowHeight = 48;
-
 class VideoPreview extends StatelessWidget {
   final String videoLink;
+  final PreviewControlsBloc bloc = PreviewControlsBloc();
 
-  const VideoPreview({Key key, this.videoLink}) : super(key: key);
+  VideoPreview({Key key, this.videoLink}) : super(key: key) {
+    bloc.dispatch(InitControlsEvent(videoLink));
+  }
 
   @override
-  Widget build(BuildContext context) => BlocProvider(
-        builder: (context) => PreviewControlsBloc(),
-        child: VideoPreviewContent(videoLink: videoLink),
-      );
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      builder: (context) => bloc,
+      child: VideoPreviewContent(videoLink: videoLink),
+    );
+  }
 }
 
 class VideoPreviewContent extends StatefulWidget {
@@ -44,17 +47,25 @@ class _VideoPreviewState extends State<VideoPreviewContent> {
   void initState() {
     super.initState();
     _bloc = BlocProvider.of<PreviewControlsBloc>(context);
-    _createVideoPlayer(videoLink);
   }
 
   @override
   void deactivate() {
-    _bloc.dispatch(DisposePreviewEvent());
+    _bloc?.dispatch(DisposePreviewEvent());
     super.deactivate();
   }
 
   @override
   Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        buildPreview(),
+        buildControls(),
+      ],
+    );
+  }
+
+  Widget buildPreview() {
     return BlocBuilder(
       bloc: _bloc,
       condition: (oldState, newState) =>
@@ -62,15 +73,10 @@ class _VideoPreviewState extends State<VideoPreviewContent> {
           (newState is InitialPreviewControlsState),
       builder: (context, state) {
         if (state is InitialPreviewControlsState) {
-          return LoadingIndicator();
+          return SizedBox.shrink();
         } else {
           final controller = (state as VideoPlayerPreviewState).controller;
-          return Stack(
-            children: <Widget>[
-              VideoPreviewWidget(controller),
-              buildControls(),
-            ],
-          );
+          return VideoPreviewWidget(controller);
         }
       },
     );
@@ -80,18 +86,19 @@ class _VideoPreviewState extends State<VideoPreviewContent> {
     return BlocBuilder(
       bloc: _bloc,
       builder: (context, state) {
-        final controller = (state as VideoPlayerPreviewState).controller;
-        if (state is StoppedPreviewState) {
-          if (state.firstTime) {
-            return buildFirstTimePreviewControls();
-          } else {
-            return buildPreviewControls();
+        if (state is VideoPlayerPreviewState) {
+          final controller = state.controller;
+          if (state is StoppedPreviewState) {
+            if (state.firstTime) {
+              return buildFirstTimePreviewControls();
+            } else {
+              return buildPreviewControls();
+            }
+          } else if (state is PlayingPreviewState) {
+            return buildPlayingPreviewControls(controller);
           }
-        } else if (state is PlayingPreviewState) {
-          return buildPlayingPreviewControls(controller);
-        } else {
-          throw AssertionError("unknown state");
         }
+        return SizedBox.shrink();
       },
     );
   }
@@ -100,20 +107,20 @@ class _VideoPreviewState extends State<VideoPreviewContent> {
     return Stack(
       children: <Widget>[
         SizedBox.fromSize(
-            size: Size.fromHeight(_rowHeight),
+            size: Size.fromHeight(rowHeight),
             child: Container(
                 child: Center(
                     child: Text(
                   "Review video",
                   style: defaultTextStyle,
                 )),
-                color: _defaultBackground)),
+                color: defaultBackground)),
         Align(
             alignment: Alignment.bottomCenter,
             child: SizedBox.fromSize(
-                size: Size.fromHeight(_rowHeight),
+                size: Size.fromHeight(rowHeight),
                 child: Container(
-                  color: _defaultBackground,
+                  color: defaultBackground,
                   child: CenteredTextButton(
                     text: "Review",
                     onTap: (_) => _bloc.dispatch(PlayPreviewEvent()),
@@ -126,37 +133,39 @@ class _VideoPreviewState extends State<VideoPreviewContent> {
   Widget buildPreviewControls() {
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Padding(
-          padding: EdgeInsets.only(left: 8, right: 8),
-          child: SizedBox.fromSize(
-              size: Size.fromHeight(_rowHeight),
-              child: Stack(
-                fit: StackFit.passthrough,
-                children: <Widget>[
-                  Container(
-                    height: 48,
-                    color: _defaultBackground,
-                  ),
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: TextButton(
-                        text: "Back",
-                        onTap: (context) => Navigator.pop(context),
-                      )),
-                  Center(
-                    child: TextButton(
-                      text: "Play",
-                      onTap: (context) => _bloc.dispatch(PlayPreviewEvent()),
-                    ),
-                  ),
-                  Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        text: "Submit",
-                        onTap: (context) => Navigator.pop(context),
-                      )),
-                ],
-              ))),
+      child: SizedBox.fromSize(
+          size: Size.fromHeight(rowHeight),
+          child: Stack(
+            fit: StackFit.passthrough,
+            children: <Widget>[
+              Container(
+                height: 48,
+                color: defaultBackground,
+              ),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextButton(
+                    text: "Back",
+                    onTap: (context) => Navigator.pop(context),
+                  )),
+              Center(
+                child: TextButton(
+                  text: "Play",
+                  onTap: (context) => _bloc.dispatch(PlayPreviewEvent()),
+                ),
+              ),
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    text: "Submit",
+                    onTap: (context) {
+                      BlocProvider.of<AwsUploadBloc>(context)
+                          .dispatch(StartAwsUploadEvent(videoLink));
+                      Navigator.pop(context);
+                    },
+                  )),
+            ],
+          )),
     );
   }
 
@@ -164,9 +173,9 @@ class _VideoPreviewState extends State<VideoPreviewContent> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: SizedBox.fromSize(
-        size: Size.fromHeight(_rowHeight),
+        size: Size.fromHeight(rowHeight),
         child: Container(
-          color: _defaultBackground,
+          color: defaultBackground,
           child: Stack(
             children: <Widget>[
               VideoProgressWidget(
@@ -192,9 +201,5 @@ class _VideoPreviewState extends State<VideoPreviewContent> {
   void dispose() {
     _bloc.dispatch(DisposePreviewEvent());
     super.dispose();
-  }
-
-  void _createVideoPlayer(String videoPath) {
-    _bloc.dispatch(InitControlsEvent(videoPath));
   }
 }

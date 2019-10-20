@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:video_player/video_player.dart';
 
 import './bloc.dart';
@@ -32,6 +33,13 @@ class PreviewControlsBloc extends Bloc<PreviewControlsEvent, PreviewState> {
       await _controller.pause();
       await _controller.seekTo(Duration());
       yield StoppedPreviewState(false, _controller);
+    } else if (event is DisposePreviewEvent) {
+      _controller = null;
+      await _controller?.dispose();
     }
   }
+ @override
+ Stream<PreviewState> transformStates(Stream<PreviewState> states) {
+   return (states as Observable<PreviewState>).delay(Duration(seconds: 1));
+ }
 }

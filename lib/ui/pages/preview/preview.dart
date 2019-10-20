@@ -5,6 +5,9 @@ import 'package:tgg/ui/pages/navigation_arguments.dart';
 
 import 'bloc.dart';
 
+const Color defaultBackground = Colors.black38;
+const double rowHeight = 48;
+
 class PreviewPage extends StatelessWidget {
   static const routeName = '/previewImage';
 

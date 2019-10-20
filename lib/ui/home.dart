@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tgg/bloc/aws_upload/aws_upload_widget.dart';
 import 'package:tgg/bloc/game/game.dart';
 import 'package:tgg/models/blueprint_model.dart';
 import 'package:tgg/models/modes.dart';
@@ -54,7 +55,7 @@ class _HomeStateContent extends State<_HomePageContent> {
 
     return Column(children: <Widget>[
       HomeToolbar(pageSelected, blueprint.routing, selectedMode),
-      mapper.map(selectedMode.name)
+      AwsUploadWidget(widgetBuilder: (context) => mapper.map(selectedMode.name))
     ]);
   }
 
