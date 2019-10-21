@@ -9,6 +9,11 @@ abstract class AwsUploadState extends Equatable {
 class InitialAwsUploadState extends AwsUploadState {
   @override
   List<Object> get props => [];
+
+  @override
+  String toString() {
+    return 'InitialAwsUploadState{}';
+  }
 }
 
 class UploadingAwsUploadState extends AwsUploadState {

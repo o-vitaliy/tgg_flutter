@@ -1,6 +1,7 @@
 package com.edicasoft.tgg.actions
 
 import android.content.Context
+import android.widget.Toast
 import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
@@ -37,11 +38,12 @@ class AwsUpload(
         )
 
         observer.setTransferListener(Listener(sink, fileUrl, observer.id))
+        Toast.makeText(context, "upload $fileUrl 3", Toast.LENGTH_SHORT).show()
     }
 
-    private class Listener constructor(private val sink: EventChannel.EventSink?,
-                                       private val fileUrl: String,
-                                       private val taskId: Int) : TransferListener {
+    private inner class Listener constructor(private val sink: EventChannel.EventSink?,
+                                             private val fileUrl: String,
+                                             private val taskId: Int) : TransferListener {
 
         override fun onStateChanged(id: Int, state: TransferState) {
             if (taskId != id) {
@@ -52,6 +54,7 @@ class AwsUpload(
                 COMPLETED -> sink?.success(Complete(fileUrl).toMap())
                 else -> return
             }
+            Toast.makeText(context, "upload state $state", Toast.LENGTH_SHORT).show()
         }
 
         override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
@@ -60,12 +63,16 @@ class AwsUpload(
             }
             val percentage: Double = bytesCurrent.toDouble() / bytesTotal.toDouble()
             sink?.success(Progress(percentage, fileUrl).toMap())
+            if (percentage > 0.99) {
+                sink?.success(Complete(fileUrl).toMap())
+            }
         }
 
         override fun onError(id: Int, ex: Exception) {
             if (taskId != id) {
                 return
             }
+            Toast.makeText(context, ex.localizedMessage, Toast.LENGTH_SHORT).show()
             sink?.success(Error(ex.localizedMessage, fileUrl).toMap())
         }
     }
@@ -94,12 +101,14 @@ private abstract class Response(val status: String, val fileUrl: String) {
         put("status", status)
     }
 }
+
 private class Complete(fileUrl: String) : Response("complete", fileUrl)
 private class Progress(val progress: Double, fileUrl: String) : Response("progress", fileUrl) {
     override fun toMap() = super.toMap().apply {
         put("progress", progress)
     }
 }
+
 private class Error(val message: String, fileUrl: String) : Response("error", fileUrl) {
     override fun toMap() = super.toMap().apply {
         put("message", message)

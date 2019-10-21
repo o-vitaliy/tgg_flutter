@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tgg/data/providers/native_provider.dart';
 import 'package:tgg/data/providers/remote_config.dart';
 
@@ -8,8 +10,9 @@ import 'aws_upload_status.dart';
 import 'bloc.dart';
 
 class AwsUploadBloc extends Bloc<AwsUploadEvent, AwsUploadState> {
-  AwsUploadBloc(this.config) : assert(config != null);
+  AwsUploadBloc(this.config, this.analytics) : assert(config != null);
   final Config config;
+  final FirebaseAnalytics analytics;
 
   Future<String> _accessKeyId() => config.awsAccessKey;
 
@@ -27,10 +30,12 @@ class AwsUploadBloc extends Bloc<AwsUploadEvent, AwsUploadState> {
   @override
   Stream<AwsUploadState> mapEventToState(AwsUploadEvent event) async* {
     if (event is StartAwsUploadEvent) {
+
       if (_upload.length == 0) {
         listen();
       }
       _upload[event.url] = 0;
+
       final accessKeyId = await _accessKeyId();
       final secretAccessKey = await _secretAccessKey();
       final bucketId = await _bucketId();
@@ -41,13 +46,20 @@ class AwsUploadBloc extends Bloc<AwsUploadEvent, AwsUploadState> {
         bucketId,
         event.url,
       );
+
+      analytics.logEvent(name: "submited upload", parameters: {
+        "accessKeyId": accessKeyId,
+        "url": event.url,
+      });
     } else if (event is ProgressChangedAwsUploadEvent) {
       final AwsUploadStatus status = event.status;
       if (status is ProgressAwsUpload) {
         _upload[status.fileName] = status.progress;
       } else if (status is CompleteAwsUpload) {
+        Fluttertoast.showToast(msg: "completed upload url ${status.fileName}");
         _upload[status.fileName] = 1.0;
       } else if (status is FailAwsUpload) {
+        Fluttertoast.showToast(msg: "failed upload url ${status.fileName}");
         _upload.remove(status.fileName);
         dispatch(StartAwsUploadEvent(status.fileName));
       }
@@ -59,7 +71,7 @@ class AwsUploadBloc extends Bloc<AwsUploadEvent, AwsUploadState> {
       yield UploadingAwsUploadState(
           _upload.length, current, totalProgress / total);
 
-      if (totalProgress + 0.05 >= total) {
+      if (totalProgress == total) {
         _upload.clear();
         _subscription.cancel();
         _subscription = null;

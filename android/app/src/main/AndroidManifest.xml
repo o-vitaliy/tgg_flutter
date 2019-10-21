@@ -3,7 +3,7 @@
 
   <application
     android:icon="@mipmap/ic_launcher"
-    android:label="tgg"
+    android:label="@string/app_name"
     android:name="com.edicasoft.tgg.Application">
     <activity
       android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

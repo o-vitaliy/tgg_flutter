@@ -1,7 +1,10 @@
 package com.edicasoft.tgg
 
 import android.os.Bundle
-import com.edicasoft.tgg.actions.*
+import com.edicasoft.tgg.actions.AwsUpload
+import com.edicasoft.tgg.actions.ScreenRotation
+import com.edicasoft.tgg.actions.VideoJoiner
+import com.edicasoft.tgg.actions.VideoThumbnail
 import io.flutter.app.FlutterActivity
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.EventChannel.StreamHandler
@@ -62,7 +65,6 @@ class MainActivity : FlutterActivity() {
                 val secretAccessKey = checkNotNull(call.argument<String>("secretAccessKey"))
                 val bucketId = checkNotNull(call.argument<String>("bucketId"))
                 val fileUrl = checkNotNull(call.argument<String>("fileUrl"))
-
                 AwsUpload.upload(self, accessKeyId, secretAccessKey, bucketId, fileUrl,
                         streamHandler.sink)
                 result.success(null)

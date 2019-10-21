@@ -7,7 +7,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rxdart/rxdart.dart';
 
 import 'bloc/auth/authentication.dart';
 import 'bloc/auth/login.dart';
@@ -27,12 +26,16 @@ import 'ui/splash.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
+
+  final FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
+  final FirebaseAnalytics _analytics = FirebaseAnalytics();
+
   final loginRepo = LoginRepo();
   final gameRepo = GameRepo(loginRepo);
   final locationRepo = LocationRepo(loginRepo);
   final config = Config();
 
-  final awsUploadBloc = AwsUploadBloc(config);
+  final awsUploadBloc = AwsUploadBloc(config, _analytics);
   final themeBloc = ThemeBloc(gameRepository: gameRepo);
   final gameBloc = GameBloc();
   final authBloc = AuthenticationBloc(
@@ -61,7 +64,11 @@ void main() {
           BlocProvider<PostLocationBloc>(
               builder: (context) => PostLocationBloc(locationRepo)),
         ],
-        child: App(gameRepo: gameRepo),
+        child: App(
+          gameRepo: gameRepo,
+          firebaseMessaging: _firebaseMessaging,
+          analytics: _analytics,
+        ),
       ),
     );
   }, onError: Crashlytics.instance.recordError);
@@ -69,10 +76,11 @@ void main() {
 
 class App extends StatelessWidget {
   final GameRepo gameRepo;
-  final FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
-  final FirebaseAnalytics analytics = FirebaseAnalytics();
+  final FirebaseMessaging firebaseMessaging;
 
-  App({Key key, this.gameRepo})
+  final FirebaseAnalytics analytics;
+
+  App({Key key, this.gameRepo, this.firebaseMessaging, this.analytics})
       : assert(gameRepo != null),
         super(key: key);
 
@@ -80,7 +88,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     FlutterError.onError = Crashlytics.instance.recordFlutterError;
 
-    _firebaseMessaging.configure(
+    firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
         //_showItemDialog(message);
@@ -154,10 +162,11 @@ class MyCustomRoute<T> extends MaterialPageRoute<T> {
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation, Widget child) {
-    return super.buildTransitions(context, animation, secondaryAnimation, child);
+    return super
+        .buildTransitions(context, animation, secondaryAnimation, child);
     //if (settings.isInitialRoute) return child;
     // Fades between routes. (If you don't want any animation,
     // just return child.)
-   // return child;//new FadeTransition(opacity: animation, child: child);
+    // return child;//new FadeTransition(opacity: animation, child: child);
   }
 }
