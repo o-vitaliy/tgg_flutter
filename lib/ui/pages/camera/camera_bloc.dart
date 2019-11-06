@@ -24,6 +24,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
 
   CameraCaptureMode mode;
   int maxVideosCount;
+  int _screenRotation;
 
   final _videoList = List<String>();
 
@@ -51,7 +52,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
           CameraTorchButtonDisableEvent(controller: cameraController));
       cameraTorchButtonBloc.dispatch(CameraTorchButtonHideEvent());
       await cameraController.changeTorchMode(false);
-      yield PhotoWasTakenState(imagePath);
+      yield PhotoWasTakenState(imagePath, _screenRotation);
       nativeProvider.screenRotationEnable(true).then((_) {});
     }
     if (event is StartVideoRecording &&
@@ -82,6 +83,9 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
       yield* mergeVideos();
       nativeProvider.screenRotationEnable(true).then((_) {});
     }
+    if (event is ScreenRotatedEvent) {
+      _screenRotation = event.screenRotation;
+    }
   }
 
   void startVideoRecording(CameraController cameraController) async {
@@ -111,12 +115,12 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
   //https://github.com/bipinvaylu/MovieMaker-Flutter
   Stream<CameraState> mergeVideos() async* {
     if (_videoList.length == 1) {
-      yield VideoWasTakenState(_videoList[0]);
+      yield VideoWasTakenState(_videoList[0], _screenRotation);
     } else {
       final videoResult = await getVideoTmpFile();
       await _videoDataRepository.createMovie(videoResult, _videoList);
 
-      yield VideoWasTakenState(videoResult);
+      yield VideoWasTakenState(videoResult, _screenRotation);
     }
   }
 }

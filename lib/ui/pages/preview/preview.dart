@@ -31,7 +31,10 @@ class PreviewPage extends StatelessWidget {
             if (state is ImagePreviewState)
               return ImagePreview(imageLink: state.link);
             if (state is VideoPreviewState)
-              return VideoPreview(videoLink: state.link);
+              return VideoPreview(
+                videoLink: state.link,
+                screenRotation: state.screenRotation,
+              );
             return Container();
           },
         ),

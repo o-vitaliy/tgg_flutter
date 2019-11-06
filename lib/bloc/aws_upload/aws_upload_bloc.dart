@@ -61,7 +61,7 @@ class AwsUploadBloc extends Bloc<AwsUploadEvent, AwsUploadState> {
       } else if (status is FailAwsUpload) {
         Fluttertoast.showToast(msg: "failed upload url ${status.fileName}");
         _upload.remove(status.fileName);
-        dispatch(StartAwsUploadEvent(status.fileName));
+        //dispatch(StartAwsUploadEvent(status.fileName));
       }
 
       final totalProgress = _upload.values.reduce((v1, v2) => v1 + v2);

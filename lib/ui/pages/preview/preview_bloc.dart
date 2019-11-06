@@ -12,7 +12,7 @@ class PreviewBloc extends Bloc<PreviewEvent, PreviewState> {
   ) async* {
     if (event is InitializePreviewEvent) {
       if (event.args.isVideo) {
-        yield VideoPreviewState(event.args.preview);
+        yield VideoPreviewState(event.args.preview, event.args.screenRotation);
       } else {
         yield ImagePreviewState(event.args.preview);
       }

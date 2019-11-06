@@ -8,11 +8,12 @@ abstract class PreviewControlsEvent extends Equatable {
 
 class InitControlsEvent extends PreviewControlsEvent {
   final String videoPath;
+  final int screenRotation;
 
-  InitControlsEvent(this.videoPath);
+  InitControlsEvent(this.videoPath, this.screenRotation);
 
   @override
-  List<Object> get props => [videoPath];
+  List<Object> get props => [videoPath, screenRotation];
 }
 
 class PlayPreviewEvent extends PreviewControlsEvent {

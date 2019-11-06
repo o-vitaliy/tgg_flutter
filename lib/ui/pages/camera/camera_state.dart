@@ -12,27 +12,38 @@ class InitialState extends CameraState {
 
 class PhotoWasTakenState extends CameraState {
   final String imagePath;
+  final int screenRotation;
 
-  PhotoWasTakenState(this.imagePath);
+  PhotoWasTakenState(this.imagePath, this.screenRotation);
+
   @override
-  List<Object> get props => [imagePath];
+  List<Object> get props => [imagePath, screenRotation];
+
   @override
-  String toString() => 'PhotoWasTakenState { imageUrl: $imagePath}';
+  String toString() {
+    return 'PhotoWasTakenState{imagePath: $imagePath, screenRotation: $screenRotation}';
+  }
 }
 
 class VideoWasTakenState extends CameraState {
   final String videoPath;
+  final int screenRotation;
 
-  VideoWasTakenState(this.videoPath);
+  VideoWasTakenState(this.videoPath, this.screenRotation);
+
   @override
-  List<Object> get props => [videoPath];
+  List<Object> get props => [videoPath, screenRotation];
+
   @override
-  String toString() => 'VideoWasTakenState { videoPath: $videoPath}';
+  String toString() {
+    return 'VideoWasTakenState{videoPath: $videoPath, screenRotation: $screenRotation}';
+  }
 }
 
 class VideoRecordingState extends CameraState {
   @override
   List<Object> get props => [];
+
   @override
   String toString() => 'StartVideoRecordingState {}';
 }
@@ -40,6 +51,7 @@ class VideoRecordingState extends CameraState {
 class VideoRecordingPausedState extends CameraState {
   @override
   List<Object> get props => [];
+
   @override
   String toString() => 'PauseVideoRecordingState {}';
 }

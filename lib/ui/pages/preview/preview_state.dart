@@ -25,12 +25,15 @@ class ImagePreviewState extends PreviewState {
 
 class VideoPreviewState extends PreviewState {
   final String link;
+  final int screenRotation;
 
-  VideoPreviewState(this.link);
-
-  @override
-  List<Object> get props => [link];
+  VideoPreviewState(this.link, this.screenRotation);
 
   @override
-  String toString() => 'VideoPreviewState { link: $link}';
+  List<Object> get props => [link, screenRotation];
+
+  @override
+  String toString() {
+    return 'VideoPreviewState{screenRotation: $screenRotation}';
+  }
 }

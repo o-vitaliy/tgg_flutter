@@ -29,7 +29,6 @@ class MainActivity : FlutterActivity() {
         super.onCreate(savedInstanceState)
         GeneratedPluginRegistrant.registerWith(this)
 
-        val self = this
         val channel = applicationContext.packageName + SUFFIX_CHANNEL
         val stream = applicationContext.packageName + SUFFIX_STREAM
 
@@ -65,7 +64,7 @@ class MainActivity : FlutterActivity() {
                 val secretAccessKey = checkNotNull(call.argument<String>("secretAccessKey"))
                 val bucketId = checkNotNull(call.argument<String>("bucketId"))
                 val fileUrl = checkNotNull(call.argument<String>("fileUrl"))
-                AwsUpload.upload(self, accessKeyId, secretAccessKey, bucketId, fileUrl,
+                AwsUpload.upload(applicationContext, accessKeyId, secretAccessKey, bucketId, fileUrl,
                         streamHandler.sink)
                 result.success(null)
             } else {

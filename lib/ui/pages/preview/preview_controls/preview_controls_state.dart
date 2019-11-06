@@ -10,8 +10,10 @@ abstract class PreviewState extends Equatable {
 @immutable
 abstract class VideoPlayerPreviewState extends PreviewState {
   final VideoPlayerController controller;
+  final int screenRotation;
 
-  VideoPlayerPreviewState(this.controller) : super([controller]);
+  VideoPlayerPreviewState(this.controller, this.screenRotation)
+      : super([controller, screenRotation]);
 }
 
 class InitialPreviewControlsState extends PreviewState {
@@ -20,7 +22,8 @@ class InitialPreviewControlsState extends PreviewState {
 }
 
 class PlayingPreviewState extends VideoPlayerPreviewState {
-  PlayingPreviewState(VideoPlayerController controller) : super(controller);
+  PlayingPreviewState(VideoPlayerController controller, int screenRotation)
+      : super(controller, screenRotation);
 
   @override
   List<Object> get props => [];
@@ -34,8 +37,9 @@ class PlayingPreviewState extends VideoPlayerPreviewState {
 class StoppedPreviewState extends VideoPlayerPreviewState {
   final bool firstTime;
 
-  StoppedPreviewState(this.firstTime, VideoPlayerController controller)
-      : super(controller);
+  StoppedPreviewState(
+      this.firstTime, VideoPlayerController controller, int screenRotation)
+      : super(controller, screenRotation);
 
   @override
   List<Object> get props => [firstTime];

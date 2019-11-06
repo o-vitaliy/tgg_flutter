@@ -1,13 +1,12 @@
 package com.edicasoft.tgg.actions
 
 import android.content.Context
-import android.widget.Toast
+import android.util.Log
 import com.amazonaws.auth.BasicAWSCredentials
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
+import com.amazonaws.mobileconnectors.s3.transferutility.*
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState.COMPLETED
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtilityOptions
+import com.amazonaws.regions.Region
+import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3Client
 import io.flutter.plugin.common.EventChannel
 import java.io.File
@@ -33,12 +32,11 @@ class AwsUpload(
 
         val observer = transferUtility.upload(
                 bucketId, /* The bucket to upload to */
-                file.name, /* The key for the uploaded object */
+                file.name.replace(".", "_"), /* The key for the uploaded object */
                 file        /* The file where the data to upload exists */
         )
 
         observer.setTransferListener(Listener(sink, fileUrl, observer.id))
-        Toast.makeText(context, "upload $fileUrl 3", Toast.LENGTH_SHORT).show()
     }
 
     private inner class Listener constructor(private val sink: EventChannel.EventSink?,
@@ -54,7 +52,7 @@ class AwsUpload(
                 COMPLETED -> sink?.success(Complete(fileUrl).toMap())
                 else -> return
             }
-            Toast.makeText(context, "upload state $state", Toast.LENGTH_SHORT).show()
+            Log.e("AwsUpload", "upload state $state")
         }
 
         override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
@@ -72,7 +70,7 @@ class AwsUpload(
             if (taskId != id) {
                 return
             }
-            Toast.makeText(context, ex.localizedMessage, Toast.LENGTH_SHORT).show()
+            Log.e("AwsUpload", ex.localizedMessage)
             sink?.success(Error(ex.localizedMessage, fileUrl).toMap())
         }
     }

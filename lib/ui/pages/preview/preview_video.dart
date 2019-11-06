@@ -14,8 +14,9 @@ class VideoPreview extends StatelessWidget {
   final String videoLink;
   final PreviewControlsBloc bloc = PreviewControlsBloc();
 
-  VideoPreview({Key key, this.videoLink}) : super(key: key) {
-    bloc.dispatch(InitControlsEvent(videoLink));
+  VideoPreview({Key key, this.videoLink, int screenRotation})
+      : super(key: key) {
+    bloc.dispatch(InitControlsEvent(videoLink, screenRotation));
   }
 
   @override
@@ -76,7 +77,12 @@ class _VideoPreviewState extends State<VideoPreviewContent> {
           return SizedBox.shrink();
         } else {
           final controller = (state as VideoPlayerPreviewState).controller;
-          return VideoPreviewWidget(controller);
+          final rotation =
+              -(state as VideoPlayerPreviewState).screenRotation / 90;
+          return RotatedBox(
+            quarterTurns: rotation.toInt(),
+            child: VideoPreviewWidget(controller),
+          );
         }
       },
     );

@@ -15,8 +15,10 @@ class InitialCameraCaptureEvent extends CameraEvent {
   InitialCameraCaptureEvent({
     @required this.mode,
   }) : super([mode]);
+
   @override
   List<Object> get props => [mode];
+
   @override
   String toString() => 'InitialCameraCaptureEvent { mode: $mode }';
 }
@@ -54,8 +56,10 @@ class PauseVideoRecording extends CameraEvent {
 
   PauseVideoRecording({@required this.cameraController})
       : super([cameraController]);
+
   @override
   List<Object> get props => [cameraController];
+
   @override
   String toString() =>
       'PauseVideoRecording { cameraController: $cameraController }';
@@ -66,9 +70,25 @@ class StopVideoRecording extends CameraEvent {
 
   StopVideoRecording({@required this.cameraController})
       : super([cameraController]);
+
   @override
   List<Object> get props => [cameraController];
+
   @override
   String toString() =>
       'StopVideoRecording { cameraController: $cameraController }';
+}
+
+class ScreenRotatedEvent extends CameraEvent {
+  final int screenRotation;
+
+  ScreenRotatedEvent(this.screenRotation);
+
+  @override
+  List<Object> get props => [screenRotation];
+
+  @override
+  String toString() {
+    return 'ScreenRotated{screenRotation: $screenRotation}';
+  }
 }

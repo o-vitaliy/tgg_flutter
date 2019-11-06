@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:native_device_orientation/native_device_orientation.dart';
 import 'package:tgg/ui/widgets/base_square_icon_button.dart';
 
 import '../navigation_arguments.dart';
@@ -102,23 +103,31 @@ class _CameraScreenState extends State<_CameraScreen>
         listener: (context, state) {
           if (state is PhotoWasTakenState) {
             Navigator.popAndPushNamed(context, PreviewPage.routeName,
-                arguments: ImagePreviewArguments(state.imagePath, false));
+                arguments: ImagePreviewArguments(
+                  state.imagePath,
+                  false,
+                  state.screenRotation,
+                ));
           }
           if (state is VideoWasTakenState) {
             Navigator.popAndPushNamed(context, PreviewPage.routeName,
-                arguments: ImagePreviewArguments(state.videoPath, true));
+                arguments: ImagePreviewArguments(
+                  state.videoPath,
+                  true,
+                  state.screenRotation,
+                ));
           }
         },
         child: Stack(
           children: <Widget>[
-            _cameraPreviewWidget(),
+            _cameraPreviewWidget(cameraBloc),
             SafeArea(child: _controlsWidget(context, cameraBloc))
           ],
         ));
   }
 
   /// Display the preview from the camera (or a message if the preview is not available).
-  Widget _cameraPreviewWidget() {
+  Widget _cameraPreviewWidget(CameraBloc cameraBloc) {
     if (controller == null || !controller.value.isInitialized) {
       return const Center(
           child: Text(
@@ -130,11 +139,42 @@ class _CameraScreenState extends State<_CameraScreen>
         ),
       ));
     } else {
-      return Center(
-        child: AspectRatio(
-          aspectRatio: controller.value.aspectRatio,
-          child: CameraPreview(controller),
-        ),
+      return NativeDeviceOrientationReader(
+        useSensor: false,
+        builder: (context) {
+          final orientation =
+              NativeDeviceOrientationReader.orientation(context);
+
+          final screenRotation =
+              orientation == NativeDeviceOrientation.landscapeRight ? 180 : 0;
+
+          cameraBloc.dispatch(ScreenRotatedEvent(screenRotation));
+
+          final isLand = orientation == NativeDeviceOrientation.landscapeLeft ||
+              orientation == NativeDeviceOrientation.landscapeRight;
+          int quarterTurns;
+          switch (orientation) {
+            case NativeDeviceOrientation.landscapeLeft:
+              quarterTurns = -1;
+              break;
+            case NativeDeviceOrientation.landscapeRight:
+              quarterTurns = 1;
+              break;
+            default:
+              quarterTurns = 0;
+          }
+          return Center(
+            child: AspectRatio(
+              aspectRatio: isLand
+                  ? 1 / controller.value.aspectRatio
+                  : controller.value.aspectRatio,
+              child: RotatedBox(
+                quarterTurns: quarterTurns,
+                child: CameraPreview(controller),
+              ),
+            ),
+          );
+        },
       );
     }
   }
