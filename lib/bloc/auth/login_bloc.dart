@@ -7,7 +7,7 @@ import 'package:tgg/bloc/auth/authentication_event.dart';
 import 'package:tgg/bloc/auth/login_event.dart';
 import 'package:tgg/bloc/auth/login_state.dart';
 import 'package:tgg/bloc/game/game.dart';
-import 'package:tgg/data/game_repository.dart';
+import 'package:tgg/data/playthrought_repository.dart';
 import 'package:tgg/data/login_repo.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {

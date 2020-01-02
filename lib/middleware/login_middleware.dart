@@ -4,8 +4,7 @@ import 'package:redux/redux.dart';
 import 'package:tgg/actions/auth_actions.dart';
 import 'package:tgg/actions/login_actions.dart';
 import 'package:tgg/actions/theme_actions.dart';
-import 'package:tgg/data/game_repository.dart';
-import 'package:tgg/data/login_repo.dart';
+import 'package:tgg/data/providers.dart';
 import 'package:tgg/redux_model/app_state.dart';
 import 'package:tgg/ui/home.dart';
 
@@ -43,14 +42,17 @@ Middleware<AppState> _createLogInMiddleware() {
       store.dispatch(ChangeLoadingStateAction(true));
       try {
         final code = action.code;
-        final response = await logInRepo.login(code: code);
-        final playthrough = await playthroughRepo.getPlaythrough();
-        store.dispatch(new UpdateThemeAction(Colors.green, Colors.green.shade100));
-        store.dispatch(new LogInSuccessful(loginResponse: response, playthrough:playthrough));
+        final response = await loginRepo.login(code: code);
+        final playthroughId = response.team.playthroughId;
+        final playthrough = await playthroughRepo.getPlaythrough(playthroughId);
+        store.dispatch(
+            new UpdateThemeAction(Colors.green, Colors.green.shade100));
+        store.dispatch(new LogInSuccessful(
+            loginResponse: response, playthrough: playthrough));
         store.dispatch(NavigateToAction.replace(HomePage.routeName));
       } catch (error) {
         print(error);
-        store.dispatch(LoginErrorAction(error.message));
+        store.dispatch(LoginErrorAction(error?.message ?? "Unexpected error"));
       }
       store.dispatch(ChangeLoadingStateAction(false));
     }

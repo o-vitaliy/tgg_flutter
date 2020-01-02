@@ -49,7 +49,11 @@ Middleware<AppState> _createPostMiddleware() {
     if (action is PostLocation) {
       Position position = await Geolocator()
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.lowest);
-      await locationRepo.sendLocation(position);
+      try {
+        await locationRepo.sendLocation(position);
+      } catch (e) {
+        print(e);
+      }
     }
     next(action);
   };

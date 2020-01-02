@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/actions/auth_actions.dart';
-import 'package:tgg/actions/home_actions.dart';
 import 'package:tgg/actions/theme_actions.dart';
-import 'package:tgg/data/game_repository.dart';
 import 'package:tgg/data/login_repo.dart';
+import 'package:tgg/data/providers.dart';
 import 'package:tgg/redux_model/app_state.dart';
 import 'package:tgg/ui/auth/login_page.dart';
 import 'package:tgg/ui/home.dart';
 
 List<Middleware<AppState>> createAuthMiddleware() {
- /* final logIn = _createLogInMiddleware();*/
+  /* final logIn = _createLogInMiddleware();*/
   final reLogIn = _createReLogInMiddleware();
   final logOut = _createLogOutMiddleware();
 
@@ -47,11 +46,15 @@ Middleware<AppState> _createReLogInMiddleware() {
   return (Store store, action, NextDispatcher next) async {
     if (action is ReLogIn) {
       try {
-        final response = await logInRepo.reLogin();
+        final response = await loginRepo.reLogin();
         if (response != null) {
-          final playthrough = await playthroughRepo.getPlaythrough();
-          store.dispatch(new UpdateThemeAction(Colors.green, Colors.green.shade100));
-          store.dispatch(LogInSuccessful(loginResponse: response, playthrough: playthrough));
+          final playthroughId = response.team.playthroughId;
+          final playthrough =
+              await playthroughRepo.getPlaythrough(playthroughId);
+          store.dispatch(
+              new UpdateThemeAction(Colors.green, Colors.green.shade100));
+          store.dispatch(LogInSuccessful(
+              loginResponse: response, playthrough: playthrough));
           store.dispatch(NavigateToAction.replace(HomePage.routeName));
         } else {
           store.dispatch(LogInFails("can not relogin"));
@@ -69,7 +72,7 @@ Middleware<AppState> _createReLogInMiddleware() {
 Middleware<AppState> _createLogOutMiddleware() {
   return (Store store, action, NextDispatcher next) async {
     if (action is LogOut) {
-      await logInRepo.removeGame();
+      await loginRepo.removeGame();
       store.dispatch(new LogOut());
     }
     next(action);

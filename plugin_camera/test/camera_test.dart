@@ -3,10 +3,10 @@
 // found in the LICENSE file.
 
 import 'package:camera/new/camera.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:camera/new/src/camera_testing.dart';
 import 'package:camera/new/src/common/native_texture.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Camera', () {

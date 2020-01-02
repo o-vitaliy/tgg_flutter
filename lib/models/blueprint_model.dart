@@ -1,4 +1,5 @@
 import './routing.dart';
+import 'game/variables.dart';
 
 class BlueprintModel {
   String name;
@@ -6,7 +7,8 @@ class BlueprintModel {
   int version;
   int duration;
 
-  // List<Variables> variables;
+  List<Variables> variables;
+
   // String category_default;
   // List<Roles> roles;
   Routing routing;
@@ -18,30 +20,18 @@ class BlueprintModel {
         title = map["title"],
         version = map["version"],
         duration = map["duration"],
-        //	variables = List<Variables>.from(map["variables"].map((it) => Variables.fromJsonMap(it))),
-        //	category_default = map["category_default"],
-        //	roles = map["roles"]!=null ? List<Roles>.from(map["roles"].map((it) => Roles.fromJsonMap(it))) :List(),
+        variables = getVariables(map),
+  //	category_default = map["category_default"],
+  //	roles = map["roles"]!=null ? List<Roles>.from(map["roles"].map((it) => Roles.fromJsonMap(it))) :List(),
         routing = Routing.fromJsonMap(map["routing"]);
 
-  //	categories = List<Categories>.from(map["categories"].map((it) => Categories.fromJsonMap(it)));
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['name'] = name;
-    data['title'] = title;
-    data['version'] = version;
-    data['duration'] = duration;
-    /*	data['variables'] = variables != null ?
-			this.variables.map((v) => v.toJson()).toList()
-			: null;*/
-    //data['category_default'] = category_default;
-    /*data['roles'] = roles != null ?
-			this.roles.map((v) => v.toJson()).toList()
-			: null;*/
-    data['routing'] = routing == null ? null : routing.toJson();
-    /*data['categories'] = categories != null ?
-			this.categories.map((v) => v.toJson()).toList()
-			: null;*/
-    return data;
+  static List<Variables> getVariables(Map<String, dynamic> map) {
+    final v = map["variables"];
+    if (v != null) {
+      return List<Variables>.from(map["variables"].map((it) => Variables.fromJsonMap(it)));
+    } else {
+      return List<Variables>();
+    }
   }
 }

@@ -20,14 +20,9 @@ import 'package:tgg/reducers/app_reducer.dart';
 import 'package:tgg/redux_model/app_state.dart';
 
 import 'bloc/auth/authentication.dart';
-import 'bloc/auth/login.dart';
-import 'bloc/aws_upload/bloc.dart';
-import 'bloc/game/game.dart';
 import 'bloc/theme/theme.dart';
 import 'containers/camera/camera_container.dart';
-import 'data/game_repository.dart';
-import 'data/location_repo.dart';
-import 'data/login_repo.dart';
+import 'data/playthrought_repository.dart';
 import 'data/providers/remote_config.dart';
 import 'data/simple_bloc_delegate.dart';
 import 'ui/auth/login_page.dart';
@@ -41,49 +36,10 @@ void main() {
   final FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   final FirebaseAnalytics _analytics = FirebaseAnalytics();
 
-  final loginRepo = LoginRepo();
-  final gameRepo = PlaythroughRepo(loginRepo);
-  final locationRepo = LocationRepo(loginRepo);
   final config = Config();
 
-  final awsUploadBloc = AwsUploadBloc(config, _analytics);
-  final themeBloc = ThemeBloc(gameRepository: gameRepo);
-  final gameBloc = GameBloc();
-  final authBloc = AuthenticationBloc(
-    gameRepo: gameRepo,
-    themeBloc: themeBloc,
-    gameBloc: gameBloc,
-  );
-  final loginBloc = LoginBloc(
-    loginRepo: loginRepo,
-    gameRepo: gameRepo,
-    authenticationBloc: authBloc,
-    gameBloc: gameBloc,
-  );
-
   runZoned<Future<void>>(() async {
-    runApp(
-      ReduxApp()
-      /* MultiBlocProvider(
-        providers: [
-          BlocProvider<AuthenticationBloc>(builder: (context) {
-            return authBloc..dispatch(AppStarted());
-          }),
-          BlocProvider<ThemeBloc>(builder: (context) => themeBloc),
-          BlocProvider<LoginBloc>(builder: (context) => loginBloc),
-          BlocProvider<GameBloc>(builder: (context) => gameBloc),
-          BlocProvider<AwsUploadBloc>(builder: (context) => awsUploadBloc),
-          BlocProvider<PostLocationBloc>(
-              builder: (context) => PostLocationBloc(locationRepo)),
-        ],
-        child: App(
-          gameRepo: gameRepo,
-          firebaseMessaging: _firebaseMessaging,
-          analytics: _analytics,
-        ),
-      )*/
-      ,
-    );
+    runApp(ReduxApp());
   }, onError: Crashlytics.instance.recordError);
 }
 

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:tgg/data/game_repository.dart';
+import 'package:tgg/data/playthrought_repository.dart';
 import 'package:tgg/ui/colors.dart';
 
 import 'theme.dart';

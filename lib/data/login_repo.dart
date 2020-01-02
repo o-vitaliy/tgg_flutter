@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:meta/meta.dart';
 import 'package:tgg/data/providers/api_provider.dart';
 import 'package:tgg/models/models.dart';
@@ -5,25 +7,30 @@ import 'package:tgg/models/models.dart';
 import 'providers/prefs_provider.dart';
 
 class LoginRepo {
+  final ApiProvider apiProvider;
+  final PrefsProvider prefs;
+
   LoginResponse loginResponse;
 
+  LoginRepo({@required this.apiProvider, @required this.prefs});
+
   Future<LoginResponse> login({@required String code}) async {
-    loginResponse = await apiProvider.login(code);
-    await prefsProvider.setGameCode(code);
+    String response = await apiProvider.login(code);
+    final Map<String, dynamic> responseMap = json.decode(response);
+    loginResponse = LoginResponse.fromJsonMap(responseMap);
+    await prefs.setGameCode(code);
     apiProvider.token = loginResponse.token;
     return loginResponse;
   }
 
   Future<LoginResponse> reLogin() async {
-    final code = await prefsProvider.getGameCode();
+    final code = await prefs.getGameCode();
     if (code != null) {
       try {
         apiProvider.token = null;
-        loginResponse = await apiProvider.login(code);
-        apiProvider.token = loginResponse.token;
-        return loginResponse;
+        return login(code: code);
       } catch (error) {
-        await prefsProvider.setGameCode(null);
+        await prefs.setGameCode(null);
         throw error;
       }
     }
@@ -32,7 +39,7 @@ class LoginRepo {
 
   Future<LoginResponse> getLoginResponse() async {
     if (loginResponse == null) {
-      final gameCode = await prefsProvider.getGameCode();
+      final gameCode = await prefs.getGameCode();
       if (gameCode != null) {
         await login(code: gameCode);
       }
@@ -43,8 +50,6 @@ class LoginRepo {
   Future removeGame() async {
     loginResponse = null;
     apiProvider.token = null;
-    prefsProvider.setGameCode(null);
+    prefs.setGameCode(null);
   }
 }
-
-final logInRepo = LoginRepo();
