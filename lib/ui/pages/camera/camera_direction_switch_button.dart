@@ -15,32 +15,31 @@ class CameraDirectionSwitchButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BaseSquareIconButton(
-        icon: _getCameraLensIcon(direction),
-        onTap: (context) => callback(_getInvertedLensDirection(direction)),
+        icon: getCameraLensIcon(direction),
+        onTap: (context) => callback(getInvertedLensDirection(direction)),
       );
+}
 
-  /// Returns a suitable camera icon for [direction].
-  IconData _getCameraLensIcon(CameraLensDirection direction) {
-    switch (direction) {
-      case CameraLensDirection.back:
-        return Icons.camera_rear;
-      case CameraLensDirection.front:
-        return Icons.camera_front;
-      case CameraLensDirection.external:
-        return Icons.camera;
-    }
-    throw ArgumentError('Unknown lens direction');
+/// Returns a suitable camera icon for [direction].
+IconData getCameraLensIcon(CameraLensDirection direction) {
+  switch (direction) {
+    case CameraLensDirection.back:
+      return Icons.camera_rear;
+    case CameraLensDirection.front:
+      return Icons.camera_front;
+    case CameraLensDirection.external:
+      return Icons.camera;
   }
+  throw ArgumentError('Unknown lens direction');
+}
 
-  CameraLensDirection _getInvertedLensDirection(CameraLensDirection direction) {
-    switch (direction) {
-      case CameraLensDirection.back:
-        return CameraLensDirection.front;
-      case CameraLensDirection.front:
-        return CameraLensDirection.back;
-      case CameraLensDirection.external:
-        return CameraLensDirection.external;
-    }
-    throw ArgumentError('Unknown lens direction');
+CameraLensDirection getInvertedLensDirection(CameraLensDirection direction) {
+  switch (direction) {
+    case CameraLensDirection.back:
+      return CameraLensDirection.front;
+    case CameraLensDirection.front:
+      return CameraLensDirection.back;
+    default:
+      throw ArgumentError('Unknown lens direction');
   }
 }

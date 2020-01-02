@@ -12,7 +12,7 @@ import 'package:tgg/data/login_repo.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginRepo loginRepo;
-  final GameRepo gameRepo;
+  final PlaythroughRepo gameRepo;
   final AuthenticationBloc authenticationBloc;
   final GameBloc gameBloc;
 
@@ -36,7 +36,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginLoading();
 
       try {
-        await loginRepo.loadLoginData(code: event.code);
+        await loginRepo.login(code: event.code);
         final game = await gameRepo.getGame();
         authenticationBloc.dispatch(LoggedIn(game));
         gameBloc.dispatch(GameLoadedEvent(game: game));

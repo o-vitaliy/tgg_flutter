@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tgg/containers/camera/camera_container.dart';
 import 'package:tgg/ui/pages/pages.dart';
 
 typedef ButtonBuilder = Widget Function(
@@ -37,7 +38,7 @@ class BonusCameraBuilder extends StatelessWidget {
 
   void startBonusCamera(BuildContext context, CameraCaptureMode mode) {
     Navigator.of(context).pop();
-    Navigator.pushNamed(context, CameraPage.routeName,
+    Navigator.pushNamed(context, CameraContainer.routeName,
         arguments: CaptureArguments(mode: mode));
   }
 }

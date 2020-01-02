@@ -15,13 +15,14 @@ class CountDownTimer extends StatefulWidget {
   final TimerFinishedCallback finishedCallback;
   final Color color;
 
-  const CountDownTimer(this.maxValue,
-      {Key key,
-      this.clockwise = true,
-      this.startAngle = 0,
-      this.color = Colors.white,
-      this.finishedCallback})
-      : super(key: key);
+  const CountDownTimer(
+    this.maxValue, {
+    Key key,
+    this.clockwise = true,
+    this.startAngle = 0,
+    this.color = Colors.white,
+    this.finishedCallback,
+  }) : super(key: key);
 
   @override
   State createState() => CountDownTimerState(
@@ -49,18 +50,21 @@ class CountDownTimerState extends State<CountDownTimer> {
   }
 
   @override
-  void dispose() {
+  void deactivate() {
+    super.deactivate();
     stopTimer();
-    super.dispose();
   }
 
   void startTimer() {
     _subscription = CountDown(currentValue, refresh: Duration(milliseconds: 10))
         .stream
         .listen(
-      (onData) => setState(() {
-        currentValue = onData;
-      }),
+      (onData) {
+        if (mounted)
+          setState(() {
+            currentValue = onData;
+          });
+      },
       onDone: () {
         if (_finishedCallback != null) _finishedCallback();
       },

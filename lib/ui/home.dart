@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tgg/bloc/aws_upload/aws_upload_widget.dart';
-import 'package:tgg/bloc/game/game.dart';
-import 'package:tgg/models/blueprint_model.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
+import 'package:tgg/actions/home_actions.dart';
+import 'package:tgg/containers/home/post_location_container.dart';
+import 'package:tgg/containers/home/upload_container.dart';
 import 'package:tgg/models/modes.dart';
-import 'package:tgg/ui/pages/post_location/post_location_widget.dart';
+import 'package:tgg/redux_model/app_state.dart';
+import 'package:tgg/ui/keys.dart';
 import 'package:tgg/ui/tabs/home_tab.dart';
 import 'package:tgg/ui/tabs/route_tab_mapper.dart';
 import 'package:tgg/ui/toolbar/HomeToolbar.dart';
-import 'package:tgg/ui/widgets/loading_indicator.dart';
 
 typedef TabItemClickCallback = void Function(RouteMode data);
 
 class HomePage extends StatelessWidget {
+  static const routeName = '/home';
+
+  HomePage() : super(key: Keys.homeScreen);
+
   @override
   Widget build(BuildContext context) {
-    return PostLocationWidget(
+    return PostLocationContainer(
       widgetBuilder: (context) => _HomePageContent(),
     );
   }
@@ -31,37 +36,49 @@ class _HomeStateContent extends State<_HomePageContent> {
 
   @override
   Widget build(BuildContext context) {
-    final gameBloc = BlocProvider.of<GameBloc>(context);
     return SafeArea(
       child: Scaffold(
-        body: BlocBuilder(
-          bloc: gameBloc,
-          builder: (BuildContext context, GameState state) {
-            if (state is GameLoadedState) {
-              return buildPage(state.game.blueprint);
-            } else {
-              return LoadingIndicator();
-            }
+        body: StoreConnector<AppState, _ViewModel>(
+          converter: _ViewModel.fromStore,
+          builder: (BuildContext context, _ViewModel vm) {
+            return buildPage(vm.selectedMode, vm.modes, vm.changeMode);
           },
         ),
       ),
     );
   }
 
-  Widget buildPage(BlueprintModel blueprint) {
-    if (selectedMode == null) selectedMode = blueprint.routing.modes.first;
+  Widget buildPage(RouteMode selectedMode, List<RouteMode> modes,
+      Function(RouteMode) changeMode) {
     RouteTabMapper mapper =
-        RouteTabMapper(() => HomeTab(blueprint.routing, pageSelected));
+        RouteTabMapper((key) => HomeTab(modes, changeMode, key: key));
 
     return Column(children: <Widget>[
-      HomeToolbar(pageSelected, blueprint.routing, selectedMode),
-      AwsUploadWidget(widgetBuilder: (context) => mapper.map(selectedMode.name))
+      HomeToolbar(changeMode, modes, selectedMode),
+      UploadContainer(widgetBuilder: (context) => mapper.map(selectedMode.name))
     ]);
   }
+}
 
-  void pageSelected(RouteMode mode) {
-    setState(() {
-      selectedMode = mode;
-    });
+class _ViewModel {
+  final RouteMode selectedMode;
+  final List<RouteMode> modes;
+
+  final Function(RouteMode) changeMode;
+
+  _ViewModel({
+    this.selectedMode,
+    this.modes,
+    this.changeMode,
+  });
+
+  static _ViewModel fromStore(Store<AppState> store) {
+    final state = store.state.homePageState;
+    return _ViewModel(
+      selectedMode: state.selectedMode,
+      modes: state.modes,
+      changeMode: (RouteMode mode) =>
+          store.dispatch(ChangeRouteModeAction(mode)),
+    );
   }
 }

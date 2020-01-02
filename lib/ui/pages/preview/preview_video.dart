@@ -2,52 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tgg/bloc/aws_upload/bloc.dart';
 import 'package:tgg/ui/colors.dart';
+import 'package:tgg/ui/keys.dart';
 import 'package:tgg/ui/pages/preview/preview.dart';
 import 'package:tgg/ui/pages/preview/preview_controls/video_preview_widget.dart';
 import 'package:tgg/ui/pages/preview/preview_controls/video_progress_widget.dart';
+import 'package:tgg/ui/widgets/loading_indicator.dart';
 import 'package:tgg/ui/widgets/text_button.dart';
 import 'package:video_player/video_player.dart';
 
 import 'preview_controls/bloc.dart';
 
-class VideoPreview extends StatelessWidget {
+class VideoPreview extends StatefulWidget {
   final String videoLink;
-  final PreviewControlsBloc bloc = PreviewControlsBloc();
+  final int screenRotation;
 
-  VideoPreview({Key key, this.videoLink, int screenRotation})
-      : super(key: key) {
-    bloc.dispatch(InitControlsEvent(videoLink, screenRotation));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      builder: (context) => bloc,
-      child: VideoPreviewContent(videoLink: videoLink),
-    );
-  }
-}
-
-class VideoPreviewContent extends StatefulWidget {
-  final String videoLink;
-
-  const VideoPreviewContent({Key key, @required this.videoLink})
-      : assert(videoLink != null),
-        super(key: key);
+  VideoPreview({Key key, this.videoLink, this.screenRotation})
+      : super(key: key);
 
   @override
   State createState() => _VideoPreviewState();
 }
 
-class _VideoPreviewState extends State<VideoPreviewContent> {
+class _VideoPreviewState extends State<VideoPreview> {
   String get videoLink => this.widget.videoLink;
+
+  int get screenRotation => this.widget.screenRotation;
 
   PreviewControlsBloc _bloc;
 
   @override
   void initState() {
     super.initState();
-    _bloc = BlocProvider.of<PreviewControlsBloc>(context);
+    _bloc = PreviewControlsBloc()
+      ..dispatch(InitControlsEvent(videoLink, screenRotation));
   }
 
   @override
@@ -74,14 +61,14 @@ class _VideoPreviewState extends State<VideoPreviewContent> {
           (newState is InitialPreviewControlsState),
       builder: (context, state) {
         if (state is InitialPreviewControlsState) {
-          return SizedBox.shrink();
+          return LoadingIndicator();
         } else {
           final controller = (state as VideoPlayerPreviewState).controller;
-          final rotation =
-              -(state as VideoPlayerPreviewState).screenRotation / 90;
-          return RotatedBox(
-            quarterTurns: rotation.toInt(),
-            child: VideoPreviewWidget(controller),
+          return Stack(
+            children: <Widget>[
+              VideoPreviewWidget(controller, key: Keys.previewVideoWidget),
+              buildControls(),
+            ],
           );
         }
       },
@@ -205,7 +192,8 @@ class _VideoPreviewState extends State<VideoPreviewContent> {
 
   @override
   void dispose() {
-    _bloc.dispatch(DisposePreviewEvent());
+    _bloc?.dispatch(DisposePreviewEvent());
+    _bloc = null;
     super.dispose();
   }
 }

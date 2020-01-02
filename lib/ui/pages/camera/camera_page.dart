@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';
+import 'package:tgg/ui/keys.dart';
 import 'package:tgg/ui/widgets/base_square_icon_button.dart';
 
 import '../navigation_arguments.dart';
@@ -12,6 +13,7 @@ import '../pages.dart';
 const defaultDuration = Duration(seconds: 30);
 
 class CameraPage extends StatelessWidget {
+  CameraPage({Key key}) : super(key: key ?? Keys.cameraPage);
   static const routeName = '/cameraPage';
 
   @override
@@ -164,6 +166,7 @@ class _CameraScreenState extends State<_CameraScreen>
               quarterTurns = 0;
           }
           return Center(
+            key: Keys.cameraPreviewScreen,
             child: AspectRatio(
               aspectRatio: isLand
                   ? 1 / controller.value.aspectRatio

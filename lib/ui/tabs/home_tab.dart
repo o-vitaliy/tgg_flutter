@@ -3,20 +3,18 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tgg/bloc/auth/login.dart';
 import 'package:tgg/models/modes.dart';
-import 'package:tgg/models/routing.dart';
 import 'package:tgg/ui/helpers/icon_mapper.dart';
-import 'package:tgg/ui/home.dart';
 import 'package:tgg/ui/routes.dart';
 
 class HomeTab extends StatelessWidget {
-  final Routing routing;
-  final TabItemClickCallback pageSelected;
+  final List<RouteMode> modes;
+  final Function(RouteMode) pageSelected;
 
-  const HomeTab(this.routing, this.pageSelected, {Key key}) : super(key: key);
+  const HomeTab(this.modes, this.pageSelected, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final buttons = routing.modes.map(buildButton).toList();
+    final buttons = modes.map(buildButton).toList();
     buttons.add(buildBonus());
     buttons.add(logoutButton(context));
     return Align(
@@ -35,9 +33,9 @@ class HomeTab extends StatelessWidget {
   }
 
   Widget logoutButton(BuildContext context) {
-    final LoginBloc authenticationBloc = BlocProvider.of<LoginBloc>(context);
+    //final LoginBloc authenticationBloc = BlocProvider.of<LoginBloc>(context);
     return RaisedButton(
-        onPressed: () => authenticationBloc.dispatch(Logout()),
+        onPressed: () => null,//authenticationBloc.dispatch(Logout()),
         child:
             Padding(padding: EdgeInsets.only(left: 8), child: Text("Logout")),
         textColor: Colors.white);

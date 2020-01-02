@@ -9,7 +9,7 @@ import 'package:tgg/ui/colors.dart';
 import 'theme.dart';
 
 class ThemeBloc extends Bloc<ThemeChangeEvent, ThemeChangeState> {
-  final GameRepo gameRepository;
+  final PlaythroughRepo gameRepository;
 
   ThemeBloc({@required this.gameRepository}) : assert(gameRepository != null);
 

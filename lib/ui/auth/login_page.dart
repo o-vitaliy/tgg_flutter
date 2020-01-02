@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:tgg/data/repositories.dart';
+import 'package:tgg/containers/login_form.dart';
+import 'package:tgg/ui/keys.dart';
 
-import 'login_form.dart';
 
 class LoginPage extends StatelessWidget {
-  final GameRepo gameRepository;
+  static const routeName = '/login';
 
-  LoginPage({Key key, @required this.gameRepository})
-      : assert(gameRepository != null),
-        super(key: key);
+  LoginPage({Key key = Keys.loginScreen}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

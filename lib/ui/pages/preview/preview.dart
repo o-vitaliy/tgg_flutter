@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tgg/ui/pages/navigation_arguments.dart';
 
+import '../../keys.dart';
 import 'bloc.dart';
 
 const Color defaultBackground = Colors.black38;
 const double rowHeight = 48;
 
 class PreviewPage extends StatelessWidget {
+  PreviewPage({Key key}) : super(key: Keys.previewPage);
   static const routeName = '/previewImage';
 
   @override
@@ -29,9 +31,13 @@ class PreviewPage extends StatelessWidget {
           bloc: bloc,
           builder: (context, state) {
             if (state is ImagePreviewState)
-              return ImagePreview(imageLink: state.link);
+              return ImagePreview(
+                key: Keys.previewImagePage,
+                imageLink: state.link,
+              );
             if (state is VideoPreviewState)
               return VideoPreview(
+                key: Keys.previewVideoPage,
                 videoLink: state.link,
                 screenRotation: state.screenRotation,
               );

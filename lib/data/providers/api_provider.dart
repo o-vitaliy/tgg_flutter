@@ -4,14 +4,14 @@ import 'dart:io';
 
 import 'package:tgg/models/models.dart';
 
-enum httpMethod { post, put }
+enum httpMethod { get, post, put }
 
 class ApiProvider {
   String token;
   final _baseUrl = 'https://bc2-api-stage.thegogame.com/api/v2.0';
 
   Future<LoginResponse> login(String code) async {
-    final url = "$_baseUrl/playthroughs/login/";
+    final url = "$_baseUrl/play/playthroughs/login/";
 
     Map map = {
       'pin': code,
@@ -27,13 +27,19 @@ class ApiProvider {
     return null;
   }
 
+  Future<Playthrough> playthroughs(String playthroughId) async {
+    final url = "$_baseUrl/play/playthroughs/$playthroughId/";
+    final response = await apiRequest(url, {}, method: httpMethod.get);
+    return Playthrough.fromJsonMap(json.decode(response));
+  }
+
   void location({
     String teamId,
     double longitude,
     double latitude,
     int accuracy,
   }) async {
-    final url = "$_baseUrl/teams/$teamId/update_location/";
+    final url = "$_baseUrl/play/teams/$teamId/update_location/";
 
     Map map = {
       'location': {'lng': longitude, 'lat': latitude},
@@ -52,9 +58,8 @@ class ApiProvider {
     HttpClient httpClient = HttpClient();
     HttpClientRequest request =
         await sendClientRequest(httpClient, Uri.parse(url), method);
-    request.headers.set('content-type', 'application/json');
     if (token != null) request.headers.set('Authorization', 'Token $token');
-    request.add(utf8.encode(json.encode(jsonMap)));
+    sendParams(request, jsonMap, method);
     HttpClientResponse response = await request.close();
     try {
       final reply = await response.transform(utf8.decoder).join();
@@ -63,15 +68,21 @@ class ApiProvider {
       } else {
         print("network error: $reply");
         if (isJson(reply)) {
-          final String errors = Map<String, dynamic>.from(json.decode(reply))
-              .values
-              .expand((v) => List<String>.from(v.map((e) => e as String)))
-              .join(", ");
+          final String errors =
+              Map<String, dynamic>.from(json.decode(reply)).values.expand((v) {
+            if (v is String)
+              return List.of([v]);
+            else
+              return List<String>.from(v.map((e) => e as String));
+          }).join(", ");
           throw ArgumentError(errors);
         } else {
           throw ArgumentError("Internal server error");
         }
       }
+    } catch (error) {
+      print(error);
+      throw error;
     } finally {
       httpClient.close();
     }
@@ -84,8 +95,22 @@ class ApiProvider {
         return httpClient.postUrl(url);
       case httpMethod.put:
         return httpClient.putUrl(url);
+      case httpMethod.get:
+        return httpClient.getUrl(url);
       default:
         throw Exception("missed implemention of $method");
+    }
+  }
+
+  void sendParams(HttpClientRequest request, Map jsonMap, httpMethod method) {
+    switch (method) {
+      case httpMethod.post:
+      case httpMethod.put:
+        request.headers.set('content-type', 'application/json');
+        request.add(utf8.encode(json.encode(jsonMap)));
+        break;
+      default:
+        break;
     }
   }
 

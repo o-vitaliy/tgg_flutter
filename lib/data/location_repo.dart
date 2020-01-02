@@ -6,8 +6,9 @@ class LocationRepo {
   final LoginRepo loginRepo;
 
   const LocationRepo(this.loginRepo);
+
   Future sendLocation(Position position) async {
-    final login = await loginRepo.getLoginResponse();
+    final login = await logInRepo.getLoginResponse();
     final teamId = login.team.id;
     return apiProvider.location(
         teamId: teamId,
@@ -16,3 +17,5 @@ class LocationRepo {
         accuracy: position.accuracy.toInt());
   }
 }
+
+final locationRepo = LocationRepo(null);

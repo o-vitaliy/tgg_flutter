@@ -11,7 +11,7 @@ import 'package:tgg/data/game_repository.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final GameRepo gameRepo;
+  final PlaythroughRepo gameRepo;
   final ThemeBloc themeBloc;
   final GameBloc gameBloc;
 
