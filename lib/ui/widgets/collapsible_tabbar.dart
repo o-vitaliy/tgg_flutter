@@ -5,25 +5,27 @@ import 'package:tgg/ui/helpers/icon_mapper.dart';
 import 'package:tgg/ui/home.dart';
 
 class CollapsibleTabBar extends StatelessWidget {
-  CollapsibleTabBar(this.children, this.selected,
-      {this.maxItemsInRaw = 4, this.maxItemsInRow});
+  CollapsibleTabBar(
+    this.children,
+    this.selected, {
+    this.maxItemsInRow = 4,
+  });
 
-  final int maxItemsInRow;
   final List<CollapsibleTabBarItemData> children;
   final RouteMode selected;
 
-  final int maxItemsInRaw;
+  final int maxItemsInRow;
   final GlobalKey _moreKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    final rowsCount = children.length > maxItemsInRaw ? 2 : 1;
+    final rowsCount = children.length > maxItemsInRow ? 2 : 1;
 
     final childList = List<CollapsibleTabBarItemData>();
     if (rowsCount == 1) {
       childList.addAll(children);
     } else {
-      childList.addAll(children.sublist(0, maxItemsInRaw - 1));
+      childList.addAll(children.sublist(0, maxItemsInRow - 1));
       childList.add(createMoreItem());
     }
     PopupMenuButton button = PopupMenuButton(
@@ -62,7 +64,7 @@ class CollapsibleTabBar extends StatelessWidget {
 
   List<PopupMenuItem<CollapsibleTabBarItemData>> _getMenuItems() {
     return children
-        .sublist(maxItemsInRaw - 1, children.length)
+        .sublist(maxItemsInRow - 1, children.length)
         .map((data) => PopupMenuItem<CollapsibleTabBarItemData>(
             child: Row(
               children: <Widget>[

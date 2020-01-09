@@ -3,6 +3,7 @@ import 'package:tgg/data/playthrought_repository.dart';
 import 'package:tgg/data/providers/api_provider.dart';
 import 'package:tgg/data/providers/providers.dart';
 import 'package:tgg/data/statics_repo.dart';
+import 'package:tgg/data/waypoint_repository.dart';
 
 ApiProvider apiProvider = ApiProvider();
 StaticApiProvider staticApiProvider = StaticApiProvider();
@@ -13,3 +14,5 @@ StaticRepo staticRepo = StaticRepo(apiProvider: staticApiProvider);
 LoginRepo loginRepo = LoginRepo(apiProvider: apiProvider, prefs: prefsProvider);
 PlaythroughRepo playthroughRepo =
     PlaythroughRepo(apiProvider: apiProvider, staticRepo: staticRepo);
+
+WaypointsRepo waypointsRepo = WaypointsRepo(apiProvider: apiProvider);

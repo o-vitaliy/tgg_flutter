@@ -48,14 +48,18 @@ class _HomeStateContent extends State<_HomePageContent> {
     );
   }
 
-  Widget buildPage(RouteMode selectedMode, List<RouteMode> modes,
-      Function(RouteMode) changeMode) {
-    RouteTabMapper mapper =
-        RouteTabMapper((key) => HomeTab(modes, changeMode, key: key));
+  Widget buildPage(
+    RouteMode selectedMode,
+    List<RouteMode> modes,
+    Function(RouteMode) changeMode,
+  ) {
+    final homeTabBuilder = (key) => HomeTab(modes, changeMode, key: key);
+    RouteTabMapper mapper = RouteTabMapper(homeTabBuilder: homeTabBuilder);
 
     return Column(children: <Widget>[
       HomeToolbar(changeMode, modes, selectedMode),
-      UploadContainer(widgetBuilder: (context) => mapper.map(selectedMode.name))
+      UploadContainer(
+          widgetBuilder: (context) => mapper.map(selectedMode?.name ?? "home"))
     ]);
   }
 }

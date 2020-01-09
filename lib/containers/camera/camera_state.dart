@@ -1,9 +1,12 @@
 import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
+import 'package:tgg/containers/camera/camera_container.dart';
 import 'package:tgg/ui/pages/camera/camera.dart';
 import 'package:tgg/ui/pages/navigation_arguments.dart';
 
 class CameraState {
   final List<CameraDescription> cameras;
+  final GlobalKey<CameraContainerState> key;
   final CameraDescription currentCamera;
   final CameraController controller;
   final CaptureArguments captureArgs;
@@ -55,6 +58,7 @@ class CameraState {
     this.processingResult,
     this.isRecordingVideo,
     this.isTakingPhoto,
+    this.key,
   });
 
   CameraState copyWith({
@@ -67,6 +71,7 @@ class CameraState {
     bool processingResult,
     bool isRecordingVideo,
     bool isTakingPhoto,
+    GlobalKey<CameraContainerState> key,
   }) {
     return CameraState(
       cameras: cameras ?? this.cameras,
@@ -79,6 +84,7 @@ class CameraState {
       processingResult: processingResult ?? this.processingResult,
       isRecordingVideo: isRecordingVideo ?? this.isRecordingVideo,
       isTakingPhoto: isTakingPhoto ?? this.isTakingPhoto,
+      key: key ?? this.key,
     );
   }
 }

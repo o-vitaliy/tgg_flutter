@@ -1,4 +1,6 @@
 import 'package:tgg/containers/camera/camera_reducer.dart';
+import 'package:tgg/containers/waypoints/waypoint/waypoint_reducer.dart';
+import 'package:tgg/containers/waypoints/waypoints_reducer.dart';
 import 'package:tgg/reducers/auth_reducer.dart';
 import 'package:tgg/reducers/home_page_reducer.dart';
 import 'package:tgg/reducers/login_reducer.dart';
@@ -18,6 +20,8 @@ AppState appReducer(AppState state, action) {
     loginState: loginReducer(state.loginState, action),
     homePageState: homePageReducer(state.homePageState, action),
     uploadFilesState: uploadFilesReducer(state.uploadFilesState, action),
-    cameraState: cameraReducer(state.cameraState, action)
+    cameraState: cameraReducer(state.cameraState, action),
+    waypointsState: waypointsReducer(state.waypointsState, action),
+    waypointState: waypointReducer(state.waypointState, action),
   );
 }

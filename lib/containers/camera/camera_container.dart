@@ -4,22 +4,33 @@ import 'package:redux/redux.dart';
 import 'package:tgg/containers/camera/widgets/camera_timer_container.dart';
 import 'package:tgg/redux_model/app_state.dart';
 import 'package:tgg/ui/pages/navigation_arguments.dart';
+import 'package:tgg/ui/pages/preview/preview.dart';
+import 'package:tgg/ui/pages/preview/preview_callbacks.dart';
 import 'package:tgg/ui/widgets/loading_indicator.dart';
 
 import 'camera_actions.dart';
 import 'camera_controls.dart';
 import 'camera_preview_view.dart';
 
-class CameraContainer extends StatelessWidget {
+final cameraKey = GlobalKey<CameraContainerState>();
+
+class CameraContainer extends StatefulWidget {
   static const routeName = '/camera';
 
+  CameraContainer() : super(key: cameraKey);
+
+  @override
+  State<StatefulWidget> createState() => CameraContainerState();
+}
+
+class CameraContainerState extends State<CameraContainer> {
   @override
   Widget build(BuildContext context) {
     final CaptureArguments args = ModalRoute.of(context).settings.arguments;
     return StoreConnector<AppState, _ViewModel>(
         converter: _ViewModel.fromStore,
         onInit: (store) {
-          store.dispatch(StartInitCameraAction(args));
+          store.dispatch(StartInitCameraAction(args, cameraKey));
         },
         distinct: true,
         builder: (BuildContext context, _ViewModel vm) {
@@ -39,6 +50,16 @@ class CameraContainer extends StatelessWidget {
             ]);
           }
         });
+  }
+
+  void showPreview(Object args, Store store) {
+    Navigator.pushNamed(context, PreviewPage.routeName, arguments: args)
+        .then((result) {
+      if (result is Submit)
+        Navigator.pop(cameraKey.currentContext, result.result);
+      else
+        store.dispatch(RestartCameraAction());
+    });
   }
 }
 

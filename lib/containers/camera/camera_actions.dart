@@ -1,16 +1,23 @@
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:tgg/containers/camera/camera_container.dart';
 import 'package:tgg/ui/pages/navigation_arguments.dart';
 
 class StartInitCameraAction {
   final CaptureArguments args;
+  final GlobalKey<CameraContainerState> state;
 
-  StartInitCameraAction(this.args);
+  StartInitCameraAction(this.args, this.state);
 }
+
+class RestartCameraAction{}
 
 class InitCameraAction {
   final CaptureArguments args;
+  final GlobalKey<CameraContainerState> state;
 
-  InitCameraAction(this.args);
+
+  InitCameraAction(this.args, this.state);
 }
 
 class InitializedCameraAction {

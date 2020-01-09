@@ -1,8 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tgg/bloc/aws_upload/bloc.dart';
+import 'package:tgg/ui/pages/preview/preview_callbacks.dart';
 import 'package:tgg/ui/pages/preview/preview.dart';
 import 'package:tgg/ui/widgets/text_button.dart';
 
@@ -39,16 +38,14 @@ class ImagePreview extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: TextButton(
                     text: "Back",
-                    onTap: (context) => Navigator.pop(context),
+                    onTap: (context) => Navigator.pop(context, Retake()),
                   )),
               Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     text: "Submit",
                     onTap: (context) {
-                      BlocProvider.of<AwsUploadBloc>(context)
-                          .dispatch(StartAwsUploadEvent(imageLink));
-                      Navigator.pop(context);
+                      Navigator.pop(context, Submit(imageLink));
                     },
                   )),
             ],

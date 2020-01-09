@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:tgg/containers/camera/camera_state.dart';
+import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
+import 'package:tgg/containers/waypoints/waypoints_state.dart';
 import 'package:tgg/helpers/theme_helper.dart';
 import 'package:tgg/models/login_response.dart';
 import 'package:tgg/models/playthrough.dart';
@@ -20,6 +22,8 @@ class AppState {
   final HomePageState homePageState;
   final UploadFilesState uploadFilesState;
   final CameraState cameraState;
+  final WaypointsState waypointsState;
+  final WaypointState waypointState;
 
   AppState({
     @required this.themeData,
@@ -31,6 +35,8 @@ class AppState {
     @required this.homePageState,
     @required this.uploadFilesState,
     @required this.cameraState,
+    @required this.waypointsState,
+    @required this.waypointState,
   });
 
   factory AppState.initial() {
@@ -44,6 +50,8 @@ class AppState {
       homePageState: null,
       uploadFilesState: UploadFilesState.initial(),
       cameraState: CameraState(),
+      waypointsState: WaypointsState.initial(),
+      waypointState: null,
     );
   }
 
@@ -55,7 +63,11 @@ class AppState {
       playthrough: playthrough ?? this.playthrough,
       postLocationTimer: postLocationTimer ?? this.postLocationTimer,
       loginState: loginState ?? this.loginState,
-      homePageState: homePageState ?? this.homePageState
+      homePageState: homePageState ?? this.homePageState,
+      uploadFilesState: uploadFilesState ?? this.uploadFilesState,
+      cameraState: cameraState ?? this.cameraState,
+      waypointsState: waypointsState ?? this.waypointsState,
+      waypointState: waypointState ?? this.waypointState,
     );
   }
 }

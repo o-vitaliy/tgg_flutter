@@ -69,8 +69,6 @@ class _CameraScreenState extends State<_CameraScreen>
   CameraController controller;
   CameraDescription currentCamera;
 
-  final GlobalKey countDownTimerKey = GlobalKey();
-
   _CameraScreenState(this.cameras);
 
   @override

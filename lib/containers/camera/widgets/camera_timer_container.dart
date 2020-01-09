@@ -5,7 +5,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/containers/camera/camera_state.dart';
 import 'package:tgg/redux_model/app_state.dart';
-import 'package:tgg/ui/keys.dart';
 import 'package:tgg/ui/widgets/count_down_timer.dart';
 
 import '../camera_actions.dart';

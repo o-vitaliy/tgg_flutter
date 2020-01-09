@@ -11,6 +11,7 @@ import 'package:tgg/ui/pages/preview/preview.dart';
 
 List<Middleware<AppState>> createCameraMiddleware() {
   final initCamera = _createInitCameraMiddleware();
+  final restartCamera = _createRestartCameraMiddleware();
   final switchCamera = _createSwitchChangeMiddleware();
   final startRecording = _createStartRecordingMiddleware();
   final stopRecording = _createStopRecordingMiddleware();
@@ -19,6 +20,7 @@ List<Middleware<AppState>> createCameraMiddleware() {
 
   return [
     new TypedMiddleware<AppState, StartInitCameraAction>(initCamera),
+    new TypedMiddleware<AppState, RestartCameraAction>(restartCamera),
     new TypedMiddleware<AppState, SwitchCameraAction>(switchCamera),
     new TypedMiddleware<AppState, TakePhotoAction>(takePhoto),
     new TypedMiddleware<AppState, StartRecordingAction>(startRecording),
@@ -30,11 +32,27 @@ List<Middleware<AppState>> createCameraMiddleware() {
 Middleware<AppState> _createInitCameraMiddleware() {
   return (Store store, action, NextDispatcher next) async {
     if (action is StartInitCameraAction) {
-      store.dispatch(InitCameraAction(action.args));
+      store.dispatch(InitCameraAction(action.args, action.state));
       final cameras = await availableCameras();
       final current = cameras.first;
       store.dispatch(InitializedCameraAction(cameras, current));
       _initializeNewController(store, current);
+    }
+    next(action);
+  };
+}
+
+Middleware<AppState> _createRestartCameraMiddleware() {
+  return (Store store, action, NextDispatcher next) async {
+    if (action is RestartCameraAction) {
+      final CameraState cameraState = store.state.cameraState;
+
+      final cameras = cameraState.cameras;
+      final currentCamera = cameraState.currentCamera;
+      store
+          .dispatch(InitCameraAction(cameraState.captureArgs, cameraState.key));
+      store.dispatch(InitializedCameraAction(cameras, currentCamera));
+      _initializeNewController(store, currentCamera);
     }
     next(action);
   };
@@ -115,8 +133,7 @@ Middleware<AppState> _createTakePhotoMiddleware() {
         state.screenOrientation,
       );
 
-      store.dispatch(
-          NavigateToAction.replace(PreviewPage.routeName, arguments: args));
+      state.key.currentState.showPreview(args, store);
       store.dispatch(ProcessingAction(false));
     }
     next(action);

@@ -6,6 +6,8 @@ const BARS = "icon-bars";
 class IconMapper {
   static IconData map(String name) {
     switch (name) {
+      case 'home':
+        return FontAwesomeIcons.home;
       case 'icon-group':
         return FontAwesomeIcons.users;
       case 'icon-screenshot':

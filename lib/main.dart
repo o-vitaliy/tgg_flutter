@@ -13,6 +13,7 @@ import 'package:redux/redux.dart';
 import 'package:redux_logging/redux_logging.dart';
 import 'package:tgg/containers/camera/camera_middleware.dart';
 import 'package:tgg/containers/themed_app.dart';
+import 'package:tgg/containers/waypoints/waypoints_middleware.dart';
 import 'package:tgg/middleware/auth_middleware.dart';
 import 'package:tgg/middleware/login_middleware.dart';
 import 'package:tgg/middleware/post_location_middleware.dart';
@@ -22,6 +23,7 @@ import 'package:tgg/redux_model/app_state.dart';
 import 'bloc/auth/authentication.dart';
 import 'bloc/theme/theme.dart';
 import 'containers/camera/camera_container.dart';
+import 'containers/waypoints/waypoint/waypoint_middleware.dart';
 import 'data/playthrought_repository.dart';
 import 'data/providers/remote_config.dart';
 import 'data/simple_bloc_delegate.dart';
@@ -51,6 +53,8 @@ class ReduxApp extends StatelessWidget {
         ..addAll(createPostingLocationMiddleware())
         ..addAll(createLoginMiddleware())
         ..addAll(createCameraMiddleware())
+        ..addAll(createWaypointsMiddleware())
+        ..addAll(createWaypointMiddleware())
         ..add(LoggingMiddleware.printer())
         ..add(NavigationMiddleware<AppState>()));
 

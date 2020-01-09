@@ -20,6 +20,11 @@ class ApiProvider {
     return apiRequest(url, token: token, method: httpMethod.get);
   }
 
+  Future<String> activeWaypoints() async {
+    final url = "$_baseUrl/play/waypoints/my_active_waypoints/";
+    return apiRequest(url, token: token, method: httpMethod.get);
+  }
+
   Future<String> location({
     String teamId,
     double longitude,

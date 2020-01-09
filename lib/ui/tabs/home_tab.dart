@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tgg/bloc/auth/login.dart';
 import 'package:tgg/models/modes.dart';
 import 'package:tgg/ui/helpers/icon_mapper.dart';
 import 'package:tgg/ui/routes.dart';
@@ -35,7 +33,7 @@ class HomeTab extends StatelessWidget {
   Widget logoutButton(BuildContext context) {
     //final LoginBloc authenticationBloc = BlocProvider.of<LoginBloc>(context);
     return RaisedButton(
-        onPressed: () => null,//authenticationBloc.dispatch(Logout()),
+        onPressed: () => null, //authenticationBloc.dispatch(Logout()),
         child:
             Padding(padding: EdgeInsets.only(left: 8), child: Text("Logout")),
         textColor: Colors.white);
