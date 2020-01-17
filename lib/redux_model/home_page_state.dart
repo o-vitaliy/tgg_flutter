@@ -24,6 +24,6 @@ class HomePageState {
   }
 
   factory HomePageState.initial(List<RouteMode> modes) {
-    return HomePageState(selectedMode: null, modes: modes);
+    return HomePageState(selectedMode: RouteMode.home(), modes: modes);
   }
 }

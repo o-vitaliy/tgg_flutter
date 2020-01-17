@@ -21,6 +21,10 @@ class CollapsibleTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final rowsCount = children.length > maxItemsInRow ? 2 : 1;
 
+    int indexOfSelected =
+        children.indexOf(children.where((it) => it.data == selected).first);
+    if (indexOfSelected >= maxItemsInRow) indexOfSelected = maxItemsInRow - 1;
+
     final childList = List<CollapsibleTabBarItemData>();
     if (rowsCount == 1) {
       childList.addAll(children);
@@ -29,14 +33,19 @@ class CollapsibleTabBar extends StatelessWidget {
       childList.add(createMoreItem());
     }
     PopupMenuButton button = PopupMenuButton(
-        key: _moreKey, itemBuilder: (_) => _getMenuItems(), onSelected: (_) {});
+        key: _moreKey,
+        itemBuilder: (_) => _getMenuItems(),
+        onSelected: (it) {
+          it.clickCallback(it.data);
+        });
 
+    int index = 0;
     final items = childList
         .map((data) => _CollapsibleTabBarItem(
             icon: data.icon,
             data: data.data,
             clickCallback: data.clickCallback,
-            selected: data.data == selected))
+            selected: index++ == indexOfSelected))
         .toList();
     return Stack(children: <Widget>[
       Container(
@@ -54,8 +63,8 @@ class CollapsibleTabBar extends StatelessWidget {
     ]);
   }
 
-  CollapsibleTabBarItemData createMoreItem() =>
-      CollapsibleTabBarItemData(icon: BARS, clickCallback: showMore);
+  CollapsibleTabBarItemData createMoreItem() => CollapsibleTabBarItemData(
+      icon: BARS, clickCallback: showMore, data: RouteMode.menu());
 
   void showMore(data) {
     dynamic state = _moreKey.currentState;

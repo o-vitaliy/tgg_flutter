@@ -24,6 +24,7 @@ class HomeToolbar extends StatelessWidget {
           ..insert(0, CollapsibleTabBarItemData(
             title: "Home",
             icon: "home",
+            data: RouteMode.home(),
             clickCallback: _tabItemClickCallback,
           ));
 

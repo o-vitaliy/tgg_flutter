@@ -44,4 +44,26 @@ class RouteMode {
     data['categories'] = categories;
     return data;
   }
+
+  RouteMode.home()
+      : name = "home",
+        title = "home",
+        icon = "home",
+        type = "home";
+
+  RouteMode.menu()
+      : name = "menu",
+        title = "menu",
+        icon = "menu",
+        type = "menu";
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is RouteMode &&
+              runtimeType == other.runtimeType &&
+              name == other.name;
+
+  @override
+  int get hashCode => name.hashCode;
 }
