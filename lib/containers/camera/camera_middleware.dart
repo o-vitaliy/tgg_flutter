@@ -98,7 +98,9 @@ Middleware<AppState> _createStopRecordingMiddleware() {
     if (action is StopRecordingAction) {
       store.dispatch(ProcessingAction(true));
       final CameraState state = store.state.cameraState;
-      await state.controller.stopVideoRecording();
+
+      if (state.controller.value.isRecordingVideo)
+        await state.controller.safeStopVideoRecording();
 
       final VideoDataRepository videoDataRepository = VideoDataRepository();
 
@@ -147,9 +149,15 @@ void _initializeNewController(Store store, CameraDescription current) async {
   await controller.initialize();
   store.dispatch(InitializedCameraControllerAction(controller));
   controller.addListener(() {
-    print(controller.value);
     store.dispatch(ControllerStateChangeAction(
         isRecordingVideo: controller.value.isRecordingVideo,
         isTakingPhoto: controller.value.isTakingPicture));
   });
+}
+
+extension SafeStopController on CameraController {
+  Future<void> safeStopVideoRecording() {
+    if (value.isRecordingVideo) return stopVideoRecording();
+    return Future.value();
+  }
 }

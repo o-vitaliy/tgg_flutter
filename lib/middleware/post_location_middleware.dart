@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:geolocator/geolocator.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/actions/post_location_actions.dart';
-import 'package:tgg/data/location_repo.dart';
+import 'package:tgg/data/providers.dart';
 import 'package:tgg/redux_model/app_state.dart';
 
 const default_delay = Duration(seconds: 60);
@@ -47,13 +46,7 @@ Middleware<AppState> _createStopPostingMiddleware() {
 Middleware<AppState> _createPostMiddleware() {
   return (Store store, action, NextDispatcher next) async {
     if (action is PostLocation) {
-      Position position = await Geolocator()
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.lowest);
-      try {
-        await locationRepo.sendLocation(position);
-      } catch (e) {
-        print(e);
-      }
+      locationRepo.sendLocation();
     }
     next(action);
   };

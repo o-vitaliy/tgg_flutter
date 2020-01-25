@@ -14,5 +14,5 @@ class WaypointStep {
         this.instructions = map["instructions"],
         this.missionId = map["mission_id"],
         this.position = map["position"],
-        this.behavior = WaypointBehavior.fromJsonMap(map["behavior"]);
+        this.behavior = WaypointBehavior.fromJsonMap(map["behavior"], map);
 }

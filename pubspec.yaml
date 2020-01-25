@@ -10,7 +10,7 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -47,6 +47,10 @@ dependencies:
   redux_logging: ^0.3.0
   flutter_redux_navigation: ^0.4.1
   flutter_markdown: ^0.3.2
+  moor: ^2.2.0
+  moor_ffi: ^0.3.1
+  mime: ^0.9.6+3
+  slugify: ^1.0.0
 
   flutter_test:
     sdk: flutter
@@ -67,6 +71,8 @@ flutter:
 dev_dependencies:
   test: ^1.5.1
   mockito: ^4.1.1
+  moor_generator: ^2.2.0
+  build_runner: ^1.7.1
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg

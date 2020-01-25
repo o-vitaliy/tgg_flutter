@@ -56,6 +56,7 @@ class TakePhotoAction {}
 class StartRecordingAction {}
 
 class PauseRecordingAction {}
+class PausedAction {}
 
 class StopRecordingAction {}
 

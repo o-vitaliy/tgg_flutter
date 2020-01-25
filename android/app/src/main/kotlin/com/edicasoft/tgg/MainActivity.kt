@@ -33,7 +33,7 @@ class MainActivity : FlutterActivity() {
         val stream = applicationContext.packageName + SUFFIX_STREAM
 
         EventChannel(flutterView, stream)
-                .setStreamHandler(streamHandler)
+            .setStreamHandler(streamHandler)
 
         MethodChannel(flutterView, channel).setMethodCallHandler { call, result ->
             if (call.method == "getVideoThumbnail") {
@@ -64,8 +64,9 @@ class MainActivity : FlutterActivity() {
                 val secretAccessKey = checkNotNull(call.argument<String>("secretAccessKey"))
                 val bucketId = checkNotNull(call.argument<String>("bucketId"))
                 val fileUrl = checkNotNull(call.argument<String>("fileUrl"))
-                AwsUpload.upload(applicationContext, accessKeyId, secretAccessKey, bucketId, fileUrl,
-                        streamHandler.sink)
+                val key = checkNotNull(call.argument<String>("key"))
+                AwsUpload.upload(applicationContext, accessKeyId, secretAccessKey, bucketId, fileUrl, key,
+                    streamHandler.sink)
                 result.success(null)
             } else {
                 result.notImplemented()

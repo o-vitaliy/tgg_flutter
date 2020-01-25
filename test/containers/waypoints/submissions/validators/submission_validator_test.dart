@@ -7,6 +7,13 @@ import 'package:tgg/models/waypoints/waypoint_submission.dart';
 
 main() {
   group("validators", () {
+    test("check if all types are covered", () {
+      SubmissionType.values.forEach((type) {
+        final result = getValidator(type);
+        expect(result, isInstanceOf<Validator>());
+      });
+    });
+
     test("empty text  - should be error", () async {
       final result = validate(SubmissionType.text, null);
       expect(result, isNotEmpty);

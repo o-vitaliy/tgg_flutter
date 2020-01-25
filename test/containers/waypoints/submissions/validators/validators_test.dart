@@ -1,5 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:tgg/containers/waypoints/submissions/validate/choice_validator.dart';
 import 'package:tgg/containers/waypoints/submissions/validate/validator.dart';
+
+import '../../../../models/waypoints/submission_choice_test.dart';
 
 main() {
   group("validators", () {
@@ -34,8 +37,30 @@ main() {
       expect(validator.validate("value"), invalidEmailError);
       expect(validator.validate("valid.valid@com.dd"), null);
     });
+
+    test("validate number ", () async {
+      final validator = NumberValidator(error: invalidNumberError);
+      expect(validator.validate(null), invalidNumberError);
+      expect(validator.validate(""), invalidNumberError);
+      expect(validator.validate("aqaq"), invalidNumberError);
+      expect(validator.validate("."), invalidNumberError);
+      expect(validator.validate("0.1a"), invalidNumberError);
+      expect(validator.validate("1"), null);
+      expect(validator.validate("111"), null);
+      expect(validator.validate("111.1"), null);
+      expect(validator.validate("111."), null);
+    });
+
+    test("validate сhoice ", () async {
+      final validator = ChoiceValidator(error: invalidChoiceError);
+      expect(validator.validate(null, variants: mocked), invalidChoiceError);
+      expect(validator.validate("first", variants: mocked), invalidChoiceError);
+      expect(validator.validate("correct", variants: mocked), isNull);
+    });
   });
 }
 
 const emptyTextError = "emptyTextError";
 const invalidEmailError = "invalidEmailError";
+const invalidNumberError = "invalidNumberError";
+const invalidChoiceError = "invalidChoiceError";

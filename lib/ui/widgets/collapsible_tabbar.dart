@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tgg/models/modes.dart';
@@ -21,9 +23,8 @@ class CollapsibleTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final rowsCount = children.length > maxItemsInRow ? 2 : 1;
 
-    int indexOfSelected =
-        children.indexOf(children.where((it) => it.data == selected).first);
-    if (indexOfSelected >= maxItemsInRow) indexOfSelected = maxItemsInRow - 1;
+    int indexOfSelected = min(
+        children.indexWhere((it) => it.data == selected), maxItemsInRow - 1);
 
     final childList = List<CollapsibleTabBarItemData>();
     if (rowsCount == 1) {

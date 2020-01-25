@@ -9,11 +9,26 @@ class WaypointInit {
   WaypointInit(this.waypoint, this.items);
 }
 
+
+class WaypointStarted{
+  final String waypointId;
+
+  WaypointStarted(this.waypointId);
+}
+
 class WaypointUpdateAnswer {
   final String answer;
   final WaypointSubmission submission;
 
   WaypointUpdateAnswer(this.answer, this.submission);
+}
+
+class WaypointSaveAnswer {
+  final String answer;
+  final WaypointSubmission submission;
+  final String media;
+
+  WaypointSaveAnswer(this.answer, this.submission, this.media);
 }
 
 class WaypointSubmit {}

@@ -28,6 +28,7 @@ class _CameraTimerContainerState extends State<CameraTimerContainer> {
         .onChange
         .map((s) => s.cameraState)
         .map((s) => s.isRecordingVideo)
+        .distinct()
         .listen((isRecordingVideo) {
       if (isRecordingVideo)
         countDownTimerKey.currentState.startTimer();
@@ -47,7 +48,6 @@ class _CameraTimerContainerState extends State<CameraTimerContainer> {
     return StoreConnector<AppState, _ViewModel>(
         converter: _ViewModel.fromStore,
         distinct: true,
-        onDidChange: (_ViewModel vm) {},
         builder: (BuildContext context, _ViewModel vm) {
           return CountDownTimer(
             vm.timerDuration,

@@ -17,6 +17,7 @@ class AwsUpload(
         private val secretAccessKey: String,
         private val bucketId: String,
         private val fileUrl: String,
+        private val key: String,
         private val sink: EventChannel.EventSink?) {
 
     fun upload() {
@@ -32,7 +33,7 @@ class AwsUpload(
 
         val observer = transferUtility.upload(
                 bucketId, /* The bucket to upload to */
-                file.name.replace(".", "_"), /* The key for the uploaded object */
+                key, /* The key for the uploaded object */
                 file        /* The file where the data to upload exists */
         )
 
@@ -81,10 +82,12 @@ class AwsUpload(
                 accessKeyId: String,
                 secretAccessKey: String,
                 bucketId: String,
-                fileUrl: String, sink: EventChannel.EventSink?) {
+                fileUrl: String,
+                key: String,
+                sink: EventChannel.EventSink?) {
 
 
-            val upload = AwsUpload(context, accessKeyId, secretAccessKey, bucketId, fileUrl, sink)
+            val upload = AwsUpload(context, accessKeyId, secretAccessKey, bucketId, fileUrl, key, sink)
             upload.upload()
         }
     }

@@ -1,16 +1,26 @@
 import 'package:tgg/containers/waypoints/submissions/submission_types.dart';
+import 'package:tgg/containers/waypoints/submissions/validate/choice_validator.dart';
 import 'package:tgg/containers/waypoints/submissions/validate/validator.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart';
 
 const typeText = "text";
 
-String validate(SubmissionType type, String answer) {
+Validator getValidator(SubmissionType type) {
   switch (type) {
     case SubmissionType.text:
-      return EmptyValidator().validate(answer);
+    case SubmissionType.photo:
+    case SubmissionType.number:
+    case SubmissionType.movie:
+      return EmptyValidator();
+    case SubmissionType.choice:
+      return ChoiceValidator();
     default:
       throw ArgumentError("unsupported type $type");
   }
+}
+
+String validate(SubmissionType type, dynamic answer) {
+  return getValidator(type).validate(answer);
 }
 
 String validateList(List<WaypointSubmissionItem> items,

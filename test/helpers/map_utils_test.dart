@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:tgg/helpers/map_utils.dart';
 
 main() {
-  group("utls", () {
+  group("utils", () {
     test("Merge maps works correctly 1", () {
       final m = {
         "a": 1,

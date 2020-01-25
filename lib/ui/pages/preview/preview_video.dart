@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tgg/bloc/aws_upload/bloc.dart';
 import 'package:tgg/ui/colors.dart';
 import 'package:tgg/ui/keys.dart';
 import 'package:tgg/ui/pages/preview/preview.dart';
+import 'package:tgg/ui/pages/preview/preview_callbacks.dart';
 import 'package:tgg/ui/pages/preview/preview_controls/video_preview_widget.dart';
 import 'package:tgg/ui/pages/preview/preview_controls/video_progress_widget.dart';
 import 'package:tgg/ui/widgets/loading_indicator.dart';
@@ -152,9 +152,7 @@ class _VideoPreviewState extends State<VideoPreview> {
                   child: TextButton(
                     text: "Submit",
                     onTap: (context) {
-                      BlocProvider.of<AwsUploadBloc>(context)
-                          .dispatch(StartAwsUploadEvent(videoLink));
-                      Navigator.pop(context);
+                      Navigator.pop(context, Submit(videoLink));
                     },
                   )),
             ],

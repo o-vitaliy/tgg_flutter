@@ -36,13 +36,14 @@ class NativeProvider {
   }
 
   Future upload(String accessKeyId, String secretAccessKey, String bucketId,
-      String url) async {
+      String url, String key) async {
     final channel = await _getChannel();
-    channel.invokeMethod('uploadAws', {
+    await channel.invokeMethod('uploadAws', {
       "accessKeyId": accessKeyId,
       "secretAccessKey": secretAccessKey,
       "bucketId": bucketId,
-      "fileUrl": url
+      "fileUrl": url,
+      "key": key,
     });
   }
 

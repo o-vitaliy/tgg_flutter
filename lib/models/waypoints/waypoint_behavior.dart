@@ -6,9 +6,13 @@ class WaypointBehavior {
   final String description;
   final List<WaypointSubmission> submissionType;
 
-  WaypointBehavior.fromJsonMap(Map<String, dynamic> map)
+  WaypointBehavior.fromJsonMap(
+      Map<String, dynamic> map, Map<String, dynamic> step)
       : this.id = map["id"],
         this.title = map["title"],
         this.description = map["description"],
-        this.submissionType = WaypointSubmission.from(map["submission_type"]);
+        this.submissionType = WaypointSubmission.from(
+          map["submission_type"],
+          step: step,
+        );
 }

@@ -12,7 +12,7 @@ class CompositeValidator extends Validator {
   CompositeValidator(this.separator, this.subValidators);
 
   @override
-  String validate(String input) {
+  String validate(String input, {variants}) {
     List<String> errors = subValidators
         .map((v) => v.validate(input))
         .where((v) => v != null)
@@ -45,5 +45,31 @@ class EmailValidator extends Validator {
                 .hasMatch(input)
         ? null
         : error;
+  }
+}
+
+class NumberValidator extends Validator {
+  final String error;
+
+  NumberValidator({String error}) : this.error = error ?? defaultEmailError;
+
+  @override
+  String validate(String input) {
+    return _isNumeric(input) ? null : error;
+  }
+
+  bool _isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+
+    if (double.tryParse(s) != null) {
+      return true;
+    }
+    if (int.tryParse(s) != null) {
+      return true;
+    }
+
+    return false;
   }
 }

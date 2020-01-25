@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:meta/meta.dart';
+
 import 'http_helper.dart';
 
 class ApiProvider {
@@ -25,6 +27,14 @@ class ApiProvider {
     return apiRequest(url, token: token, method: httpMethod.get);
   }
 
+  Future<String> waypointTriggerAction({
+    waypointId: String,
+    values: Map,
+  }) async {
+    final url = "$_baseUrl/play/waypoints/$waypointId/trigger_action/";
+    return apiRequest(url, token: token, params: values);
+  }
+
   Future<String> location({
     String teamId,
     double longitude,
@@ -35,11 +45,21 @@ class ApiProvider {
 
     Map map = {
       'location': {'lng': longitude, 'lat': latitude},
-      'located_at': DateTime.now().toUtc().toString(),
+      'located_at': DateTime.now().toIso8601String(),
       'accuracy': accuracy
     };
 
     return apiRequest(url, token: token, params: map);
+  }
+
+  Future<String> createMedia({@required Map values}) async {
+    final url = "$_baseUrl/media/";
+    return apiRequest(url, token: token, params: values);
+  }
+
+  Future<String> putMedia({@required String id, @required Map values}) async {
+    final url = "$_baseUrl/media/$id/";
+    return apiRequest(url, token: token, params: values);
   }
 }
 

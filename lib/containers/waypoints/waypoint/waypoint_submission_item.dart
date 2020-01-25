@@ -6,14 +6,21 @@ class WaypointSubmissionItem {
   final WaypointSubmission submission;
   final String answer;
   final String error;
+  final String media;
 
-  WaypointSubmissionItem({@required this.submission, this.answer, this.error});
+  WaypointSubmissionItem(
+      {@required this.submission, this.answer, this.media, this.error});
 
-  WaypointSubmissionItem copyWith(
-          {WaypointSubmission submission, String answer, Optional error}) =>
+  WaypointSubmissionItem copyWith({
+    WaypointSubmission submission,
+    String answer,
+    String media,
+    Optional error,
+  }) =>
       WaypointSubmissionItem(
         submission: submission ?? this.submission,
         answer: answer ?? this.answer,
+        media: media ?? this.media,
         error: error != null ? error.orNull : this.error,
       );
 

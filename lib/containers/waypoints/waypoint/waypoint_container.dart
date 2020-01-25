@@ -18,6 +18,10 @@ class WaypointContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
         converter: _ViewModel.fromStore,
+        onInit: (store) {
+          final waypointId = store.state.waypointState.waypoint.id;
+          store.dispatch(WaypointStarted(waypointId));
+        },
         distinct: true,
         builder: (BuildContext context, _ViewModel vm) {
           return Column(

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:tgg/containers/aws_uploader/aws_upload_state.dart';
 import 'package:tgg/containers/camera/camera_state.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
 import 'package:tgg/containers/waypoints/waypoints_state.dart';
@@ -9,7 +10,6 @@ import 'package:tgg/models/login_response.dart';
 import 'package:tgg/models/playthrough.dart';
 import 'package:tgg/redux_model/home_page_state.dart';
 import 'package:tgg/redux_model/login_state.dart';
-import 'package:tgg/redux_model/upload_files_state.dart';
 
 @immutable
 class AppState {
@@ -20,7 +20,7 @@ class AppState {
   final Timer postLocationTimer;
   final LoginState loginState;
   final HomePageState homePageState;
-  final UploadFilesState uploadFilesState;
+  final AwsUploadState uploadFilesState;
   final CameraState cameraState;
   final WaypointsState waypointsState;
   final WaypointState waypointState;
@@ -48,7 +48,7 @@ class AppState {
       postLocationTimer: null,
       loginState: null,
       homePageState: null,
-      uploadFilesState: UploadFilesState.initial(),
+      uploadFilesState: AwsUploadState.initial(),
       cameraState: CameraState(),
       waypointsState: WaypointsState.initial(),
       waypointState: null,

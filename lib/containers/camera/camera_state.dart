@@ -28,7 +28,7 @@ class CameraState {
   bool get showTakePhotoButton =>
       !isTakingPhoto && captureArgs?.mode == CameraCaptureMode.PHOTO;
 
-  bool get needTimer => !showTakePhotoButton;
+  bool get needTimer => captureArgs?.mode != CameraCaptureMode.PHOTO;
 
   bool get showStartRecordingButton =>
       (captureArgs?.mode != CameraCaptureMode.PHOTO) && !isRecordingVideo;
@@ -36,8 +36,11 @@ class CameraState {
   bool get showPauseRecordingButton =>
       isRecordingVideo && captureArgs?.mode == CameraCaptureMode.MULTI_VIDEO;
 
-  bool get showStopRecordingButton =>
-      (controller?.value?.isRecordingVideo ?? false);
+  bool get showStopRecordingButton{
+    if (captureArgs?.mode == CameraCaptureMode.PHOTO) return false;
+    if (files.length > 0) return true;
+    return false;
+  }
 
   bool get showSwitchCameraButton =>
       controller != null &&

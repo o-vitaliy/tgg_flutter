@@ -5,7 +5,7 @@ import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
 
 final waypointReducer = combineReducers<WaypointState>([
   new TypedReducer<WaypointState, WaypointInit>(_init),
-  new TypedReducer<WaypointState, WaypointUpdateAnswer>(_updateAnswer),
+  new TypedReducer<WaypointState, WaypointSaveAnswer>(_saveAnswer),
   new TypedReducer<WaypointState, WaypointShowError>(_showError),
 ]);
 
@@ -16,11 +16,12 @@ WaypointState _init(WaypointState state, action) {
   );
 }
 
-WaypointState _updateAnswer(WaypointState state, action) {
-  final a = action as WaypointUpdateAnswer;
+WaypointState _saveAnswer(WaypointState state, action) {
+  final a = action as WaypointSaveAnswer;
   final item = state.items.where((i) => i.submission == a.submission).first;
   final items = state.items.where((i) => i.submission != a.submission).toList()
-    ..add(item.copyWith(answer: a.answer, error: Optional.absent()));
+    ..add(item.copyWith(
+        answer: a.answer, media: a.media, error: Optional.absent()));
   return state.copyWith(items: items);
 }
 
