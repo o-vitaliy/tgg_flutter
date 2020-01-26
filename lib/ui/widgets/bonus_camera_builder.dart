@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tgg/containers/camera/camera_capture_mode.dart';
 import 'package:tgg/containers/camera/camera_container.dart';
 import 'package:tgg/ui/pages/pages.dart';
 

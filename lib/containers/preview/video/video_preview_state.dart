@@ -8,29 +8,32 @@ class VideoPreviewState {
 
   bool get initialized => controller != null;
 
-  bool get isPlaying => initialized && controller.value.isPlaying;
+  final bool isPlaying;
 
   final int playedTimes;
 
-  bool get firstTimePlayed => playedTimes >= 1;
+  bool get firstTimePlayed => playedTimes == 0;
 
-  VideoPreviewState({
+  VideoPreviewState._({
     @required this.controller,
     @required this.playedTimes,
+    @required this.isPlaying,
   });
 
   static VideoPreviewState initial() {
-    return VideoPreviewState(playedTimes: 0);
+    return VideoPreviewState._(
+        playedTimes: 0, controller: null, isPlaying: false);
   }
 
   VideoPreviewState copyWith({
     Optional<bool> initialized,
+    Optional<bool> isPlaying,
     VideoPlayerController controller,
     int playedTimes,
   }) {
-    return VideoPreviewState(
-      controller: controller ?? this.controller,
-      playedTimes: playedTimes ?? this.playedTimes,
-    );
+    return VideoPreviewState._(
+        controller: controller ?? this.controller,
+        playedTimes: playedTimes ?? this.playedTimes,
+        isPlaying: (controller ?? this.controller)?.value?.isPlaying ?? false);
   }
 }

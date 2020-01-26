@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
+import 'package:tgg/containers/camera/camera_capture_mode.dart';
 
-import 'camera/camera.dart';
 
 class ImagePreviewArguments {
   final String preview;

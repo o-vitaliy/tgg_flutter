@@ -22,9 +22,17 @@ main() {
       expect(insertId, isPositive);
     });
 
-    test("get after insert", () async {
+    test("get by path", () async {
       await dao.insert("mediaId", "path", "key");
       final mediaTableData = await dao.findByUrl("path");
+      expect(mediaTableData.mediaId, "mediaId");
+      expect(mediaTableData.fileUrl, "path");
+      expect(mediaTableData.uploaded, false);
+    });
+
+    test("get by key", () async {
+      await dao.insert("mediaId", "path", "key");
+      final mediaTableData = await dao.findByKey("key");
       expect(mediaTableData.mediaId, "mediaId");
       expect(mediaTableData.fileUrl, "path");
       expect(mediaTableData.uploaded, false);

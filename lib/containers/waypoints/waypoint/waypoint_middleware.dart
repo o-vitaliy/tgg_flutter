@@ -11,7 +11,7 @@ import 'package:tgg/redux_model/app_state.dart';
 
 List<Middleware<AppState>> createWaypointMiddleware() {
   return [
-    new TypedMiddleware<AppState, WaypointsCompletedLoadingAction>(
+    new TypedMiddleware<AppState, WaypointsSelectCurrentAction>(
         _initWaypoint()),
     new TypedMiddleware<AppState, WaypointSubmit>(_submit()),
     new TypedMiddleware<AppState, WaypointStarted>(_trackStarted()),
@@ -21,12 +21,16 @@ List<Middleware<AppState>> createWaypointMiddleware() {
 
 Middleware<AppState> _initWaypoint() {
   return (Store store, action, NextDispatcher next) async {
-    if (action is WaypointsCompletedLoadingAction) {
-      final waypoints = action.waypoints.first;
-      final items = waypoints.step.behavior.submissionType
-          .map((item) => WaypointSubmissionItem.initial(item))
-          .toList();
-      store.dispatch(WaypointInit(waypoints, items));
+    if (action is WaypointsSelectCurrentAction) {
+      if (action.waypoint != null) {
+        final waypoint = action.waypoint;
+        final items = waypoint.step.behavior.submissionType
+            .map((item) => WaypointSubmissionItem.initial(item))
+            .toList();
+        store.dispatch(WaypointInit(waypoint, items));
+      } else {
+        store.dispatch(WaypointRemoveAction());
+      }
     }
     next(action);
   };
@@ -46,13 +50,7 @@ Middleware<AppState> _submit() {
       });
 
       if (errors == 0) {
-        await waypointsRepo.submitAnswer(
-            waypoint.waypoint.id,
-            waypoint.items.map((i) => {
-                  i.submission.type: i.answer,
-                }),
-            waypoint.items.map((i) => i.media).where((i) => i != null));
-
+        await waypointsRepo.submitAnswer(waypoint.waypoint, waypoint.items);
         store.dispatch(WaypointsStartLoadAction());
       }
     }

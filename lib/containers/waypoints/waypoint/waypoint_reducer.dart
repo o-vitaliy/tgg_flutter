@@ -7,6 +7,7 @@ final waypointReducer = combineReducers<WaypointState>([
   new TypedReducer<WaypointState, WaypointInit>(_init),
   new TypedReducer<WaypointState, WaypointSaveAnswer>(_saveAnswer),
   new TypedReducer<WaypointState, WaypointShowError>(_showError),
+  new TypedReducer<WaypointState, WaypointRemoveAction>(_removeAction),
 ]);
 
 WaypointState _init(WaypointState state, action) {
@@ -31,4 +32,8 @@ WaypointState _showError(WaypointState state, action) {
   final items = state.items.where((i) => i.submission != a.submission).toList()
     ..add(item.copyWith(error: Optional.fromNullable(a.error)));
   return state.copyWith(items: items);
+}
+
+Null _removeAction(WaypointState state, action) {
+  return null;
 }

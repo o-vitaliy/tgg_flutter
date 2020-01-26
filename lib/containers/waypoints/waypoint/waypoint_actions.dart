@@ -9,8 +9,9 @@ class WaypointInit {
   WaypointInit(this.waypoint, this.items);
 }
 
+class WaypointRemoveAction {}
 
-class WaypointStarted{
+class WaypointStarted {
   final String waypointId;
 
   WaypointStarted(this.waypointId);

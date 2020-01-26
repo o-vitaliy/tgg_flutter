@@ -26,7 +26,7 @@ class VideoPreviewContainer extends StatelessWidget {
           return Scaffold(
               backgroundColor: Colors.black,
               body: SafeArea(
-                  child: vm.initialized
+                  child: !vm.initialized
                       ? LoadingIndicator()
                       : Stack(
                           children: <Widget>[
@@ -35,7 +35,6 @@ class VideoPreviewContainer extends StatelessWidget {
                           ],
                         )));
         });
-    ;
   }
 
   Widget buildPreview(_ViewModel vm) =>
@@ -124,10 +123,7 @@ class VideoPreviewContainer extends StatelessWidget {
           color: defaultBackground,
           child: Stack(
             children: <Widget>[
-              VideoProgressWidget(
-                vm.controller,
-                onComplete: () => {},
-              ),
+              VideoProgressWidget(vm.controller),
               Padding(
                   padding: EdgeInsets.only(left: 8, right: 8),
                   child: Align(
@@ -158,15 +154,15 @@ class _ViewModel {
   final Function(BuildContext context) submit;
 
   _ViewModel({
-    this.initialized,
-    this.isPlaying,
-    this.controller,
-    this.rotation,
-    this.firstTime,
-    this.play,
-    this.stop,
-    this.retake,
-    this.submit,
+    @required this.initialized,
+    @required this.isPlaying,
+    @required this.controller,
+    @required this.rotation,
+    @required this.firstTime,
+    @required this.play,
+    @required this.stop,
+    @required this.retake,
+    @required this.submit,
   });
 
   static _ViewModel fromStore(Store<PreviewState> store) {
@@ -175,6 +171,7 @@ class _ViewModel {
       initialized: state.videoPreviewState.initialized,
       isPlaying: state.videoPreviewState.isPlaying,
       controller: state.videoPreviewState.controller,
+      rotation: state.containerState.screenRotation,
       firstTime: state.videoPreviewState.firstTimePlayed,
       play: () => store.dispatch(PlayVideoAction()),
       stop: () => store.dispatch(StopVideoAction()),

@@ -7,9 +7,10 @@ import 'package:tgg/containers/camera/camera_actions.dart';
 import 'package:tgg/containers/camera/widgets/camera_torch_button.dart';
 import 'package:tgg/redux_model/app_state.dart';
 import 'package:tgg/ui/keys.dart';
-import 'package:tgg/ui/pages/camera/actionbutton/actionbutton.dart';
-import 'package:tgg/ui/pages/camera/camera_direction_switch_button.dart';
 import 'package:tgg/ui/widgets/base_square_icon_button.dart';
+
+import 'widgets/actionbutton.dart';
+import 'widgets/camera_direction_switch_button.dart';
 
 class CameraControls extends StatelessWidget {
   @override

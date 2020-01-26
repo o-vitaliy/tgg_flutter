@@ -1,5 +1,6 @@
 import 'package:tgg/models/waypoints/waypoint.dart';
 
+
 class WaypointsState {
   final bool isLoading;
   final List<Waypoint> activeWaypoints;
@@ -8,8 +9,7 @@ class WaypointsState {
 
   WaypointsState copyWith({
     bool isLoading,
-    List<Waypoint> activeWaypoints,
-    Waypoint currentWaypoint,
+    List<Waypoint> activeWaypoints
   }) =>
       WaypointsState(
         isLoading: isLoading != null ? isLoading : this.isLoading,

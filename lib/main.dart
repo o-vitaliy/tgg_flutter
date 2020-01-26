@@ -20,12 +20,12 @@ import 'package:tgg/redux_model/app_state.dart';
 
 import 'containers/aws_uploader/aws_upload_middleware.dart';
 import 'containers/camera/camera_container.dart';
+import 'containers/preview/preview_container.dart';
 import 'containers/waypoints/waypoint/waypoint_middleware.dart';
 import 'data/providers/remote_config.dart';
 import 'data/simple_bloc_delegate.dart';
 import 'ui/auth/login_page.dart';
 import 'ui/home.dart';
-import 'ui/pages/pages.dart';
 import 'ui/splash.dart';
 
 void main() {

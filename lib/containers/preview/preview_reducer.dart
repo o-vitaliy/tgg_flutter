@@ -1,19 +1,10 @@
-import 'package:quiver/core.dart';
-import 'package:redux/redux.dart';
+import 'package:tgg/containers/preview/preview_container_reducer.dart';
 
-import 'preview_actions.dart';
 import 'preview_state.dart';
+import 'video/video_preview_reducer.dart';
 
-final previewReducer = combineReducers<PreviewState>([
-  new TypedReducer<PreviewState, InitPreviewAction>(_initPreview),
-]);
-
-PreviewState _initPreview(PreviewState state, action) {
-  final args = (action as InitPreviewAction).args;
-  return state.copyWith(
-    initialized: Optional.of(true),
-    preview: args.preview,
-    isVideo: args.isVideo,
-    screenRotation: args.screenRotation,
-  );
+PreviewState previewReducer(PreviewState state, action) {
+  return PreviewState(
+      containerState: previewContainerReducer(state.containerState, action),
+      videoPreviewState: videoPreviewReducer(state.videoPreviewState, action));
 }

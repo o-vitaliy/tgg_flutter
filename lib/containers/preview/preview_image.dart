@@ -62,13 +62,16 @@ class _ViewModel {
   final Function(BuildContext context) retake;
   final Function(BuildContext context) submit;
 
-
-  _ViewModel({this.url, this.retake, this.submit, });
+  _ViewModel({
+    this.url,
+    this.retake,
+    this.submit,
+  });
 
   static _ViewModel fromStore(Store<PreviewState> store) {
     final state = store.state;
     return _ViewModel(
-      url: state.preview,
+      url: state.containerState.preview,
       retake: (BuildContext context) =>
           store.dispatch(RetakePreviewAction(context)),
       submit: (BuildContext context) =>

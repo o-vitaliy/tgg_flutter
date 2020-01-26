@@ -2,15 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:tgg/containers/preview/preview_actions.dart';
-import 'package:tgg/containers/preview/preview_middleware.dart';
-import 'package:tgg/containers/preview/preview_reducer.dart';
-import 'package:tgg/containers/preview/video/video_preview_container.dart';
 import 'package:tgg/ui/keys.dart';
 import 'package:tgg/ui/pages/navigation_arguments.dart';
 
+import 'preview_actions.dart';
+import 'preview_container_middleware.dart';
 import 'preview_image.dart';
+import 'preview_reducer.dart';
 import 'preview_state.dart';
+import 'video/video_preview_container.dart';
+import 'video/video_preview_middleware.dart';
 
 const Color defaultBackground = Colors.black38;
 const double rowHeight = 48;
@@ -22,7 +23,9 @@ class PreviewPage extends StatelessWidget {
   final store = new Store<PreviewState>(
     previewReducer,
     initialState: PreviewState.initial(),
-    middleware: []..addAll(createPreviewStateMiddleware()),
+    middleware: []
+      ..addAll(createPreviewContainerMiddleware())
+      ..addAll(createVideoPreviewMiddleware()),
   );
 
   @override
@@ -71,16 +74,18 @@ class PreviewContainer extends StatelessWidget {
   }
 }
 
+@immutable
 class _ViewModel {
   final bool initialized;
   final bool isVideo;
 
-  _ViewModel({this.initialized, this.isVideo});
+  _ViewModel({@required this.initialized, @required this.isVideo});
 
   static _ViewModel fromStore(Store<PreviewState> store) {
-    final state = store.state;
+    final state = store.state.containerState;
     return _ViewModel(
       initialized: state.initialized,
+      isVideo: state.isVideo,
     );
   }
 

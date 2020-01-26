@@ -1,8 +1,9 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:tgg/containers/camera/camera_container.dart';
-import 'package:tgg/ui/pages/camera/camera.dart';
 import 'package:tgg/ui/pages/navigation_arguments.dart';
+
+import 'camera_capture_mode.dart';
 
 class CameraState {
   final List<CameraDescription> cameras;
@@ -36,7 +37,7 @@ class CameraState {
   bool get showPauseRecordingButton =>
       isRecordingVideo && captureArgs?.mode == CameraCaptureMode.MULTI_VIDEO;
 
-  bool get showStopRecordingButton{
+  bool get showStopRecordingButton {
     if (captureArgs?.mode == CameraCaptureMode.PHOTO) return false;
     if (files.length > 0) return true;
     return false;

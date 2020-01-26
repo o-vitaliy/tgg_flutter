@@ -59,7 +59,7 @@ class ApiProvider {
 
   Future<String> putMedia({@required String id, @required Map values}) async {
     final url = "$_baseUrl/media/$id/";
-    return apiRequest(url, token: token, params: values);
+    return apiRequest(url, token: token, params: values, method: httpMethod.put);
   }
 }
 

@@ -1,13 +1,13 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
-import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/containers/camera/camera_actions.dart';
 import 'package:tgg/containers/camera/camera_state.dart';
 import 'package:tgg/data/video_data_repository.dart';
 import 'package:tgg/redux_model/app_state.dart';
-import 'package:tgg/ui/pages/camera/camera_bloc.dart';
 import 'package:tgg/ui/pages/navigation_arguments.dart';
-import 'package:tgg/ui/pages/preview/preview.dart';
 
 List<Middleware<AppState>> createCameraMiddleware() {
   final initCamera = _createInitCameraMiddleware();
@@ -87,7 +87,7 @@ Middleware<AppState> _createPauseRecordingMiddleware() {
   return (Store store, action, NextDispatcher next) async {
     if (action is PauseRecordingAction) {
       final CameraState state = store.state.cameraState;
-      await state.controller.stopVideoRecording();
+      await state.controller.safeStopVideoRecording();
     }
     next(action);
   };
@@ -113,8 +113,7 @@ Middleware<AppState> _createStopRecordingMiddleware() {
         state.screenOrientation,
       );
 
-      store.dispatch(
-          NavigateToAction.replace(PreviewPage.routeName, arguments: args));
+      state.key.currentState.showPreview(args, store);
       store.dispatch(ProcessingAction(false));
     }
     next(action);
@@ -161,3 +160,19 @@ extension SafeStopController on CameraController {
     return Future.value();
   }
 }
+
+Future<String> getImageTmpFile() {
+  return getTemporaryDirectory()
+      .then((extDir) => '${extDir.path}/images')
+      .then((dirPath) => Directory(dirPath).create(recursive: true))
+      .then((dir) => '${dir.path}/${timestamp()}.jpg');
+}
+
+Future<String> getVideoTmpFile() {
+  return getTemporaryDirectory()
+      .then((extDir) => '${extDir.path}/images')
+      .then((dirPath) => Directory(dirPath).create(recursive: true))
+      .then((dir) => '${dir.path}/${timestamp()}.mp4');
+}
+
+String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();

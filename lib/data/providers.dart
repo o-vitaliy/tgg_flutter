@@ -30,6 +30,7 @@ MediaRepo mediaRepo = MediaRepo(apiProvider: apiProvider, daoMedia: daoMedia);
 
 WaypointsRepo waypointsRepo = WaypointsRepo(
   apiProvider: apiProvider,
+  daoMedia: daoMedia,
   daoSubmission: daoSubmission,
   locationProvider: locationProvider,
 );

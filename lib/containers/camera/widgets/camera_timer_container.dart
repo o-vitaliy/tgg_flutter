@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -22,34 +23,30 @@ class _CameraTimerContainerState extends State<CameraTimerContainer> {
   StreamSubscription _subscription;
 
   @override
-  void initState() {
-    super.initState();
-    _subscription = StoreProvider.of<AppState>(context, listen: false)
-        .onChange
-        .map((s) => s.cameraState)
-        .map((s) => s.isRecordingVideo)
-        .distinct()
-        .listen((isRecordingVideo) {
-      if (isRecordingVideo)
-        countDownTimerKey.currentState.startTimer();
-      else
-        countDownTimerKey.currentState.stopTimer();
-    });
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
-    _subscription?.cancel();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
         converter: _ViewModel.fromStore,
         distinct: true,
+        onInit: (state) {
+          _subscription = StoreProvider.of<AppState>(context, listen: false)
+              .onChange
+              .map((s) => s.cameraState)
+              .map((s) => s.isRecordingVideo)
+              .distinct()
+              .listen((isRecordingVideo) {
+            if (isRecordingVideo)
+              countDownTimerKey.currentState.startTimer();
+            else
+              countDownTimerKey.currentState.stopTimer();
+          });
+        },
+        onDispose: (state) {
+          _subscription?.cancel();
+          _subscription = null;
+        },
         builder: (BuildContext context, _ViewModel vm) {
           return CountDownTimer(
+            vm.timerDuration,
             vm.timerDuration,
             key: countDownTimerKey,
             finishedCallback: vm.stopRecording,
@@ -60,15 +57,28 @@ class _CameraTimerContainerState extends State<CameraTimerContainer> {
 
 class _ViewModel {
   final Duration timerDuration;
+  final CameraController controller;
   final Function stopRecording;
 
-  _ViewModel({this.timerDuration, this.stopRecording});
+  _ViewModel({this.timerDuration, this.controller, this.stopRecording});
 
   static _ViewModel fromStore(Store<AppState> store) {
     final CameraState state = store.state.cameraState;
     return _ViewModel(
       timerDuration: state.timerDuration,
+      controller: state.controller,
       stopRecording: () => store.dispatch(StopRecordingAction()),
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _ViewModel &&
+          runtimeType == other.runtimeType &&
+          timerDuration == other.timerDuration &&
+          controller == other.controller;
+
+  @override
+  int get hashCode => timerDuration.hashCode ^ controller.hashCode;
 }

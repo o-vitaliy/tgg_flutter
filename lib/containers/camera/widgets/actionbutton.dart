@@ -1,57 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:meta/meta.dart';
 import 'package:tgg/ui/widgets/base_square_icon_button.dart';
-
-import 'bloc.dart';
-
-class ActionButton extends StatelessWidget {
-  final VoidCallback onTakePhotoClick;
-  final VoidCallback onRecordClick;
-  final VoidCallback onPauseClick;
-  final VoidCallback onStopClick;
-
-  const ActionButton(
-      {Key key,
-      @required this.onTakePhotoClick,
-      @required this.onRecordClick,
-      @required this.onPauseClick,
-      @required this.onStopClick})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<ActionButtonBloc>(context);
-    return BlocBuilder<ActionButtonBloc, ActionButtonState>(
-      bloc: bloc,
-      builder: (context, state) {
-        if (state is TakePhotoActionButtonState) {
-          return TakePhotoButton(
-            onTakePhotoClick: onTakePhotoClick,
-          );
-        }
-        if (state is RecordActionButtonState) {
-          if (state.isPausable) {
-            return RecordStartPauseButton(
-              isRecording: state.isRecording,
-              onRecordClick: onRecordClick,
-              onPauseClick: onPauseClick,
-            );
-          } else {
-            return RecordStartStopButton(
-              isRecording: state.isRecording,
-              onRecordClick: onRecordClick,
-              onStopClick: onStopClick,
-            );
-          }
-        }
-
-        return SizedBox.shrink();
-      },
-    );
-  }
-}
 
 class RecordStartStopButton extends StatelessWidget {
   final bool isRecording;

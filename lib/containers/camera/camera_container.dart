@@ -40,13 +40,13 @@ class CameraContainerState extends State<CameraContainer> {
             return Stack(children: <Widget>[
               CameraPreviewView(),
               !vm.processingResult ? CameraControls() : LoadingIndicator(),
-              !vm.needTimer
-                  ? SizedBox.shrink()
-                  : SafeArea(
+              vm.needTimer && !vm.processingResult
+                  ? SafeArea(
                       child: Container(
                       alignment: Alignment.topCenter,
                       child: CameraTimerContainer(),
                     ))
+                  : SizedBox.shrink()
             ]);
           }
         });

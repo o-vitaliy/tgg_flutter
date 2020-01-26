@@ -171,7 +171,7 @@ class _VideoPreviewState extends State<VideoPreview> {
             children: <Widget>[
               VideoProgressWidget(
                 controller,
-                onComplete: () => _bloc.dispatch(ResetPreviewEvent()),
+              //  onComplete: () => _bloc.dispatch(ResetPreviewEvent()),
               ),
               Padding(
                   padding: EdgeInsets.only(left: 8, right: 8),

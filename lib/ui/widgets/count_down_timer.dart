@@ -10,12 +10,14 @@ typedef TimerFinishedCallback = void Function();
 
 class CountDownTimer extends StatefulWidget {
   final Duration maxValue;
+  final Duration initialValue;
   final bool clockwise;
   final double startAngle;
   final TimerFinishedCallback finishedCallback;
   final Color color;
 
   const CountDownTimer(
+    this.initialValue,
     this.maxValue, {
     Key key,
     this.clockwise = true,
@@ -26,7 +28,13 @@ class CountDownTimer extends StatefulWidget {
 
   @override
   State createState() => CountDownTimerState(
-      maxValue, clockwise, startAngle, color, finishedCallback);
+        maxValue,
+        initialValue,
+        clockwise,
+        startAngle,
+        color,
+        finishedCallback,
+      );
 }
 
 class CountDownTimerState extends State<CountDownTimer> {
@@ -38,15 +46,18 @@ class CountDownTimerState extends State<CountDownTimer> {
   final millisFormat = NumberFormat("000");
 
   Duration currentValue;
+
   StreamSubscription _subscription;
 
-  CountDownTimerState(this.maxValue, this._clockwise, this._startAngle,
-      this._color, this._finishedCallback);
-
-  @override
-  void initState() {
-    super.initState();
-    currentValue = maxValue;
+  CountDownTimerState(
+    this.maxValue,
+    Duration initialValue,
+    this._clockwise,
+    this._startAngle,
+    this._color,
+    this._finishedCallback,
+  ) {
+    currentValue = initialValue;
   }
 
   @override

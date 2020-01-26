@@ -18,6 +18,12 @@ class DaoMedia {
         mode: InsertMode.insertOrAbort);
   }
 
+  Future<MediaTableData> findByKey(String key) {
+    return (_appDatabase.select(_appDatabase.mediaTable)
+          ..where((t) => t.key.equals(key)))
+        .getSingle();
+  }
+
   Future<MediaTableData> findByUrl(String url) {
     return (_appDatabase.select(_appDatabase.mediaTable)
           ..where((t) => t.fileUrl.equals(url)))
