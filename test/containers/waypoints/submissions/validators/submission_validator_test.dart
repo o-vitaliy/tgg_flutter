@@ -15,11 +15,11 @@ main() {
     });
 
     test("empty text  - should be error", () async {
-      final result = validate(SubmissionType.text, null);
+      final result = validate(SubmissionType.text, null, null);
       expect(result, isNotEmpty);
     });
     test("not empty text  - should  not be error", () async {
-      final result = validate(SubmissionType.text, "value");
+      final result = validate(SubmissionType.text, "value", null);
       expect(result, null);
     });
 

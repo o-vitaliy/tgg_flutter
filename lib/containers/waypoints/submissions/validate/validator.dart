@@ -2,7 +2,7 @@ const defaultEmptyError = "Field shoud not be empty";
 const defaultEmailError = "Invalid email";
 
 abstract class Validator {
-  String validate(String input);
+  String validate(input, {variants});
 }
 
 class CompositeValidator extends Validator {
@@ -12,9 +12,9 @@ class CompositeValidator extends Validator {
   CompositeValidator(this.separator, this.subValidators);
 
   @override
-  String validate(String input, {variants}) {
+  String validate(input, {variants}) {
     List<String> errors = subValidators
-        .map((v) => v.validate(input))
+        .map((v) => v.validate(input, variants: variants))
         .where((v) => v != null)
         .toList();
 
@@ -28,7 +28,7 @@ class EmptyValidator extends Validator {
   EmptyValidator({String error}) : this.error = error ?? defaultEmptyError;
 
   @override
-  String validate(String input) {
+  String validate(input, {variants}) {
     return input == null || input.isEmpty ? error : null;
   }
 }
@@ -39,7 +39,7 @@ class EmailValidator extends Validator {
   EmailValidator({String error}) : this.error = error ?? defaultEmailError;
 
   @override
-  String validate(String input) {
+  String validate(input, {variants}) {
     return input != null &&
             RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                 .hasMatch(input)
@@ -54,7 +54,7 @@ class NumberValidator extends Validator {
   NumberValidator({String error}) : this.error = error ?? defaultEmailError;
 
   @override
-  String validate(String input) {
+  String validate(input, {variants}) {
     return _isNumeric(input) ? null : error;
   }
 

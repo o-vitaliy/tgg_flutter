@@ -44,7 +44,7 @@ Middleware<AppState> _submit() {
       int errors = 0;
       waypoint.items.forEach((item) {
         final type = SubmissionTypeHelper.fromString(item.submission.type);
-        String error = validate(type, item.answer);
+        String error = validate(type, item.answer, item.submission.choices);
         if (error != null) errors++;
         store.dispatch(WaypointShowError(error, item.submission));
       });
@@ -70,7 +70,7 @@ Middleware<AppState> _trackStarted() {
 Middleware<AppState> _updateAnswer() {
   return (Store store, action, NextDispatcher next) async {
     if (action is WaypointUpdateAnswer) {
-      String answer = action.answer;
+      dynamic answer = action.answer;
       String media;
       if (SubmissionTypeHelper.isMediaFromString(action.submission.type)) {
         final AppState state = store.state;

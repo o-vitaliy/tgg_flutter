@@ -54,8 +54,14 @@ main() {
     test("validate сhoice ", () async {
       final validator = ChoiceValidator(error: invalidChoiceError);
       expect(validator.validate(null, variants: mocked), invalidChoiceError);
-      expect(validator.validate("first", variants: mocked), invalidChoiceError);
-      expect(validator.validate("correct", variants: mocked), isNull);
+      expect(
+          validator.validate(["first"], variants: mocked), invalidChoiceError);
+      expect(validator.validate(["correct"], variants: mocked),
+          invalidChoiceError);
+      expect(
+          validator.validate(["first", "correct"], variants: mocked), isNull);
+      expect(
+          validator.validate(["correct", "first"], variants: mocked), isNull);
     });
   });
 }

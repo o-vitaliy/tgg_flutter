@@ -4,7 +4,7 @@ import 'package:tgg/models/waypoints/waypoint_submission.dart';
 
 class WaypointSubmissionItem {
   final WaypointSubmission submission;
-  final String answer;
+  final answer;
   final String error;
   final String media;
 
@@ -13,7 +13,7 @@ class WaypointSubmissionItem {
 
   WaypointSubmissionItem copyWith({
     WaypointSubmission submission,
-    String answer,
+    answer,
     String media,
     Optional error,
   }) =>

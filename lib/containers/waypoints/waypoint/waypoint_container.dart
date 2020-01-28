@@ -55,7 +55,14 @@ class _ViewModel {
         final OnValueChange onChange = (value) {
           store.dispatch(WaypointUpdateAnswer(value, item.submission));
         };
-        return build(type, answer, error, onChange, onSubmit);
+        return build(
+          type,
+          error,
+          onChange,
+          onSubmit,
+          value: answer,
+          variants: item.submission.choices,
+        );
       });
     };
     return _ViewModel(

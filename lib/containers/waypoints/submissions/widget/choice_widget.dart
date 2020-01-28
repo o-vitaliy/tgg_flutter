@@ -6,16 +6,15 @@ class ChoiceWidget extends ValueWidget {
   final List<SubmissionChoice> choices;
 
   ChoiceWidget(OnValueChange onValueChange, OnSubmit onSubmit,
-      String initialValue, String error, this.choices)
-      : super(onValueChange, onSubmit, initialValue, error);
+      List<String> initialValue, String error, this.choices)
+      : super(onValueChange, onSubmit, initialValue ?? List<String>.of([]),
+            error);
 
   @override
   State createState() => _ChoiceInputState();
 }
 
 class _ChoiceInputState extends State<ChoiceWidget> {
-  final controller = TextEditingController();
-
   List<SubmissionChoice> get choices => widget.choices;
 
   OnValueChange get onValueChange => widget.onValueChange;
@@ -24,34 +23,29 @@ class _ChoiceInputState extends State<ChoiceWidget> {
 
   String get error => widget.error;
 
-  String get initialValue => widget.initialValue;
-
-  @override
-  void initState() {
-    super.initState();
-    controller.text = initialValue;
-    controller.addListener(() {
-      onValueChange(controller.text);
-    });
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+  List<String> get initialValue => widget.initialValue;
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: List<Widget>.of(choices.map((choice) {
-      return RadioListTile<String>(
+    return Column(
+        children: List<Widget>.of(choices.map((choice) {
+      return CheckboxListTile(
+        key: ValueKey(choice.value),
+        value: initialValue.contains(choice.value),
         title: Text(choice.value),
-        value: choice.value,
-        groupValue: initialValue,
-        onChanged: (String value) {
-          onValueChange(value);
+        onChanged: (selected) {
+          if (selected)
+            initialValue.add(choice.value);
+          else
+            initialValue.remove(choice.value);
+          onValueChange(initialValue);
         },
       );
-    })));
+    }))
+          ..add(Text(error ?? ""))
+          ..add(RaisedButton(
+            child: const Text("Go!"),
+            onPressed: onSubmit,
+          )));
   }
 }

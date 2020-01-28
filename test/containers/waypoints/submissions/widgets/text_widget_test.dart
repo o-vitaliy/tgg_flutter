@@ -14,8 +14,8 @@ void main() {
       (WidgetTester tester) async {
     String value;
 
-    await tester.pumpWidget(MaterialWrapper(
-        (c) => build(SubmissionType.text, null, null, (newValue) {
+    await tester.pumpWidget(
+        MaterialWrapper((c) => build(SubmissionType.text, null, (newValue) {
               value = newValue;
             }, () {})));
 
@@ -28,8 +28,8 @@ void main() {
   testWidgets('TextField clicked button', (WidgetTester tester) async {
     bool clicked;
 
-    await tester.pumpWidget(MaterialWrapper(
-        (c) => build(SubmissionType.text, null, null, (_) {}, () {
+    await tester.pumpWidget(
+        MaterialWrapper((c) => build(SubmissionType.text, null, (_) {}, () {
               clicked = true;
             })));
 

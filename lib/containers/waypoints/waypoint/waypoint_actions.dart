@@ -18,14 +18,14 @@ class WaypointStarted {
 }
 
 class WaypointUpdateAnswer {
-  final String answer;
+  final answer;
   final WaypointSubmission submission;
 
   WaypointUpdateAnswer(this.answer, this.submission);
 }
 
 class WaypointSaveAnswer {
-  final String answer;
+  final answer;
   final WaypointSubmission submission;
   final String media;
 

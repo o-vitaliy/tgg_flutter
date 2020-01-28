@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:tgg/models/waypoints/submission_choice.dart';
 
 final _mockedJson =
-    """[{"text":"first","value":false},{"text":"second","value":false},{"text":"correct","value":true},{"text":"last","value":false}]""";
+    """[{"text":"first","value":true},{"text":"second","value":false},{"text":"correct","value":true},{"text":"last","value":false}]""";
 
 List<SubmissionChoice> get mocked {
   final map = json.decode(_mockedJson);
@@ -29,7 +29,7 @@ main() {
     });
 
     test("corrct answers is third", () {
-      expect(mocked.indexWhere((it) => it.correct), 2);
+      expect(mocked.indexWhere((it) => it.correct), 0);
     });
   });
 }
