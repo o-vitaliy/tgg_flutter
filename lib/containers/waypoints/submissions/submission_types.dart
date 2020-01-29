@@ -1,4 +1,4 @@
-enum SubmissionType { text, photo, number, choice, movie }
+enum SubmissionType { text, photo, number, choice, movie , checkboxes}
 
 class SubmissionTypeHelper {
   static SubmissionType fromString(String value) {
@@ -15,6 +15,7 @@ class SubmissionTypeHelper {
       case SubmissionType.text:
       case SubmissionType.number:
       case SubmissionType.choice:
+      case SubmissionType.checkboxes:
         return false;
 
       default:

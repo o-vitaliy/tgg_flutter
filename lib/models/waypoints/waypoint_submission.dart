@@ -5,13 +5,15 @@ class WaypointSubmission {
   final String type;
   final String defaultPlaceholder;
   final String placeholder;
-  final List<SubmissionChoice> choices;
+  final choices;
+  final List<String> variants;
 
   WaypointSubmission._({
     this.type,
     this.defaultPlaceholder,
     this.placeholder,
     this.choices,
+    this.variants,
   });
 
   static List<WaypointSubmission> from(dynamic map, {step}) {
@@ -19,7 +21,7 @@ class WaypointSubmission {
     if (map is Map) {
       result.add(WaypointSubmission._fromMap(map, step: step));
     } else if (map is String) {
-      result.add(WaypointSubmission._fromString(map));
+      result.add(WaypointSubmission._fromString(map, step: step));
     } else if (map is List) {
       result.addAll(map.expand((m) => WaypointSubmission.from(m, step: step)));
     }
@@ -28,16 +30,22 @@ class WaypointSubmission {
 
   static WaypointSubmission _fromMap(Map<String, dynamic> map, {step}) {
     return WaypointSubmission._(
-        type: map["type"],
-        defaultPlaceholder: map["default_placeholder"],
-        placeholder: map["placeholder"],
-        choices: SubmissionChoice.from(getAt(step, map["choices"])));
+      type: map["type"],
+      defaultPlaceholder: map["default_placeholder"],
+      placeholder: map["placeholder"],
+      choices: SubmissionChoice.from(getAt(step, map["choices"])) ??
+          _getTextVariants(step),
+    );
   }
 
-  static WaypointSubmission _fromString(String type) {
-    return WaypointSubmission._(
-      type: type,
-    );
+  static WaypointSubmission _fromString(String type, {step}) {
+    return WaypointSubmission._(type: type, choices: _getTextVariants(step));
+  }
+
+  static List<String> _getTextVariants(step) {
+    final variants =
+        getAt(step, "content.correct")?.split(",")?.map((v) => v.trim());
+    return variants != null ? List<String>.from(variants) : null;
   }
 
   @override

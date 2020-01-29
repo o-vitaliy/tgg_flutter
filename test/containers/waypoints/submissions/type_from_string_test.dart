@@ -15,6 +15,10 @@ main() {
     test("choice", () async {
       expect(SubmissionTypeHelper.fromString("choice"), SubmissionType.choice);
     });
+    test("choice", () async {
+      expect(SubmissionTypeHelper.fromString("checkboxes"),
+          SubmissionType.checkboxes);
+    });
     test("movie", () async {
       expect(SubmissionTypeHelper.fromString("movie"), SubmissionType.movie);
     });
@@ -33,13 +37,16 @@ main() {
     test("choice", () async {
       expect(SubmissionTypeHelper.isMediaFromString("choice"), false);
     });
+    test("checkboxes", () async {
+      expect(SubmissionTypeHelper.isMediaFromString("checkboxes"), false);
+    });
     test("movie", () async {
       expect(SubmissionTypeHelper.isMediaFromString("movie"), true);
     });
   });
 
   group("is_media", () {
-    test("check dosn't fail check all values", () async {
+    test("checks all types are covered ", () async {
       SubmissionType.values
           .forEach((type) => SubmissionTypeHelper.isMedia(type));
     });

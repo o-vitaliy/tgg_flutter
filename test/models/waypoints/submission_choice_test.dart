@@ -6,7 +6,7 @@ import 'package:tgg/models/waypoints/submission_choice.dart';
 final _mockedJson =
     """[{"text":"first","value":true},{"text":"second","value":false},{"text":"correct","value":true},{"text":"last","value":false}]""";
 
-List<SubmissionChoice> get mocked {
+List<SubmissionChoice> get mockedChoices {
   final map = json.decode(_mockedJson);
   return SubmissionChoice.from(map);
 }
@@ -14,22 +14,22 @@ List<SubmissionChoice> get mocked {
 main() {
   group("parse choises", () {
     test("test parsed without crash", () {
-      expect(mocked, isNotNull);
+      expect(mockedChoices, isNotNull);
     });
 
     test("check lenght", () {
-      expect(mocked.length, 4);
+      expect(mockedChoices.length, 4);
     });
     test("has correct answer", () {
-      expect(mocked.any((it) => it.correct), true);
+      expect(mockedChoices.any((it) => it.correct), true);
     });
 
     test("not all answers are correct", () {
-      expect(mocked.every((it) => it.correct), false);
+      expect(mockedChoices.every((it) => it.correct), false);
     });
 
     test("corrct answers is third", () {
-      expect(mocked.indexWhere((it) => it.correct), 0);
+      expect(mockedChoices.indexWhere((it) => it.correct), 0);
     });
   });
 }

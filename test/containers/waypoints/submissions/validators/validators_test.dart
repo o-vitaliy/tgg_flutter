@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tgg/containers/waypoints/submissions/validate/choice_validator.dart';
+import 'package:tgg/containers/waypoints/submissions/validate/text_validator.dart';
 import 'package:tgg/containers/waypoints/submissions/validate/validator.dart';
+import 'package:tgg/containers/waypoints/submissions/validate/variant_validator.dart';
 
 import '../../../../models/waypoints/submission_choice_test.dart';
 
@@ -51,17 +53,76 @@ main() {
       expect(validator.validate("111."), null);
     });
 
-    test("validate сhoice ", () async {
-      final validator = ChoiceValidator(error: invalidChoiceError);
-      expect(validator.validate(null, variants: mocked), invalidChoiceError);
-      expect(
-          validator.validate(["first"], variants: mocked), invalidChoiceError);
-      expect(validator.validate(["correct"], variants: mocked),
+    test("validate all сhoices checked ", () async {
+      final validator = CheckboxesValidator(error: invalidChoiceError);
+      expect(validator.validate(null, variants: mockedChoices),
           invalidChoiceError);
+      expect(validator.validate(["first"], variants: mockedChoices),
+          invalidChoiceError);
+      expect(validator.validate(["correct"], variants: mockedChoices),
+          invalidChoiceError);
+      expect(validator.validate(["first", "correct"], variants: mockedChoices),
+          isNull);
+      expect(validator.validate(["correct", "first"], variants: mockedChoices),
+          isNull);
+    });
+
+    test("validate radio", () async {
+      final validator = RadioValidator(error: invalidChoiceError);
+      expect(validator.validate(null, variants: mockedChoices),
+          invalidChoiceError);
+      expect(validator.validate("first", variants: mockedChoices), isNull);
+      expect(validator.validate("correct", variants: mockedChoices), isNull);
+      expect(validator.validate("second", variants: mockedChoices),
+          invalidChoiceError);
+      expect(validator.validate("last", variants: mockedChoices),
+          invalidChoiceError);
+    });
+
+    test("validate variant ", () async {
+      final validator = VariantValidator(error: invalidVariantError);
+      final variants = ["Hello", "hello world"];
+      expect(validator.validate(null, variants: variants), invalidVariantError);
+
+      //short word one typo -> error
       expect(
-          validator.validate(["first", "correct"], variants: mocked), isNull);
+          validator.validate("Helo", variants: variants), invalidVariantError);
+
+      //long word two typos -> error
+      expect(validator.validate("hallo warld", variants: variants),
+          invalidVariantError);
+
+      //short word no typo -> ok
+      expect(validator.validate("hello", variants: variants), null);
+
+      //long word no typo -> ok
+      expect(validator.validate("hello world", variants: variants), null);
+      //long word one typo -> ok
+      expect(validator.validate("hello world", variants: variants), null);
+    });
+    test("validate text ", () async {
+      final validator = TextValidator(
+          emptyTextError: emptyTextError, invalidError: invalidVariantError);
+      final variants = ["Hello", "hello world"];
+
+      expect(validator.validate(null, variants: null), emptyTextError);
+      expect(validator.validate("value", variants: null), null);
+
+      //short word one typo -> error
       expect(
-          validator.validate(["correct", "first"], variants: mocked), isNull);
+          validator.validate("Helo", variants: variants), invalidVariantError);
+
+      //long word two typos -> error
+      expect(validator.validate("hallo warld", variants: variants),
+          invalidVariantError);
+
+      //short word no typo -> ok
+      expect(validator.validate("hello", variants: variants), null);
+
+      //long word no typo -> ok
+      expect(validator.validate("hello world", variants: variants), null);
+      //long word one typo -> ok
+      expect(validator.validate("hello world", variants: variants), null);
     });
   });
 }
@@ -70,3 +131,4 @@ const emptyTextError = "emptyTextError";
 const invalidEmailError = "invalidEmailError";
 const invalidNumberError = "invalidNumberError";
 const invalidChoiceError = "invalidChoiceError";
+const invalidVariantError = "invalidVariantError";

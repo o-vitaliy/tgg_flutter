@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/value_widget.dart';
 import 'package:tgg/models/waypoints/submission_choice.dart';
 
-class ChoiceWidget extends ValueWidget {
+class CheckboxWidget extends ValueWidget {
   final List<SubmissionChoice> choices;
 
-  ChoiceWidget(OnValueChange onValueChange, OnSubmit onSubmit,
+  CheckboxWidget(OnValueChange onValueChange, OnSubmit onSubmit,
       List<String> initialValue, String error, this.choices)
       : super(onValueChange, onSubmit, initialValue ?? List<String>.of([]),
             error);
@@ -14,7 +14,7 @@ class ChoiceWidget extends ValueWidget {
   State createState() => _ChoiceInputState();
 }
 
-class _ChoiceInputState extends State<ChoiceWidget> {
+class _ChoiceInputState extends State<CheckboxWidget> {
   List<SubmissionChoice> get choices => widget.choices;
 
   OnValueChange get onValueChange => widget.onValueChange;

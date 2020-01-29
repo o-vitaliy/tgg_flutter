@@ -3,12 +3,13 @@ import 'package:tgg/models/waypoints/submission_choice.dart';
 
 import 'validator.dart';
 
-const defaultChoiceError = "Field shoud not be empty";
+const defaultChoiceError = "Incorrect value";
 
-class ChoiceValidator extends Validator {
+class CheckboxesValidator extends Validator {
   final String error;
 
-  ChoiceValidator({String error}) : this.error = error ?? defaultChoiceError;
+  CheckboxesValidator({String error})
+      : this.error = error ?? defaultChoiceError;
 
   @override
   String validate(input, {variants}) {
@@ -22,5 +23,21 @@ class ChoiceValidator extends Validator {
     correctChoices.sort(comparator);
 
     return listsEqual(result, correctChoices) ? null : error;
+  }
+}
+
+class RadioValidator extends Validator {
+  final String error;
+
+  RadioValidator({String error}) : this.error = error ?? defaultChoiceError;
+
+  @override
+  String validate(input, {variants}) {
+    final List<String> correctChoices = List<SubmissionChoice>.of(variants)
+        .where((c) => c.correct)
+        .map((c) => c.value)
+        .toList();
+
+    return input != null && correctChoices.contains(input) ? null : error;
   }
 }

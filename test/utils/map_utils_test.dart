@@ -31,5 +31,10 @@ main() {
     test("getAt for null map", () {
       expect(getAt(null, "content.choices"), isNull);
     });
+
+    test("getAt for verification text", () {
+      final map = json.decode(mockedVerifiedText);
+      expect(getAt(map, "content.correct"), "A, a");
+    });
   });
 }

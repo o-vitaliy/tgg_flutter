@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tgg/containers/waypoints/submissions/submission_types.dart';
-import 'package:tgg/containers/waypoints/submissions/widget/choice_widget.dart';
+import 'package:tgg/containers/waypoints/submissions/widget/checkbox_widget.dart';
+import 'package:tgg/containers/waypoints/submissions/widget/radio_widget.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/submissions_builder.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/take_photo_widget.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/take_video_widget.dart';
@@ -26,11 +27,15 @@ main() {
 
     test("choice", () async {
       final component = build(SubmissionType.choice, null, (_) {}, () {});
-      expect(component, isInstanceOf<ChoiceWidget>());
+      expect(component, isInstanceOf<RadioWidget>());
     });
     test("movie", () async {
       final component = build(SubmissionType.movie, null, (_) {}, () {});
       expect(component, isInstanceOf<TakeVideoWidget>());
+    });
+    test("checkboxes", () async {
+      final component = build(SubmissionType.checkboxes, null, (_) {}, () {});
+      expect(component, isInstanceOf<CheckboxWidget>());
     });
   });
 }
