@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tgg/containers/waypoints/submissions/submission_types.dart';
+import 'package:tgg/containers/waypoints/submissions/widget/camera_widget.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/checkbox_widget.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/radio_widget.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/submissions_builder.dart';
@@ -36,6 +37,10 @@ main() {
     test("checkboxes", () async {
       final component = build(SubmissionType.checkboxes, null, (_) {}, () {});
       expect(component, isInstanceOf<CheckboxWidget>());
+    });
+    test("camera", () async {
+      final component = build(SubmissionType.camera, null, (_) {}, () {});
+      expect(component, isInstanceOf<CameraWidget>());
     });
   });
 }

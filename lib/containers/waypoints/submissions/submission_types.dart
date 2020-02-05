@@ -6,7 +6,7 @@ class SubmissionTypeHelper {
       return e.toString() == "SubmissionType.$value";
     },
         orElse: () => throw ArgumentError(
-            "unsupported type $value")); //return null if not found
+            "unsupported type $value")); //throws error if not found
   }
 
   static bool isMedia(SubmissionType type) {
