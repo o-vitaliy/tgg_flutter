@@ -1,16 +1,19 @@
-enum SubmissionType { text, photo, number, choice, movie , checkboxes}
+enum SubmissionType { text, photo, number, choice, movie, checkboxes, camera }
 
 class SubmissionTypeHelper {
   static SubmissionType fromString(String value) {
     return SubmissionType.values.firstWhere((e) {
       return e.toString() == "SubmissionType.$value";
-    }, orElse: () => null); //return null if not found
+    },
+        orElse: () => throw ArgumentError(
+            "unsupported type $value")); //return null if not found
   }
 
   static bool isMedia(SubmissionType type) {
     switch (type) {
       case SubmissionType.photo:
       case SubmissionType.movie:
+      case SubmissionType.camera:
         return true;
       case SubmissionType.text:
       case SubmissionType.number:

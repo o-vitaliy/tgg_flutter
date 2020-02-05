@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor_ffi/moor_ffi.dart';
+import 'package:tgg/containers/waypoints/submissions/submission_types.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart';
 import 'package:tgg/data/dao/dao_media.dart';
 import 'package:tgg/data/dao/dao_submission.dart';
@@ -26,10 +27,11 @@ main() {
           locationProvider: mockedLocationProvider);
       final waypoints = await repo.getActiveWaypoints();
 
-      expect(waypoints.first.step.behavior.submissionType.first.type,
-          equals("text"));
-      expect(waypoints.last.step.behavior.submissionType.first.type,
-          equals("movie"));
+      waypoints.forEach((wp) {
+        wp.step.behavior.submissionType.forEach((s) {
+          expect(SubmissionTypeHelper.fromString(s.type), isNotNull);
+        });
+      });
     });
 
     test("track start", () async {

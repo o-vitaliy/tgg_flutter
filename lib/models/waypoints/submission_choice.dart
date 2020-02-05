@@ -2,12 +2,12 @@ import 'package:meta/meta.dart';
 
 @immutable
 class SubmissionChoice {
-  final String value;
-  final bool correct;
+  final String text;
+  final value;
 
   SubmissionChoice._fromMap(Map<String, dynamic> map)
-      : value = map["text"],
-        correct = map["value"];
+      : text = map["text"],
+        value = map["value"];
 
   static List<SubmissionChoice> from(map) {
     if (map == null) return null;
@@ -16,7 +16,11 @@ class SubmissionChoice {
     if (map is List) {
       results.addAll(map.expand((m) => from(m)));
     } else {
-      results.add(SubmissionChoice._fromMap(map));
+      try {
+        results.add(SubmissionChoice._fromMap(map));
+      } catch (e) {
+        print(e);
+      }
     }
 
     return results;

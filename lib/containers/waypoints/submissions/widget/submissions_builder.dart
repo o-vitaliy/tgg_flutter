@@ -1,4 +1,5 @@
 import '../submission_types.dart';
+import 'camera_widget.dart';
 import 'checkbox_widget.dart';
 import 'number_widget.dart';
 import 'radio_widget.dart';
@@ -23,6 +24,8 @@ ValueWidget build(SubmissionType type, String error,
       return CheckboxWidget(onValueChange, onSubmit, value, error, variants);
     case SubmissionType.movie:
       return TakeVideoWidget(onValueChange, onSubmit, value, error);
+    case SubmissionType.camera:
+      return CameraWidget(onValueChange, onSubmit, value, error);
     default:
       throw ArgumentError("unsupported type $type");
   }

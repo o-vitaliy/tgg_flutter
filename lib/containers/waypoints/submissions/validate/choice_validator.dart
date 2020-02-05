@@ -17,7 +17,7 @@ class CheckboxesValidator extends Validator {
     final List<String> result = List<String>.of(input ?? []);
     final List<SubmissionChoice> choices = variants;
     final List<String> correctChoices =
-        choices.where((c) => c.correct).map((c) => c.value).toList();
+        choices.where((c) => c.value).map((c) => c.text).toList();
 
     result.sort(comparator);
     correctChoices.sort(comparator);
@@ -34,8 +34,8 @@ class RadioValidator extends Validator {
   @override
   String validate(input, {variants}) {
     final List<String> correctChoices = List<SubmissionChoice>.of(variants)
-        .where((c) => c.correct)
-        .map((c) => c.value)
+        .where((c) => c.value)
+        .map((c) => c.text)
         .toList();
 
     return input != null && correctChoices.contains(input) ? null : error;

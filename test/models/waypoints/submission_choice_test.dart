@@ -21,15 +21,15 @@ main() {
       expect(mockedChoices.length, 4);
     });
     test("has correct answer", () {
-      expect(mockedChoices.any((it) => it.correct), true);
+      expect(mockedChoices.any((it) => it.value), true);
     });
 
     test("not all answers are correct", () {
-      expect(mockedChoices.every((it) => it.correct), false);
+      expect(mockedChoices.every((it) => it.value), false);
     });
 
     test("corrct answers is third", () {
-      expect(mockedChoices.indexWhere((it) => it.correct), 0);
+      expect(mockedChoices.indexWhere((it) => it.value), 0);
     });
   });
 }

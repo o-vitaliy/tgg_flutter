@@ -30,14 +30,14 @@ class _ChoiceInputState extends State<CheckboxWidget> {
     return Column(
         children: List<Widget>.of(choices.map((choice) {
       return CheckboxListTile(
-        key: ValueKey(choice.value),
-        value: initialValue.contains(choice.value),
-        title: Text(choice.value),
+        key: ValueKey(choice.text),
+        value: initialValue.contains(choice.text),
+        title: Text(choice.text),
         onChanged: (selected) {
           if (selected)
-            initialValue.add(choice.value);
+            initialValue.add(choice.text);
           else
-            initialValue.remove(choice.value);
+            initialValue.remove(choice.text);
           onValueChange(initialValue);
         },
       );

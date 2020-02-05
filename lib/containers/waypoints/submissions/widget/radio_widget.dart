@@ -29,9 +29,9 @@ class _RadioState extends State<RadioWidget> {
     return Column(
         children: List<Widget>.of(choices.map((choice) {
       return RadioListTile<String>(
-        title: Text(choice.value),
-        key: ValueKey(choice.value),
-        value: choice.value,
+        title: Text(choice.text),
+        key: ValueKey(choice.text),
+        value: choice.text,
         groupValue: initialValue,
         onChanged: (value) {
           onValueChange(value);

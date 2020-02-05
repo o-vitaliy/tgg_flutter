@@ -10,6 +10,7 @@ Validator getValidator(SubmissionType type) {
       return TextValidator();
     case SubmissionType.photo:
     case SubmissionType.movie:
+    case SubmissionType.camera:
       return EmptyValidator();
     case SubmissionType.number:
       return NumberValidator();
