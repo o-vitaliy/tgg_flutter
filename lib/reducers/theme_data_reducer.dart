@@ -3,18 +3,6 @@ import 'package:redux/redux.dart';
 import 'package:tgg/actions/theme_actions.dart';
 import 'package:tgg/helpers/theme_helper.dart';
 
-/*
-ThemeData themeDataReducer(ThemeData current, action) {
-  if (action is UpdateThemeAction) {
-    return buildTheme(action.primarySwatch, action.disabledColor);
-  } else if (action is DefaultThemeAction) {
-    return defaultTheme;
-  } else {
-    return current;
-  }
-}
-*/
-
 final themeDataReducer = combineReducers<ThemeData>([
   new TypedReducer<ThemeData, UpdateThemeAction>(_changeTheme),
   new TypedReducer<ThemeData, DefaultThemeAction>(_defaultTheme),

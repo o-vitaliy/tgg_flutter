@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/actions/auth_actions.dart';
 import 'package:tgg/actions/login_actions.dart';
-import 'package:tgg/actions/theme_actions.dart';
+import 'package:tgg/common/flavor/flavor_actions.dart';
 import 'package:tgg/containers/waypoints/waypoints_actions.dart';
 import 'package:tgg/data/providers.dart';
 import 'package:tgg/models/login_response.dart';
@@ -59,7 +58,9 @@ Middleware<AppState> _createLogInMiddleware() {
 void doAfterLogin(Store store, LoginResponse response) async {
   final playthroughId = response.team.playthroughId;
   final playthrough = await playthroughRepo.getPlaythrough(playthroughId);
-  store.dispatch(new UpdateThemeAction(Colors.green, Colors.green.shade100));
+  staticRepo.getFlavor(playthrough.game.blueprint.name).then((v) {
+    store.dispatch(UpdateFlavorAction(v));
+  });
   store.dispatch(new LogInSuccessful(
     loginResponse: response,
     playthrough: playthrough,

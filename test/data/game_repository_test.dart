@@ -11,8 +11,11 @@ main() {
   group("playthrough", () {
     test("getPlaythrough", () async {
       final repo = PlaythroughRepo(
-          apiProvider: mockedApiProvider,
-          staticRepo: StaticRepo(apiProvider: mockedStaticApiProvider,),);
+        apiProvider: mockedApiProvider,
+        staticRepo: StaticRepo(
+            staticApiProvider: mockedStaticApiProvider,
+            apiProvider: mockedApiProvider),
+      );
       final response = await repo.getPlaythrough(playthroughs);
       expect(response.id, equals("5e07304dd71f10001a444b3b"));
     });

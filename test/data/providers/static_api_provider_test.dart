@@ -8,9 +8,5 @@ main() {
       final b = await apiStaticProvider.fetchBlueprint();
       expect(b, stringContainsInOrder(["name"]));
     });
-    test("flavor", () async {
-      final f = await apiStaticProvider.fetchFlavor();
-      expect(f, stringContainsInOrder(["primary.color"]));
-    });
   });
 }

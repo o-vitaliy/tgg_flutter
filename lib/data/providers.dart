@@ -22,7 +22,7 @@ DaoSubmission daoSubmission = DaoSubmission(database);
 DaoMedia daoMedia = DaoMedia(database);
 
 // repos
-StaticRepo staticRepo = StaticRepo(apiProvider: staticApiProvider);
+StaticRepo staticRepo = StaticRepo(staticApiProvider: staticApiProvider, apiProvider: apiProvider);
 LoginRepo loginRepo = LoginRepo(apiProvider: apiProvider, prefs: prefsProvider);
 PlaythroughRepo playthroughRepo =
     PlaythroughRepo(apiProvider: apiProvider, staticRepo: staticRepo);

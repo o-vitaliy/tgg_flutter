@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:tgg/common/flavor/flavor.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_state.dart';
 import 'package:tgg/containers/camera/camera_state.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
@@ -24,6 +25,7 @@ class AppState {
   final CameraState cameraState;
   final WaypointsState waypointsState;
   final WaypointState waypointState;
+  final Flavor flavor;
 
   AppState({
     @required this.themeData,
@@ -37,6 +39,7 @@ class AppState {
     @required this.cameraState,
     @required this.waypointsState,
     @required this.waypointState,
+    @required this.flavor,
   });
 
   factory AppState.initial() {
@@ -52,6 +55,7 @@ class AppState {
       cameraState: CameraState(),
       waypointsState: WaypointsState.initial(),
       waypointState: null,
+      flavor: Flavor.initial(),
     );
   }
 
@@ -68,6 +72,7 @@ class AppState {
       cameraState: cameraState ?? this.cameraState,
       waypointsState: waypointsState ?? this.waypointsState,
       waypointState: waypointState ?? this.waypointState,
+      flavor: flavor ?? this.flavor,
     );
   }
 }

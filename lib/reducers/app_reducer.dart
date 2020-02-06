@@ -1,3 +1,4 @@
+import 'package:tgg/common/flavor/flavor_reducer.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_reducer.dart';
 import 'package:tgg/containers/camera/camera_reducer.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_reducer.dart';
@@ -23,5 +24,6 @@ AppState appReducer(AppState state, action) {
     cameraState: cameraReducer(state.cameraState, action),
     waypointsState: waypointsReducer(state.waypointsState, action),
     waypointState: waypointReducer(state.waypointState, action),
+    flavor: flavorReducer(state.flavor, action),
   );
 }

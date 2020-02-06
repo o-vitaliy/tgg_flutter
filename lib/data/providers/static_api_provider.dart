@@ -10,8 +10,4 @@ class StaticApiProvider {
     return apiRequest(url, method: httpMethod.get);
   }
 
-  Future<String> fetchFlavor() async {
-    final url = "$_baseUrl/flavors/gogame-en.json";
-    return apiRequest(url, method: httpMethod.get);
-  }
 }

@@ -59,7 +59,13 @@ class ApiProvider {
 
   Future<String> putMedia({@required String id, @required Map values}) async {
     final url = "$_baseUrl/media/$id/";
-    return apiRequest(url, token: token, params: values, method: httpMethod.put);
+    return apiRequest(url,
+        token: token, params: values, method: httpMethod.put);
+  }
+
+  Future<String> getFlavor(String blueprintId) {
+    final url = "$_baseUrl/flavors/entries/$blueprintId/";
+    return apiRequest(url, token: token, method: httpMethod.get);
   }
 }
 
