@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -22,19 +21,13 @@ import 'containers/aws_uploader/aws_upload_middleware.dart';
 import 'containers/camera/camera_container.dart';
 import 'containers/preview/preview_container.dart';
 import 'containers/waypoints/waypoint/waypoint_middleware.dart';
-import 'data/providers/remote_config.dart';
-import 'data/simple_bloc_delegate.dart';
 import 'ui/auth/login_page.dart';
 import 'ui/home.dart';
 import 'ui/splash.dart';
 
 void main() {
-  BlocSupervisor.delegate = SimpleBlocDelegate();
-
   final FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   final FirebaseAnalytics _analytics = FirebaseAnalytics();
-
-  final config = Config();
 
   runZoned<Future<void>>(() async {
     runApp(ReduxApp());

@@ -8,5 +8,5 @@ final flavorReducer = combineReducers<Flavor>([
 ]);
 
 Flavor _updateFlavor(Flavor response, action) {
-  return Flavor((action as UpdateFlavorAction).flavor);
+  return Flavor.create((action as UpdateFlavorAction).flavor);
 }

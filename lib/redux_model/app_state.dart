@@ -9,7 +9,7 @@ import 'package:tgg/containers/waypoints/waypoints_state.dart';
 import 'package:tgg/helpers/theme_helper.dart';
 import 'package:tgg/models/login_response.dart';
 import 'package:tgg/models/playthrough.dart';
-import 'package:tgg/redux_model/home_page_state.dart';
+import 'package:tgg/common/routing/routing_state.dart';
 import 'package:tgg/redux_model/login_state.dart';
 
 @immutable
@@ -20,7 +20,7 @@ class AppState {
   final Playthrough playthrough;
   final Timer postLocationTimer;
   final LoginState loginState;
-  final HomePageState homePageState;
+  final RoutingState homePageState;
   final AwsUploadState uploadFilesState;
   final CameraState cameraState;
   final WaypointsState waypointsState;

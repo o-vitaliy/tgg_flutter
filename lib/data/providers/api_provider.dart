@@ -67,6 +67,9 @@ class ApiProvider {
     final url = "$_baseUrl/flavors/entries/$blueprintId/";
     return apiRequest(url, token: token, method: httpMethod.get);
   }
-}
 
-final apiProvider = ApiProvider();
+  Future<String> getRouting(String gameId) {
+    final url = "$_baseUrl/games/$gameId/routing/";
+    return apiRequest(url, token: token, method: httpMethod.get);
+  }
+}

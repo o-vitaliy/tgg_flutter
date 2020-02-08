@@ -7,6 +7,7 @@ import 'package:tgg/data/playthrought_repository.dart';
 import 'package:tgg/data/providers/api_provider.dart';
 import 'package:tgg/data/providers/location_provider.dart';
 import 'package:tgg/data/providers/providers.dart';
+import 'package:tgg/data/routing_repository.dart';
 import 'package:tgg/data/statics_repo.dart';
 import 'package:tgg/data/waypoint_repository.dart';
 
@@ -27,6 +28,7 @@ LoginRepo loginRepo = LoginRepo(apiProvider: apiProvider, prefs: prefsProvider);
 PlaythroughRepo playthroughRepo =
     PlaythroughRepo(apiProvider: apiProvider, staticRepo: staticRepo);
 MediaRepo mediaRepo = MediaRepo(apiProvider: apiProvider, daoMedia: daoMedia);
+RoutingRepo routingRepo = RoutingRepo(apiProvider: apiProvider);
 
 WaypointsRepo waypointsRepo = WaypointsRepo(
   apiProvider: apiProvider,

@@ -1,8 +1,10 @@
 import 'package:tgg/models/blueprint_model.dart';
 
 class Game {
-  BlueprintModel blueprint;
+  final BlueprintModel blueprint;
+  final String id;
 
   Game.fromJsonMap(Map<String, dynamic> map)
-      : blueprint = BlueprintModel.fromJsonMap(map["blueprint"]);
+      : blueprint = BlueprintModel.fromJsonMap(map["blueprint"]),
+        id = map["id"];
 }

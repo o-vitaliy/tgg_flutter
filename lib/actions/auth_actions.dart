@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:tgg/models/models.dart';
+import 'package:tgg/models/routing.dart';
 
 /*
 class LogIn {
@@ -14,8 +15,9 @@ class ReLogIn {}
 class LogInSuccessful {
   final LoginResponse loginResponse;
   final Playthrough playthrough;
+  final Routing routing;
 
-  LogInSuccessful({@required this.loginResponse, @required this.playthrough});
+  LogInSuccessful({@required this.loginResponse, @required this.playthrough, @required this.routing});
 }
 
 class LogInFails {

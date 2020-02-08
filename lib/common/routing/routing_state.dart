@@ -3,27 +3,27 @@ import 'package:quiver/core.dart';
 import 'package:tgg/models/modes.dart';
 
 @immutable
-class HomePageState {
+class RoutingState {
   final RouteMode selectedMode;
   final List<RouteMode> modes;
 
-  HomePageState({
+  RoutingState({
     @required this.selectedMode,
     this.modes,
   });
 
-  HomePageState copyWith({
+  RoutingState copyWith({
     Optional<RouteMode> selectedMode,
     List<RouteMode> modes,
   }) {
-    return HomePageState(
+    return RoutingState(
       selectedMode:
           selectedMode != null ? selectedMode.orNull : this.selectedMode,
       modes: modes ?? this.modes,
     );
   }
 
-  factory HomePageState.initial(List<RouteMode> modes) {
-    return HomePageState(selectedMode: RouteMode.home(), modes: modes);
+  factory RoutingState.initial(List<RouteMode> modes) {
+    return RoutingState(selectedMode: RouteMode.home(), modes: modes);
   }
 }

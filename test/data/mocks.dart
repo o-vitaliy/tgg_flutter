@@ -37,6 +37,11 @@ const mockedActiveWaypoints = """
 const mockCreateMedia =
     """{"media_bucket":"gogame-breadcrumb-display-media","upload_key":"2017-08-12/immaculate-conception-church-powell-11-07/camera-/art-pose-2017-08-12-11-23-38.png","media_key":"2017-08-12/immaculate-conception-church-powell-11-07/camera-/images-<size>/art-pose-2017-08-12-11-23-38.jpeg","upload_mime_type":"image/png","media_mime_type":"image/jpeg","media_timestamp":1502562059,"media_type":"image","media_filename":"photoCompressed5.png","media_size":4616904,"options":{"is_uploaded":true,"is_uploading":true,"in_gallery":true,"is_ready":true,"media_duration":4,"caption":"Donkey Kong"},"id":"5c743270cffcee7eef899092"}""";
 
+const mockRouting =
+    """
+    {"version":1,"votables":{"max":null},"modes":[{"name":"main","title":"Main","icon":"icon-screenshot","type":"routed","features":{"route_ahead":2},"rules":[{"category":"411","sort":"priority"},{"category":"sneak","sort":"spread, priority, distance","max":1},{"category":"plant","sort":"cluster","timer":true,"max":4,"allow_repeat":false},{"category":"creative","max":3,"timer":true,"sort":"priority, spread","allow_repeat":false},{"category":"trivia","max":5,"timer":true,"allow_repeat":false,"sort":"priority, random"},{"category":"sneak","sort":"cluster"},{"category":"trivia","sort":"priority, random"},{"category":"brainburner","sort":"priority, random"}],"sorting":{"cluster":[{"has_location":true,"is_nearby":true,"sort":"priority, distance"},{"has_location":false,"sort":"priority, spread"},{"has_location":true,"is_nearby":false,"sort":"distance"}]},"categories":["sneak","plant","creative","trivia","411","recall","brainburner","filler","unrouted"]},{"name":"head_to_head","title":"H2H","icon":"icon-group","type":"challenge","category":"head_to_head","enabled":true,"delay":10,"max_total":5,"max_per_team":2},{"name":"camera","type":"persistent","source":"queued","title":"Camera","category":"camera","icon":"icon-camera"},{"name":"anytime","type":"persistent","source":"uncompleted","enabled":false,"title":"Anytime","category":"anytime","icon":"icon-reorder"}]}
+    """;
+
 final mockedApiProvider = MockedApiProvider();
 final mockedStaticApiProvider = MockedStaticApiProvider();
 final mockedPrefs = MockedPrefsProvider();
@@ -61,6 +66,9 @@ void initLoginMock() {
     id: anyNamed("id"),
     values: anyNamed("values"),
   )).thenAnswer((_) => Future.value(mockCreateMedia));
+
+  when(mockedApiProvider.getRouting(captureAny))
+      .thenAnswer((_) => Future.value(mockRouting));
 
   //static
   when(mockedStaticApiProvider.fetchBlueprint())
