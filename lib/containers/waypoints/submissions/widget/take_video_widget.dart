@@ -37,10 +37,6 @@ class _TakeVideoInputState extends State<TakeVideoWidget> {
           onPressed: _takeVideo,
         ),
         error != null ? Text(error) : SizedBox.shrink(),
-        RaisedButton(
-          child: const Text("Go!"),
-          onPressed: onSubmit,
-        )
       ],
     );
   }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:tgg/common/flavor/flavor.dart';
+import 'package:tgg/common/playthrought/playthrought_state.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_state.dart';
 import 'package:tgg/containers/camera/camera_state.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
@@ -17,7 +18,7 @@ class AppState {
   final ThemeData themeData;
   final bool isLoading;
   final LoginResponse loginResponse;
-  final Playthrough playthrough;
+  final PlaythroughtState playthrough;
   final Timer postLocationTimer;
   final LoginState loginState;
   final RoutingState homePageState;
@@ -47,7 +48,7 @@ class AppState {
       themeData: getDefaultTheme(),
       isLoading: false,
       loginResponse: null,
-      playthrough: null,
+      playthrough: PlaythroughtState.initial(),
       postLocationTimer: null,
       loginState: null,
       homePageState: null,

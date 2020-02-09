@@ -1,3 +1,4 @@
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart';
 import 'package:tgg/models/waypoints/waypoint.dart';
 import 'package:tgg/models/waypoints/waypoint_submission.dart';
@@ -32,11 +33,27 @@ class WaypointSaveAnswer {
   WaypointSaveAnswer(this.answer, this.submission, this.media);
 }
 
-class WaypointSubmit {}
+class WaypointSubmit {
+  final BuildContext context;
 
+  WaypointSubmit(this.context);
+}
+
+class WaypointShowHintAction {}
+
+class WaypointHintShown {
+  final String hint;
+  final int usedCount;
+
+  WaypointHintShown(this.hint, this.usedCount);
+}
+
+@deprecated
 class WaypointShowError {
   final String error;
   final WaypointSubmission submission;
 
   WaypointShowError(this.error, this.submission);
 }
+
+class WaypointIncrementAttemptAction{}

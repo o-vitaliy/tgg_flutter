@@ -1,4 +1,5 @@
 import 'package:tgg/common/flavor/flavor_reducer.dart';
+import 'package:tgg/common/playthrought/playthrought_reducer.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_reducer.dart';
 import 'package:tgg/containers/camera/camera_reducer.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_reducer.dart';
@@ -6,7 +7,6 @@ import 'package:tgg/containers/waypoints/waypoints_reducer.dart';
 import 'package:tgg/reducers/auth_reducer.dart';
 import 'package:tgg/common/routing/routing_reducer.dart';
 import 'package:tgg/reducers/login_reducer.dart';
-import 'package:tgg/reducers/playthrough_reducer.dart';
 import 'package:tgg/reducers/post_location_reducer.dart';
 import 'package:tgg/reducers/theme_data_reducer.dart';
 import 'package:tgg/redux_model/app_state.dart';

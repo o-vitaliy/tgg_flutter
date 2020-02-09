@@ -44,10 +44,6 @@ class _TextInputState extends State<TextWidget> {
           controller: controller,
         ),
         error != null ? Text(error) : SizedBox.shrink(),
-        RaisedButton(
-          child: const Text("Go!"),
-          onPressed: onSubmit,
-        )
       ],
     );
   }

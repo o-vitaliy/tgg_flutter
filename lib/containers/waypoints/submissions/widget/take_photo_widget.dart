@@ -37,10 +37,6 @@ class _TakePhotoInputState extends State<TakePhotoWidget> {
           onPressed: _takePhoto,
         ),
         error != null ? Text(error) : SizedBox.shrink(),
-        RaisedButton(
-          child: const Text("Go!"),
-          onPressed: onSubmit,
-        )
       ],
     );
   }

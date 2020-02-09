@@ -12,34 +12,34 @@ main() {
   group("submissions_builder_test", () {
     test("check if all types are covered", () {
       SubmissionType.values.forEach((type) {
-        final component = build(type, null, (_) {}, () {});
+        final component = build(type, null, (_) {}, (_) {});
         expect(component, isNotNull);
       });
     });
     test("text", () async {
-      final component = build(SubmissionType.text, null, (_) {}, () {});
+      final component = build(SubmissionType.text, null, (_) {}, (_) {});
       expect(component, isInstanceOf<TextWidget>());
     });
 
     test("photo", () async {
-      final component = build(SubmissionType.photo, null, (_) {}, () {});
+      final component = build(SubmissionType.photo, null, (_) {}, (_) {});
       expect(component, isInstanceOf<TakePhotoWidget>());
     });
 
     test("choice", () async {
-      final component = build(SubmissionType.choice, null, (_) {}, () {});
+      final component = build(SubmissionType.choice, null, (_) {}, (_) {});
       expect(component, isInstanceOf<RadioWidget>());
     });
     test("movie", () async {
-      final component = build(SubmissionType.movie, null, (_) {}, () {});
+      final component = build(SubmissionType.movie, null, (_) {}, (_) {});
       expect(component, isInstanceOf<TakeVideoWidget>());
     });
     test("checkboxes", () async {
-      final component = build(SubmissionType.checkboxes, null, (_) {}, () {});
+      final component = build(SubmissionType.checkboxes, null, (_) {}, (_) {});
       expect(component, isInstanceOf<CheckboxWidget>());
     });
     test("camera", () async {
-      final component = build(SubmissionType.camera, null, (_) {}, () {});
+      final component = build(SubmissionType.camera, null, (_) {}, (_) {});
       expect(component, isInstanceOf<CameraWidget>());
     });
   });

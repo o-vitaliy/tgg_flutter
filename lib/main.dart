@@ -17,6 +17,7 @@ import 'package:tgg/middleware/post_location_middleware.dart';
 import 'package:tgg/reducers/app_reducer.dart';
 import 'package:tgg/redux_model/app_state.dart';
 
+import 'common/dialog/dialog_middleware.dart';
 import 'containers/aws_uploader/aws_upload_middleware.dart';
 import 'containers/camera/camera_container.dart';
 import 'containers/preview/preview_container.dart';
@@ -46,7 +47,8 @@ class ReduxApp extends StatelessWidget {
         ..addAll(createWaypointMiddleware())
         ..addAll(createUploadMiddleware())
         ..add(LoggingMiddleware.printer())
-        ..add(NavigationMiddleware<AppState>()));
+        ..add(NavigationMiddleware<AppState>())
+        ..add(DialogMiddleware<AppState>()));
 
   @override
   Widget build(BuildContext context) {

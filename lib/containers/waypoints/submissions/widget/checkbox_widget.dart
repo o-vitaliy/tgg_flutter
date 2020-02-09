@@ -42,10 +42,6 @@ class _ChoiceInputState extends State<CheckboxWidget> {
         },
       );
     }))
-          ..add(Text(error ?? ""))
-          ..add(RaisedButton(
-            child: const Text("Go!"),
-            onPressed: onSubmit,
-          )));
+          ..add(Text(error ?? "")));
   }
 }

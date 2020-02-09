@@ -24,6 +24,13 @@ main() {
       final params = {"pin": pin};
       expect(flavor.get(key, params: params), "Your code is: $pin");
     });
+
+    test("with int params", () {
+      final key = "modes:head_to_head:home:your_pin";
+      final pin = 3333;
+      final params = {"pin": pin};
+      expect(flavor.get(key, params: params), "Your code is: $pin");
+    });
   });
 
   group("iterable", () {

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:tgg/helpers/map_utils.dart';
 import 'package:tgg/models/waypoints/submission_choice.dart';
 
@@ -6,14 +7,12 @@ class WaypointSubmission {
   final String defaultPlaceholder;
   final String placeholder;
   final choices;
-  final List<String> variants;
 
   WaypointSubmission._({
-    this.type,
+    @required this.type,
     this.defaultPlaceholder,
     this.placeholder,
-    this.choices,
-    this.variants,
+    @required this.choices,
   });
 
   static List<WaypointSubmission> from(dynamic map, {step}) {
@@ -30,12 +29,11 @@ class WaypointSubmission {
 
   static WaypointSubmission _fromMap(Map<String, dynamic> map, {step}) {
     return WaypointSubmission._(
-      type: map["type"],
-      defaultPlaceholder: map["default_placeholder"],
-      placeholder: map["placeholder"],
-      choices: SubmissionChoice.from(getAt(step, map["choices"])) ??
-          _getTextVariants(step),
-    );
+        type: map["type"],
+        defaultPlaceholder: map["default_placeholder"],
+        placeholder: map["placeholder"],
+        choices: SubmissionChoice.from(getAt(step, map["choices"])) ??
+            _getTextVariants(step));
   }
 
   static WaypointSubmission _fromString(String type, {step}) {

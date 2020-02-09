@@ -38,10 +38,6 @@ class _RadioState extends State<RadioWidget> {
         },
       );
     }))
-          ..add(Text(error ?? ""))
-          ..add(RaisedButton(
-            child: const Text("Go!"),
-            onPressed: onSubmit,
-          )));
+          ..add(Text(error ?? "")));
   }
 }

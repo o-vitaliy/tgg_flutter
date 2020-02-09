@@ -44,11 +44,7 @@ class _NumberInputState extends State<NumberWidget> {
           keyboardType: TextInputType.number,
           controller: controller,
         ),
-        error != null ? Text(error) : SizedBox.shrink(),
-        RaisedButton(
-          child: const Text("Go!"),
-          onPressed: onSubmit,
-        )
+        error != null ? Text(error) : SizedBox.shrink()
       ],
     );
   }

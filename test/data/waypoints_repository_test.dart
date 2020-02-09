@@ -14,11 +14,11 @@ import 'package:tgg/data/waypoint_repository.dart';
 import 'mocks.dart';
 
 main() {
-  setUp(() {
+  setUpAll(() {
     initLoginMock();
   });
   group("waypoints", () {
-    test("active_waypints", () async {
+    test("active_waypoints", () async {
       final repo = WaypointsRepo(
           apiProvider: mockedApiProvider,
           daoSubmission:

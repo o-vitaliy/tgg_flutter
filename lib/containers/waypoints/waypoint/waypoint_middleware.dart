@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
+import 'package:tgg/common/dialog/dialog_action.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_action.dart';
 import 'package:tgg/containers/waypoints/submissions/submission_types.dart';
 import 'package:tgg/containers/waypoints/submissions/validate/submissions_validator.dart';
@@ -9,11 +11,14 @@ import 'package:tgg/containers/waypoints/waypoints_actions.dart';
 import 'package:tgg/data/providers.dart';
 import 'package:tgg/redux_model/app_state.dart';
 
+import 'dialogs.dart';
+
 List<Middleware<AppState>> createWaypointMiddleware() {
   return [
     new TypedMiddleware<AppState, WaypointsSelectCurrentAction>(
         _initWaypoint()),
     new TypedMiddleware<AppState, WaypointSubmit>(_submit()),
+    new TypedMiddleware<AppState, WaypointShowHintAction>(_showHint()),
     new TypedMiddleware<AppState, WaypointStarted>(_trackStarted()),
     new TypedMiddleware<AppState, WaypointUpdateAnswer>(_updateAnswer()),
   ];
@@ -41,17 +46,40 @@ Middleware<AppState> _submit() {
     if (action is WaypointSubmit) {
       final WaypointState waypoint = store.state.waypointState;
 
-      int errors = 0;
+      List<String> incorrectAnswers = new List<String>();
       waypoint.items.forEach((item) {
         final type = SubmissionTypeHelper.fromString(item.submission.type);
         String error = validate(type, item.answer, item.submission.choices);
-        if (error != null) errors++;
+        if (error != null) incorrectAnswers.add(item.answer);
         store.dispatch(WaypointShowError(error, item.submission));
       });
 
-      if (errors == 0) {
+      if (incorrectAnswers.isEmpty) {
+        final errorDialogBuilder = (context) {
+          return createSuccessDialog(
+            waypoint.attemptsUsed,
+            store.state.flavor,
+            () {
+              Navigator.pop(context);
+              store.dispatch(WaypointsStartLoadAction());
+            },
+          );
+        };
+        store.dispatch(DialogAction(action.context, errorDialogBuilder));
         await waypointsRepo.submitAnswer(waypoint.waypoint, waypoint.items);
-        store.dispatch(WaypointsStartLoadAction());
+      } else {
+        final errorDialogBuilder = (context) {
+          return createErrorDialog(
+            incorrectAnswers.join(","),
+            waypoint.attemptsUsed,
+            store.state.flavor,
+            () {
+              Navigator.pop(context);
+            },
+          );
+        };
+        store.dispatch(WaypointIncrementAttemptAction());
+        store.dispatch(DialogAction(action.context, errorDialogBuilder));
       }
     }
     next(action);
@@ -76,7 +104,7 @@ Middleware<AppState> _updateAnswer() {
         final AppState state = store.state;
         String key = mediaRepo.getKey(
           action.answer,
-          state.playthrough,
+          state.playthrough.playthrough,
           state.loginResponse.team,
           state.waypointState.waypoint,
         );
@@ -86,6 +114,18 @@ Middleware<AppState> _updateAnswer() {
       }
 
       store.dispatch(WaypointSaveAnswer(answer, action.submission, media));
+    }
+    next(action);
+  };
+}
+
+Middleware<AppState> _showHint() {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    if (action is WaypointShowHintAction) {
+      final WaypointState state = store.state.waypointState;
+      final hintIndex = state.hintsUsed;
+      final hint = state.waypoint.step.behavior.hints[hintIndex];
+      store.dispatch(WaypointHintShown(hint, state.hintsUsed + 1));
     }
     next(action);
   };

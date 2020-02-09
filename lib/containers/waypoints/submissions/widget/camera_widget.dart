@@ -31,11 +31,7 @@ class _CameraInputState extends State<CameraWidget> {
           child: Text("Take image/video"),
           onPressed: _captureMedia,
         ),
-        error != null ? Text(error) : SizedBox.shrink(),
-        RaisedButton(
-          child: const Text("Go!"),
-          onPressed: onSubmit,
-        )
+        error != null ? Text(error) : SizedBox.shrink()
       ],
     );
   }

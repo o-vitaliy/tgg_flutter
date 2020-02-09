@@ -28,7 +28,7 @@ class WaypointsRepo {
     final response = await apiProvider.activeWaypoints();
     final map = json.decode(response);
     final mapped = map.map((w) => Waypoint.fromJsonMap(w));
-    return List<Waypoint>.from(mapped);
+    return List<Waypoint>.from(mapped, growable: false);
   }
 
   Future trackStart(String waypointId) {

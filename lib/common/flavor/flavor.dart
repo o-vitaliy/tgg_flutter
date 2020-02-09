@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 const _iterableSign = "{n}";
 
 const tryAgainText = "mission:incorrect:tryagain:{n}:text";
-const tryAgainImage = "mission:incorrect:tryagain:{n}:text";
+const tryAgainImage = "mission:incorrect:tryagain:{n}:image";
+const missionCorrectText = "mission:correct:{n}:text";
+const missionCorrectImage = "mission:correct:{n}:image";
+const missionCodeOk = "mission:code:ok";
+const messageOk = "message:ok";
 
 class Flavor {
   final Map<String, dynamic> values;
@@ -27,7 +31,7 @@ class Flavor {
     if (params == null) return text;
 
     params.forEach((key, value) {
-      text = text.replaceFirst("{{$key}}", value);
+      text = text.replaceFirst("{{$key}}", value.toString());
     });
     return text;
   }
