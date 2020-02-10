@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:tgg/actions/auth_actions.dart';
 import 'package:tgg/actions/home_actions.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_container.dart';
 import 'package:tgg/containers/home/post_location_container.dart';
@@ -41,7 +42,8 @@ class _HomeStateContent extends State<_HomePageContent> {
         body: StoreConnector<AppState, _ViewModel>(
           converter: _ViewModel.fromStore,
           builder: (BuildContext context, _ViewModel vm) {
-            return buildPage(vm.selectedMode, vm.modes, vm.changeMode);
+            return buildPage(
+                vm.selectedMode, vm.modes, vm.changeMode, vm.logout);
           },
         ),
       ),
@@ -52,8 +54,10 @@ class _HomeStateContent extends State<_HomePageContent> {
     RouteMode selectedMode,
     List<RouteMode> modes,
     Function(RouteMode) changeMode,
+    Function logout,
   ) {
-    final homeTabBuilder = (key) => HomeTab(modes, changeMode, key: key);
+    final homeTabBuilder =
+        (key) => HomeTab(modes, changeMode, logout, key: key);
     RouteTabMapper mapper = RouteTabMapper(homeTabBuilder: homeTabBuilder);
 
     return Column(children: <Widget>[
@@ -69,20 +73,17 @@ class _ViewModel {
   final List<RouteMode> modes;
 
   final Function(RouteMode) changeMode;
+  final Function logout;
 
-  _ViewModel({
-    this.selectedMode,
-    this.modes,
-    this.changeMode,
-  });
+  _ViewModel({this.selectedMode, this.modes, this.changeMode, this.logout});
 
   static _ViewModel fromStore(Store<AppState> store) {
     final state = store.state.homePageState;
     return _ViewModel(
-      selectedMode: state.selectedMode,
-      modes: state.modes,
-      changeMode: (RouteMode mode) =>
-          store.dispatch(ChangeRouteModeAction(mode)),
-    );
+        selectedMode: state.selectedMode,
+        modes: state.modes,
+        changeMode: (RouteMode mode) =>
+            store.dispatch(ChangeRouteModeAction(mode)),
+        logout: () => store.dispatch(LogOut()));
   }
 }

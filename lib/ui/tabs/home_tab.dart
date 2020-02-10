@@ -7,8 +7,10 @@ import 'package:tgg/ui/routes.dart';
 class HomeTab extends StatelessWidget {
   final List<RouteMode> modes;
   final Function(RouteMode) pageSelected;
+  final Function logout;
 
-  const HomeTab(this.modes, this.pageSelected, {Key key}) : super(key: key);
+  const HomeTab(this.modes, this.pageSelected, this.logout, {Key key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class HomeTab extends StatelessWidget {
   Widget logoutButton(BuildContext context) {
     //final LoginBloc authenticationBloc = BlocProvider.of<LoginBloc>(context);
     return RaisedButton(
-        onPressed: () => null, //authenticationBloc.dispatch(Logout()),
+        onPressed: logout, //authenticationBloc.dispatch(Logout()),
         child:
             Padding(padding: EdgeInsets.only(left: 8), child: Text("Logout")),
         textColor: Colors.white);

@@ -63,8 +63,8 @@ Middleware<AppState> _createReLogInMiddleware() {
 Middleware<AppState> _createLogOutMiddleware() {
   return (Store store, action, NextDispatcher next) async {
     if (action is LogOut) {
-      await loginRepo.removeGame();
-      store.dispatch(new LogOut());
+      await loginRepo.logout();
+      store.dispatch(NavigateToAction.replace(LoginPage.routeName));
     }
     next(action);
   };

@@ -6,6 +6,7 @@ class PrefsProvider {
   static const onBoarding = "onboarding";
   static const logged_in = "logged_in";
   static const game_code = "game_code";
+  static const game_pin = "game_pin";
 
   Future<bool> isOnbordingSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -40,6 +41,16 @@ class PrefsProvider {
   Future<String> getGameCode() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(game_code);
+  }
+
+  Future setGamePin(String pin) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(game_pin, pin);
+  }
+
+  Future<String> getGamePin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(game_pin);
   }
 }
 

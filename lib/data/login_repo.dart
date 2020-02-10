@@ -14,21 +14,23 @@ class LoginRepo {
 
   LoginRepo({@required this.apiProvider, @required this.prefs});
 
-  Future<LoginResponse> login({@required String code}) async {
+  Future<LoginResponse> login({@required String code, String pin = ""}) async {
     String response = await apiProvider.login(code);
     final Map<String, dynamic> responseMap = json.decode(response);
     loginResponse = LoginResponse.fromJsonMap(responseMap);
     await prefs.setGameCode(code);
+    await prefs.setGamePin(loginResponse.team.pin);
     apiProvider.token = loginResponse.token;
     return loginResponse;
   }
 
   Future<LoginResponse> reLogin() async {
     final code = await prefs.getGameCode();
+    final pin = await prefs.getGamePin();
     if (code != null) {
       try {
         apiProvider.token = null;
-        return login(code: code);
+        return login(code: code, pin: pin);
       } catch (error) {
         await prefs.setGameCode(null);
         throw error;
@@ -47,9 +49,9 @@ class LoginRepo {
     return loginResponse;
   }
 
-  Future removeGame() async {
+  Future logout() async {
     loginResponse = null;
     apiProvider.token = null;
-    prefs.setGameCode(null);
+    await prefs.setGameCode(null);
   }
 }
