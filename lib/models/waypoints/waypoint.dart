@@ -7,6 +7,6 @@ class Waypoint {
 
   Waypoint.fromJsonMap(Map<String, dynamic> map)
       : this.id = map["id"],
-        this.points = map.containsKey("points")? map["points"] : 0,
+        this.points = map.containsKey("mission_points")? map["mission_points"] : 0,
         this.step = WaypointStep.fromJsonMap(map["step"]);
 }

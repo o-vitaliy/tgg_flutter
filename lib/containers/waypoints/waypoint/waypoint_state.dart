@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart';
 import 'package:tgg/models/waypoints/waypoint.dart';
 
+const double hintPenalty = 0.25;
+
 @immutable
 class WaypointState {
   final Waypoint waypoint;
@@ -17,7 +19,7 @@ class WaypointState {
   int get hintRemained => waypoint.step.behavior.hints.length - hintsUsed;
 
   int get hintPrice =>
-      (waypoint.points / waypoint.step.behavior.hints.length).floor();
+      (waypoint.points / waypoint.step.behavior.hints.length * hintPenalty).floor();
 
   WaypointState({
     @required this.waypoint,
