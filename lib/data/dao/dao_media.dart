@@ -8,7 +8,7 @@ class DaoMedia {
   DaoMedia(this._appDatabase);
 
   Future<int> insert(String mediaId, String fileUrl, String key) {
-    return _appDatabase.into(_appDatabase.mediaTable).insert(
+    return _appDatabase.intoMediaTable.insert(
         MediaTableCompanion.insert(
           mediaId: mediaId,
           fileUrl: fileUrl,
@@ -19,20 +19,17 @@ class DaoMedia {
   }
 
   Future<MediaTableData> findByKey(String key) {
-    return (_appDatabase.select(_appDatabase.mediaTable)
-          ..where((t) => t.key.equals(key)))
+    return (_appDatabase.selectMediaTable..where((t) => t.key.equals(key)))
         .getSingle();
   }
 
   Future<MediaTableData> findByUrl(String url) {
-    return (_appDatabase.select(_appDatabase.mediaTable)
-          ..where((t) => t.fileUrl.equals(url)))
+    return (_appDatabase.selectMediaTable..where((t) => t.fileUrl.equals(url)))
         .getSingle();
   }
 
   Future<int> updateUploadedByUrl(String url, bool uploaded) {
-    return (_appDatabase.update(_appDatabase.mediaTable)
-          ..where((t) => t.fileUrl.equals(url)))
+    return (_appDatabase.updateMediaTable..where((t) => t.fileUrl.equals(url)))
         .write(MediaTableCompanion(uploaded: Value(true)));
   }
 }

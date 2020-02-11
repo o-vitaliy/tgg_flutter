@@ -22,6 +22,9 @@ main() {
     test("movie", () async {
       expect(SubmissionTypeHelper.fromString("movie"), SubmissionType.movie);
     });
+    test("camera", () async {
+      expect(SubmissionTypeHelper.fromString("camera"), SubmissionType.camera);
+    });
   });
 
   group("is_media from string", () {
@@ -43,12 +46,34 @@ main() {
     test("movie", () async {
       expect(SubmissionTypeHelper.isMediaFromString("movie"), true);
     });
+    test("camera", () async {
+      expect(SubmissionTypeHelper.isMediaFromString("camera"), true);
+    });
   });
 
   group("is_media", () {
     test("checks all types are covered ", () async {
       SubmissionType.values
           .forEach((type) => SubmissionTypeHelper.isMedia(type));
+    });
+  });
+
+  group("is mutli choice", () {
+    test("checks all types are covered ", () async {
+      SubmissionType.values
+          .forEach((type) => SubmissionTypeHelper.isMedia(type));
+    });
+
+    test("checks", () async {
+      expect(SubmissionTypeHelper.isMultiChoice(SubmissionType.choice), true);
+      expect(
+          SubmissionTypeHelper.isMultiChoice(SubmissionType.checkboxes), true);
+
+      expect(SubmissionTypeHelper.isMultiChoice(SubmissionType.text), false);
+      expect(SubmissionTypeHelper.isMultiChoice(SubmissionType.number), false);
+      expect(SubmissionTypeHelper.isMultiChoice(SubmissionType.photo), false);
+      expect(SubmissionTypeHelper.isMultiChoice(SubmissionType.movie), false);
+      expect(SubmissionTypeHelper.isMultiChoice(SubmissionType.camera), false);
     });
   });
 }

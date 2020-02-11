@@ -16,10 +16,16 @@ class WaypointState {
       ? waypoint.step.behavior.numAttempts - attemptsUsed
       : 1;
 
-  int get hintRemained => waypoint.step.behavior.hints.length - hintsUsed;
+  int get _hintsCount => (waypoint.step.behavior.hints?.length ?? 0);
 
-  int get hintPrice =>
-      (waypoint.points / waypoint.step.behavior.hints.length * hintPenalty).floor();
+  int get hintRemained => _hintsCount - hintsUsed;
+
+  int get hintPrice {
+    if (_hintsCount > 0)
+      return (waypoint.points / _hintsCount * hintPenalty).floor();
+    else
+      return 0;
+  }
 
   WaypointState({
     @required this.waypoint,

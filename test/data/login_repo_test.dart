@@ -17,7 +17,7 @@ main() {
     test("badLogin", () async {
       final repo =
           LoginRepo(apiProvider: mockedApiProvider, prefs: mockedPrefs);
-      final response = repo.login(code: badPin);
+      final response = repo.login(code: badPin, pin: "");
       expect(response, throwsA(equals(mockedLoginErrorResponse)));
     });
   });

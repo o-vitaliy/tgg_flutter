@@ -15,7 +15,7 @@ class LoginRepo {
   LoginRepo({@required this.apiProvider, @required this.prefs});
 
   Future<LoginResponse> login({@required String code, String pin = ""}) async {
-    String response = await apiProvider.login(code);
+    String response = await apiProvider.login(code + pin);
     final Map<String, dynamic> responseMap = json.decode(response);
     loginResponse = LoginResponse.fromJsonMap(responseMap);
     await prefs.setGameCode(code);

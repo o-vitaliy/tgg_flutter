@@ -9,7 +9,7 @@ class DaoSubmission {
 
   Future<int> insert(
       String waypointId, DateTime startedAt, double lat, double lng) {
-    return _appDatabase.into(_appDatabase.submissionsTable).insert(
+    return _appDatabase.intoSubmissionsTable.insert(
         SubmissionsTableCompanion.insert(
             waypointId: waypointId,
             startedAt: startedAt,
@@ -20,7 +20,7 @@ class DaoSubmission {
   }
 
   Future<SubmissionsTableData> findById(String waypointId) {
-    return (_appDatabase.select(_appDatabase.submissionsTable)
+    return (_appDatabase.selectSubmissionsTable
           ..where((t) => t.waypointId.equals(waypointId)))
         .getSingle();
   }

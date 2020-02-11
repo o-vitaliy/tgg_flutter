@@ -1,4 +1,4 @@
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart';
 import 'package:tgg/models/waypoints/waypoint.dart';
 import 'package:tgg/models/waypoints/waypoint_submission.dart';
@@ -23,14 +23,18 @@ class WaypointUpdateAnswer {
   final WaypointSubmission submission;
 
   WaypointUpdateAnswer(this.answer, this.submission);
+
+  @override
+  String toString() {
+    return 'WaypointUpdateAnswer{answer: $answer, submission: $submission}';
+  }
 }
 
 class WaypointSaveAnswer {
   final answer;
   final WaypointSubmission submission;
-  final String media;
 
-  WaypointSaveAnswer(this.answer, this.submission, this.media);
+  WaypointSaveAnswer(this.answer, this.submission);
 }
 
 class WaypointSubmit {

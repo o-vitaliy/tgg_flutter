@@ -2,9 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:tgg/data/providers/api_provider.dart';
-import 'package:tgg/data/statics_repo.dart';
-import 'package:tgg/helpers/map_utils.dart';
-import 'package:tgg/models/models.dart';
 import 'package:tgg/models/routing.dart';
 
 class RoutingRepo {

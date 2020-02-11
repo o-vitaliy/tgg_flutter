@@ -18,5 +18,11 @@ main() {
     test("mediaTable not null", () async {
       expect(database.mediaTable, isNotNull);
     });
+    test("hintsTable not null", () async {
+      expect(database.hintsTable, isNotNull);
+    });
+    test("answerTable not null", () async {
+      expect(database.answerTable, isNotNull);
+    });
   });
 }

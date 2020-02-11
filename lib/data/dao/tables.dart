@@ -15,7 +15,8 @@ class SubmissionsTable extends Table {
 
   TextColumn get waypointId => text()();
 
-  DateTimeColumn get startedAt => dateTime()();
+  DateTimeColumn get startedAt =>
+      dateTime().clientDefault(() => DateTime.now())();
 
   RealColumn get startedLocationLat => real()();
 
@@ -40,4 +41,34 @@ class MediaTable extends Table {
   TextColumn get key => text()();
 
   BoolColumn get uploaded => boolean()();
+}
+
+class HintsTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+
+  TextColumn get waypointId => text()();
+
+  DateTimeColumn get usedAt => dateTime()();
+}
+
+class AnswerTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+
+  TextColumn get waypointId => text()();
+
+  TextColumn get submissionType => text()();
+
+  TextColumn get answer => text()();
+}
+
+class WaypointTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+
+  TextColumn get waypointId => text().customConstraint('UNIQUE')();
+
+  TextColumn get waypointJson => text()();
+
+  BoolColumn get passed => boolean().withDefault(const Constant(false))();
+
+  BoolColumn get synced => boolean().withDefault(const Constant(false))();
 }

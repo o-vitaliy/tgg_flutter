@@ -1044,6 +1044,751 @@ class $MediaTableTable extends MediaTable
   }
 }
 
+class HintsTableData extends DataClass implements Insertable<HintsTableData> {
+  final int id;
+  final String waypointId;
+  final DateTime usedAt;
+  HintsTableData(
+      {@required this.id, @required this.waypointId, @required this.usedAt});
+  factory HintsTableData.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    return HintsTableData(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      waypointId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}waypoint_id']),
+      usedAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}used_at']),
+    );
+  }
+  factory HintsTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return HintsTableData(
+      id: serializer.fromJson<int>(json['id']),
+      waypointId: serializer.fromJson<String>(json['waypointId']),
+      usedAt: serializer.fromJson<DateTime>(json['usedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'waypointId': serializer.toJson<String>(waypointId),
+      'usedAt': serializer.toJson<DateTime>(usedAt),
+    };
+  }
+
+  @override
+  HintsTableCompanion createCompanion(bool nullToAbsent) {
+    return HintsTableCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      waypointId: waypointId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(waypointId),
+      usedAt:
+          usedAt == null && nullToAbsent ? const Value.absent() : Value(usedAt),
+    );
+  }
+
+  HintsTableData copyWith({int id, String waypointId, DateTime usedAt}) =>
+      HintsTableData(
+        id: id ?? this.id,
+        waypointId: waypointId ?? this.waypointId,
+        usedAt: usedAt ?? this.usedAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('HintsTableData(')
+          ..write('id: $id, ')
+          ..write('waypointId: $waypointId, ')
+          ..write('usedAt: $usedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(id.hashCode, $mrjc(waypointId.hashCode, usedAt.hashCode)));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is HintsTableData &&
+          other.id == this.id &&
+          other.waypointId == this.waypointId &&
+          other.usedAt == this.usedAt);
+}
+
+class HintsTableCompanion extends UpdateCompanion<HintsTableData> {
+  final Value<int> id;
+  final Value<String> waypointId;
+  final Value<DateTime> usedAt;
+  const HintsTableCompanion({
+    this.id = const Value.absent(),
+    this.waypointId = const Value.absent(),
+    this.usedAt = const Value.absent(),
+  });
+  HintsTableCompanion.insert({
+    this.id = const Value.absent(),
+    @required String waypointId,
+    @required DateTime usedAt,
+  })  : waypointId = Value(waypointId),
+        usedAt = Value(usedAt);
+  HintsTableCompanion copyWith(
+      {Value<int> id, Value<String> waypointId, Value<DateTime> usedAt}) {
+    return HintsTableCompanion(
+      id: id ?? this.id,
+      waypointId: waypointId ?? this.waypointId,
+      usedAt: usedAt ?? this.usedAt,
+    );
+  }
+}
+
+class $HintsTableTable extends HintsTable
+    with TableInfo<$HintsTableTable, HintsTableData> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $HintsTableTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _waypointIdMeta = const VerificationMeta('waypointId');
+  GeneratedTextColumn _waypointId;
+  @override
+  GeneratedTextColumn get waypointId => _waypointId ??= _constructWaypointId();
+  GeneratedTextColumn _constructWaypointId() {
+    return GeneratedTextColumn(
+      'waypoint_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _usedAtMeta = const VerificationMeta('usedAt');
+  GeneratedDateTimeColumn _usedAt;
+  @override
+  GeneratedDateTimeColumn get usedAt => _usedAt ??= _constructUsedAt();
+  GeneratedDateTimeColumn _constructUsedAt() {
+    return GeneratedDateTimeColumn(
+      'used_at',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, waypointId, usedAt];
+  @override
+  $HintsTableTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'hints_table';
+  @override
+  final String actualTableName = 'hints_table';
+  @override
+  VerificationContext validateIntegrity(HintsTableCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
+    }
+    if (d.waypointId.present) {
+      context.handle(_waypointIdMeta,
+          waypointId.isAcceptableValue(d.waypointId.value, _waypointIdMeta));
+    } else if (waypointId.isRequired && isInserting) {
+      context.missing(_waypointIdMeta);
+    }
+    if (d.usedAt.present) {
+      context.handle(
+          _usedAtMeta, usedAt.isAcceptableValue(d.usedAt.value, _usedAtMeta));
+    } else if (usedAt.isRequired && isInserting) {
+      context.missing(_usedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  HintsTableData map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return HintsTableData.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(HintsTableCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.waypointId.present) {
+      map['waypoint_id'] = Variable<String, StringType>(d.waypointId.value);
+    }
+    if (d.usedAt.present) {
+      map['used_at'] = Variable<DateTime, DateTimeType>(d.usedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  $HintsTableTable createAlias(String alias) {
+    return $HintsTableTable(_db, alias);
+  }
+}
+
+class AnswerTableData extends DataClass implements Insertable<AnswerTableData> {
+  final int id;
+  final String waypointId;
+  final String submissionType;
+  final String answer;
+  AnswerTableData(
+      {@required this.id,
+      @required this.waypointId,
+      @required this.submissionType,
+      @required this.answer});
+  factory AnswerTableData.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return AnswerTableData(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      waypointId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}waypoint_id']),
+      submissionType: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}submission_type']),
+      answer:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}answer']),
+    );
+  }
+  factory AnswerTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return AnswerTableData(
+      id: serializer.fromJson<int>(json['id']),
+      waypointId: serializer.fromJson<String>(json['waypointId']),
+      submissionType: serializer.fromJson<String>(json['submissionType']),
+      answer: serializer.fromJson<String>(json['answer']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'waypointId': serializer.toJson<String>(waypointId),
+      'submissionType': serializer.toJson<String>(submissionType),
+      'answer': serializer.toJson<String>(answer),
+    };
+  }
+
+  @override
+  AnswerTableCompanion createCompanion(bool nullToAbsent) {
+    return AnswerTableCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      waypointId: waypointId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(waypointId),
+      submissionType: submissionType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(submissionType),
+      answer:
+          answer == null && nullToAbsent ? const Value.absent() : Value(answer),
+    );
+  }
+
+  AnswerTableData copyWith(
+          {int id, String waypointId, String submissionType, String answer}) =>
+      AnswerTableData(
+        id: id ?? this.id,
+        waypointId: waypointId ?? this.waypointId,
+        submissionType: submissionType ?? this.submissionType,
+        answer: answer ?? this.answer,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('AnswerTableData(')
+          ..write('id: $id, ')
+          ..write('waypointId: $waypointId, ')
+          ..write('submissionType: $submissionType, ')
+          ..write('answer: $answer')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(waypointId.hashCode,
+          $mrjc(submissionType.hashCode, answer.hashCode))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is AnswerTableData &&
+          other.id == this.id &&
+          other.waypointId == this.waypointId &&
+          other.submissionType == this.submissionType &&
+          other.answer == this.answer);
+}
+
+class AnswerTableCompanion extends UpdateCompanion<AnswerTableData> {
+  final Value<int> id;
+  final Value<String> waypointId;
+  final Value<String> submissionType;
+  final Value<String> answer;
+  const AnswerTableCompanion({
+    this.id = const Value.absent(),
+    this.waypointId = const Value.absent(),
+    this.submissionType = const Value.absent(),
+    this.answer = const Value.absent(),
+  });
+  AnswerTableCompanion.insert({
+    this.id = const Value.absent(),
+    @required String waypointId,
+    @required String submissionType,
+    @required String answer,
+  })  : waypointId = Value(waypointId),
+        submissionType = Value(submissionType),
+        answer = Value(answer);
+  AnswerTableCompanion copyWith(
+      {Value<int> id,
+      Value<String> waypointId,
+      Value<String> submissionType,
+      Value<String> answer}) {
+    return AnswerTableCompanion(
+      id: id ?? this.id,
+      waypointId: waypointId ?? this.waypointId,
+      submissionType: submissionType ?? this.submissionType,
+      answer: answer ?? this.answer,
+    );
+  }
+}
+
+class $AnswerTableTable extends AnswerTable
+    with TableInfo<$AnswerTableTable, AnswerTableData> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $AnswerTableTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _waypointIdMeta = const VerificationMeta('waypointId');
+  GeneratedTextColumn _waypointId;
+  @override
+  GeneratedTextColumn get waypointId => _waypointId ??= _constructWaypointId();
+  GeneratedTextColumn _constructWaypointId() {
+    return GeneratedTextColumn(
+      'waypoint_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _submissionTypeMeta =
+      const VerificationMeta('submissionType');
+  GeneratedTextColumn _submissionType;
+  @override
+  GeneratedTextColumn get submissionType =>
+      _submissionType ??= _constructSubmissionType();
+  GeneratedTextColumn _constructSubmissionType() {
+    return GeneratedTextColumn(
+      'submission_type',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _answerMeta = const VerificationMeta('answer');
+  GeneratedTextColumn _answer;
+  @override
+  GeneratedTextColumn get answer => _answer ??= _constructAnswer();
+  GeneratedTextColumn _constructAnswer() {
+    return GeneratedTextColumn(
+      'answer',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, waypointId, submissionType, answer];
+  @override
+  $AnswerTableTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'answer_table';
+  @override
+  final String actualTableName = 'answer_table';
+  @override
+  VerificationContext validateIntegrity(AnswerTableCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
+    }
+    if (d.waypointId.present) {
+      context.handle(_waypointIdMeta,
+          waypointId.isAcceptableValue(d.waypointId.value, _waypointIdMeta));
+    } else if (waypointId.isRequired && isInserting) {
+      context.missing(_waypointIdMeta);
+    }
+    if (d.submissionType.present) {
+      context.handle(
+          _submissionTypeMeta,
+          submissionType.isAcceptableValue(
+              d.submissionType.value, _submissionTypeMeta));
+    } else if (submissionType.isRequired && isInserting) {
+      context.missing(_submissionTypeMeta);
+    }
+    if (d.answer.present) {
+      context.handle(
+          _answerMeta, answer.isAcceptableValue(d.answer.value, _answerMeta));
+    } else if (answer.isRequired && isInserting) {
+      context.missing(_answerMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  AnswerTableData map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return AnswerTableData.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(AnswerTableCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.waypointId.present) {
+      map['waypoint_id'] = Variable<String, StringType>(d.waypointId.value);
+    }
+    if (d.submissionType.present) {
+      map['submission_type'] =
+          Variable<String, StringType>(d.submissionType.value);
+    }
+    if (d.answer.present) {
+      map['answer'] = Variable<String, StringType>(d.answer.value);
+    }
+    return map;
+  }
+
+  @override
+  $AnswerTableTable createAlias(String alias) {
+    return $AnswerTableTable(_db, alias);
+  }
+}
+
+class WaypointTableData extends DataClass
+    implements Insertable<WaypointTableData> {
+  final int id;
+  final String waypointId;
+  final String waypointJson;
+  final bool passed;
+  final bool synced;
+  WaypointTableData(
+      {@required this.id,
+      @required this.waypointId,
+      @required this.waypointJson,
+      @required this.passed,
+      @required this.synced});
+  factory WaypointTableData.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    final boolType = db.typeSystem.forDartType<bool>();
+    return WaypointTableData(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      waypointId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}waypoint_id']),
+      waypointJson: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}waypoint_json']),
+      passed:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}passed']),
+      synced:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}synced']),
+    );
+  }
+  factory WaypointTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return WaypointTableData(
+      id: serializer.fromJson<int>(json['id']),
+      waypointId: serializer.fromJson<String>(json['waypointId']),
+      waypointJson: serializer.fromJson<String>(json['waypointJson']),
+      passed: serializer.fromJson<bool>(json['passed']),
+      synced: serializer.fromJson<bool>(json['synced']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'waypointId': serializer.toJson<String>(waypointId),
+      'waypointJson': serializer.toJson<String>(waypointJson),
+      'passed': serializer.toJson<bool>(passed),
+      'synced': serializer.toJson<bool>(synced),
+    };
+  }
+
+  @override
+  WaypointTableCompanion createCompanion(bool nullToAbsent) {
+    return WaypointTableCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      waypointId: waypointId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(waypointId),
+      waypointJson: waypointJson == null && nullToAbsent
+          ? const Value.absent()
+          : Value(waypointJson),
+      passed:
+          passed == null && nullToAbsent ? const Value.absent() : Value(passed),
+      synced:
+          synced == null && nullToAbsent ? const Value.absent() : Value(synced),
+    );
+  }
+
+  WaypointTableData copyWith(
+          {int id,
+          String waypointId,
+          String waypointJson,
+          bool passed,
+          bool synced}) =>
+      WaypointTableData(
+        id: id ?? this.id,
+        waypointId: waypointId ?? this.waypointId,
+        waypointJson: waypointJson ?? this.waypointJson,
+        passed: passed ?? this.passed,
+        synced: synced ?? this.synced,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('WaypointTableData(')
+          ..write('id: $id, ')
+          ..write('waypointId: $waypointId, ')
+          ..write('waypointJson: $waypointJson, ')
+          ..write('passed: $passed, ')
+          ..write('synced: $synced')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(
+          waypointId.hashCode,
+          $mrjc(waypointJson.hashCode,
+              $mrjc(passed.hashCode, synced.hashCode)))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is WaypointTableData &&
+          other.id == this.id &&
+          other.waypointId == this.waypointId &&
+          other.waypointJson == this.waypointJson &&
+          other.passed == this.passed &&
+          other.synced == this.synced);
+}
+
+class WaypointTableCompanion extends UpdateCompanion<WaypointTableData> {
+  final Value<int> id;
+  final Value<String> waypointId;
+  final Value<String> waypointJson;
+  final Value<bool> passed;
+  final Value<bool> synced;
+  const WaypointTableCompanion({
+    this.id = const Value.absent(),
+    this.waypointId = const Value.absent(),
+    this.waypointJson = const Value.absent(),
+    this.passed = const Value.absent(),
+    this.synced = const Value.absent(),
+  });
+  WaypointTableCompanion.insert({
+    this.id = const Value.absent(),
+    @required String waypointId,
+    @required String waypointJson,
+    this.passed = const Value.absent(),
+    this.synced = const Value.absent(),
+  })  : waypointId = Value(waypointId),
+        waypointJson = Value(waypointJson);
+  WaypointTableCompanion copyWith(
+      {Value<int> id,
+      Value<String> waypointId,
+      Value<String> waypointJson,
+      Value<bool> passed,
+      Value<bool> synced}) {
+    return WaypointTableCompanion(
+      id: id ?? this.id,
+      waypointId: waypointId ?? this.waypointId,
+      waypointJson: waypointJson ?? this.waypointJson,
+      passed: passed ?? this.passed,
+      synced: synced ?? this.synced,
+    );
+  }
+}
+
+class $WaypointTableTable extends WaypointTable
+    with TableInfo<$WaypointTableTable, WaypointTableData> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $WaypointTableTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _waypointIdMeta = const VerificationMeta('waypointId');
+  GeneratedTextColumn _waypointId;
+  @override
+  GeneratedTextColumn get waypointId => _waypointId ??= _constructWaypointId();
+  GeneratedTextColumn _constructWaypointId() {
+    return GeneratedTextColumn('waypoint_id', $tableName, false,
+        $customConstraints: 'UNIQUE');
+  }
+
+  final VerificationMeta _waypointJsonMeta =
+      const VerificationMeta('waypointJson');
+  GeneratedTextColumn _waypointJson;
+  @override
+  GeneratedTextColumn get waypointJson =>
+      _waypointJson ??= _constructWaypointJson();
+  GeneratedTextColumn _constructWaypointJson() {
+    return GeneratedTextColumn(
+      'waypoint_json',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _passedMeta = const VerificationMeta('passed');
+  GeneratedBoolColumn _passed;
+  @override
+  GeneratedBoolColumn get passed => _passed ??= _constructPassed();
+  GeneratedBoolColumn _constructPassed() {
+    return GeneratedBoolColumn('passed', $tableName, false,
+        defaultValue: const Constant(false));
+  }
+
+  final VerificationMeta _syncedMeta = const VerificationMeta('synced');
+  GeneratedBoolColumn _synced;
+  @override
+  GeneratedBoolColumn get synced => _synced ??= _constructSynced();
+  GeneratedBoolColumn _constructSynced() {
+    return GeneratedBoolColumn('synced', $tableName, false,
+        defaultValue: const Constant(false));
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, waypointId, waypointJson, passed, synced];
+  @override
+  $WaypointTableTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'waypoint_table';
+  @override
+  final String actualTableName = 'waypoint_table';
+  @override
+  VerificationContext validateIntegrity(WaypointTableCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
+    }
+    if (d.waypointId.present) {
+      context.handle(_waypointIdMeta,
+          waypointId.isAcceptableValue(d.waypointId.value, _waypointIdMeta));
+    } else if (waypointId.isRequired && isInserting) {
+      context.missing(_waypointIdMeta);
+    }
+    if (d.waypointJson.present) {
+      context.handle(
+          _waypointJsonMeta,
+          waypointJson.isAcceptableValue(
+              d.waypointJson.value, _waypointJsonMeta));
+    } else if (waypointJson.isRequired && isInserting) {
+      context.missing(_waypointJsonMeta);
+    }
+    if (d.passed.present) {
+      context.handle(
+          _passedMeta, passed.isAcceptableValue(d.passed.value, _passedMeta));
+    } else if (passed.isRequired && isInserting) {
+      context.missing(_passedMeta);
+    }
+    if (d.synced.present) {
+      context.handle(
+          _syncedMeta, synced.isAcceptableValue(d.synced.value, _syncedMeta));
+    } else if (synced.isRequired && isInserting) {
+      context.missing(_syncedMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  WaypointTableData map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return WaypointTableData.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(WaypointTableCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.waypointId.present) {
+      map['waypoint_id'] = Variable<String, StringType>(d.waypointId.value);
+    }
+    if (d.waypointJson.present) {
+      map['waypoint_json'] = Variable<String, StringType>(d.waypointJson.value);
+    }
+    if (d.passed.present) {
+      map['passed'] = Variable<bool, BoolType>(d.passed.value);
+    }
+    if (d.synced.present) {
+      map['synced'] = Variable<bool, BoolType>(d.synced.value);
+    }
+    return map;
+  }
+
+  @override
+  $WaypointTableTable createAlias(String alias) {
+    return $WaypointTableTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $SubmissionsTableTable _submissionsTable;
@@ -1054,7 +1799,20 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       _submissionTable ??= $SubmissionTableTable(this);
   $MediaTableTable _mediaTable;
   $MediaTableTable get mediaTable => _mediaTable ??= $MediaTableTable(this);
+  $HintsTableTable _hintsTable;
+  $HintsTableTable get hintsTable => _hintsTable ??= $HintsTableTable(this);
+  $AnswerTableTable _answerTable;
+  $AnswerTableTable get answerTable => _answerTable ??= $AnswerTableTable(this);
+  $WaypointTableTable _waypointTable;
+  $WaypointTableTable get waypointTable =>
+      _waypointTable ??= $WaypointTableTable(this);
   @override
-  List<TableInfo> get allTables =>
-      [submissionsTable, submissionTable, mediaTable];
+  List<TableInfo> get allTables => [
+        submissionsTable,
+        submissionTable,
+        mediaTable,
+        hintsTable,
+        answerTable,
+        waypointTable
+      ];
 }

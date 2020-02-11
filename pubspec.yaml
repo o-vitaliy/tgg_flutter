@@ -20,8 +20,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   rxdart: ^0.22.0
-  http: ^0.12.0+1
-  shared_preferences: ^0.5.3+4
+  http: ^0.12.0+4
+  shared_preferences: ^0.5.6+1
   quiver: ^2.0.5
 
   page_view_indicators: ^1.2.0
@@ -30,25 +30,25 @@ dependencies:
   video_player: ^0.10.2+5
   camera:
     path: ./plugin_camera
-  path_provider: ^1.2.0
+  path_provider: ^1.6.0
   countdown: ^0.1.0
-  intl: ^0.15.8
-  equatable: ^0.6.0
-  package_info: ^0.4.0+6
-  geolocator: ^5.1.3
-  firebase_analytics: ^5.0.2
-  firebase_crashlytics: ^0.1.0+3
-  firebase_messaging: ^5.1.6
-  firebase_remote_config: ^0.2.0+7 # https://pub.dev/packages/firebase_remote_config
+  intl: ^0.16.1
+  equatable: ^1.1.0
+  package_info: ^0.4.0+13
+  geolocator: ^5.2.1
+  firebase_analytics: ^5.0.11
+  firebase_crashlytics: ^0.1.2+5
+  firebase_messaging: ^6.0.9
+  firebase_remote_config: ^0.3.0+1 # https://pub.dev/packages/firebase_remote_config
   fluttertoast: ^3.1.3
   native_device_orientation: ^0.3.0
-  redux: ^3.0.0
-  flutter_redux: ^0.5.3
-  redux_logging: ^0.3.0
-  flutter_redux_navigation: ^0.4.1
-  flutter_markdown: ^0.3.2
-  moor: ^2.2.0
-  moor_ffi: ^0.3.1
+  redux: ^4.0.0
+  flutter_redux: ^0.6.0
+  redux_logging: ^0.4.0
+  flutter_redux_navigation: ^0.5.1
+  flutter_markdown: ^0.3.3
+  moor: ^2.3.0
+  moor_ffi: ^0.4.0
   mime: ^0.9.6+3
   slugify: ^1.0.0
 

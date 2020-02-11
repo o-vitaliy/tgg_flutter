@@ -26,8 +26,7 @@ WaypointState _saveAnswer(WaypointState state, action) {
   final a = action as WaypointSaveAnswer;
   final item = state.items.where((i) => i.submission == a.submission).first;
   final items = state.items.where((i) => i.submission != a.submission).toList()
-    ..add(item.copyWith(
-        answer: a.answer, media: a.media, error: Optional.absent()));
+    ..add(item.copyWith(answer: a.answer, error: Optional.absent()));
   return state.copyWith(items: items);
 }
 

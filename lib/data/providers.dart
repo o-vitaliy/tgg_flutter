@@ -1,5 +1,8 @@
+import 'package:tgg/data/dao/dao_answer.dart';
+import 'package:tgg/data/dao/dao_hints.dart';
 import 'package:tgg/data/dao/dao_media.dart';
 import 'package:tgg/data/dao/dao_submission.dart';
+import 'package:tgg/data/dao/dao_waypoints.dart';
 import 'package:tgg/data/dao/db.dart';
 import 'package:tgg/data/location_repo.dart';
 import 'package:tgg/data/login_repo.dart';
@@ -21,9 +24,13 @@ LocationProvider locationProvider = new LocationProvider();
 AppDatabase database = AppDatabase();
 DaoSubmission daoSubmission = DaoSubmission(database);
 DaoMedia daoMedia = DaoMedia(database);
+DaoHint daoHint = DaoHint(database);
+DaoAnswer daoAnswer = DaoAnswer(database);
+DaoWaypoint daoWaypoint = DaoWaypoint(database);
 
 // repos
-StaticRepo staticRepo = StaticRepo(staticApiProvider: staticApiProvider, apiProvider: apiProvider);
+StaticRepo staticRepo =
+    StaticRepo(staticApiProvider: staticApiProvider, apiProvider: apiProvider);
 LoginRepo loginRepo = LoginRepo(apiProvider: apiProvider, prefs: prefsProvider);
 PlaythroughRepo playthroughRepo =
     PlaythroughRepo(apiProvider: apiProvider, staticRepo: staticRepo);
@@ -34,7 +41,10 @@ WaypointsRepo waypointsRepo = WaypointsRepo(
   apiProvider: apiProvider,
   daoMedia: daoMedia,
   daoSubmission: daoSubmission,
+  daoHint: daoHint,
+  daoAnswer: daoAnswer,
   locationProvider: locationProvider,
+  daoWaypoint: daoWaypoint,
 );
 LocationRepo locationRepo = LocationRepo(
   apiProvider: apiProvider,

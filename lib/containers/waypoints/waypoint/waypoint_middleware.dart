@@ -11,6 +11,7 @@ import 'package:tgg/containers/waypoints/waypoints_actions.dart';
 import 'package:tgg/data/providers.dart';
 import 'package:tgg/redux_model/app_state.dart';
 
+import '../../../constants.dart';
 import 'dialogs.dart';
 
 List<Middleware<AppState>> createWaypointMiddleware() {
@@ -46,16 +47,22 @@ Middleware<AppState> _submit() {
     if (action is WaypointSubmit) {
       final WaypointState waypoint = store.state.waypointState;
 
+      final waypointId = waypoint.waypoint.id;
+
       List<String> incorrectAnswers = new List<String>();
       waypoint.items.forEach((item) {
-        final type = SubmissionTypeHelper.fromString(item.submission.type);
+        final typeString = item.submission.type;
+
+        daoAnswer.insert(waypointId, typeString, _answerToString(item.answer));
+
+        final type = SubmissionTypeHelper.fromString(typeString);
         String error = validate(type, item.answer, item.submission.choices);
         if (error != null) incorrectAnswers.add(item.answer);
         store.dispatch(WaypointShowError(error, item.submission));
       });
 
       if (incorrectAnswers.isEmpty) {
-        final errorDialogBuilder = (context) {
+        final dialogBuilder = (context) {
           return createSuccessDialog(
             waypoint.attemptsUsed,
             store.state.flavor,
@@ -65,10 +72,10 @@ Middleware<AppState> _submit() {
             },
           );
         };
-        store.dispatch(DialogAction(action.context, errorDialogBuilder));
-        await waypointsRepo.submitAnswer(waypoint.waypoint, waypoint.items);
+        store.dispatch(DialogAction(action.context, dialogBuilder));
+        await waypointsRepo.submitAnswer(waypointId);
       } else {
-        final errorDialogBuilder = (context) {
+        final dialogBuilder = (context) {
           return createErrorDialog(
             incorrectAnswers.join(","),
             waypoint.attemptsUsed,
@@ -79,7 +86,7 @@ Middleware<AppState> _submit() {
           );
         };
         store.dispatch(WaypointIncrementAttemptAction());
-        store.dispatch(DialogAction(action.context, errorDialogBuilder));
+        store.dispatch(DialogAction(action.context, dialogBuilder));
       }
     }
     next(action);
@@ -99,7 +106,6 @@ Middleware<AppState> _updateAnswer() {
   return (Store store, action, NextDispatcher next) async {
     if (action is WaypointUpdateAnswer) {
       dynamic answer = action.answer;
-      String media;
       if (SubmissionTypeHelper.isMediaFromString(action.submission.type)) {
         final AppState state = store.state;
         String key = mediaRepo.getKey(
@@ -110,10 +116,9 @@ Middleware<AppState> _updateAnswer() {
         );
         store.dispatch(AddFileToUploadAction(action.answer, key));
         answer = key;
-        media = key;
       }
 
-      store.dispatch(WaypointSaveAnswer(answer, action.submission, media));
+      store.dispatch(WaypointSaveAnswer(answer, action.submission));
     }
     next(action);
   };
@@ -129,4 +134,14 @@ Middleware<AppState> _showHint() {
     }
     next(action);
   };
+}
+
+String _answerToString(answer) {
+  if (answer is String) {
+    return answer;
+  } else if (answer is List) {
+    return answer.join(answerDelimiter);
+  } else {
+    throw ArgumentError("unsupported type of answer $answer");
+  }
 }

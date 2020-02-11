@@ -29,7 +29,11 @@ Widget _createDialog(
         Map<String, dynamic> textTemplateParams}) =>
     AlertDialog(
       content: Column(mainAxisSize: MainAxisSize.min, children: [
-        Image.network(flavor.iterable(imageTemplate, attempts)),
+        Image.network(
+          flavor.iterable(imageTemplate, attempts),
+          loadingBuilder: loadingBuilder,
+          excludeFromSemantics: true,
+        ),
         Text(flavor.iterable(textTemplate, attempts,
             params: textTemplateParams)),
       ]),
@@ -40,3 +44,16 @@ Widget _createDialog(
         )
       ],
     );
+
+final ImageLoadingBuilder loadingBuilder =
+    (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+  if (loadingProgress == null) return child;
+  return Center(
+    child: CircularProgressIndicator(
+      value: loadingProgress.expectedTotalBytes != null
+          ? loadingProgress.cumulativeBytesLoaded /
+              loadingProgress.expectedTotalBytes
+          : null,
+    ),
+  );
+};

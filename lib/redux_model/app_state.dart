@@ -3,14 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:tgg/common/flavor/flavor.dart';
 import 'package:tgg/common/playthrought/playthrought_state.dart';
+import 'package:tgg/common/routing/routing_state.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_state.dart';
 import 'package:tgg/containers/camera/camera_state.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
 import 'package:tgg/containers/waypoints/waypoints_state.dart';
 import 'package:tgg/helpers/theme_helper.dart';
 import 'package:tgg/models/login_response.dart';
-import 'package:tgg/models/playthrough.dart';
-import 'package:tgg/common/routing/routing_state.dart';
 import 'package:tgg/redux_model/login_state.dart';
 
 @immutable
