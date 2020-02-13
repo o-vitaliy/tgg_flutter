@@ -1,37 +1,46 @@
-import 'package:tgg/containers/waypoints/submissions/submission_types.dart';
+import 'package:tgg/containers/waypoints/submissions/behavior_types.dart';
 import 'package:tgg/containers/waypoints/submissions/validate/choice_validator.dart';
 import 'package:tgg/containers/waypoints/submissions/validate/text_validator.dart';
 import 'package:tgg/containers/waypoints/submissions/validate/validator.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart';
 
-Validator getValidator(SubmissionType type) {
+Validator getValidator(BehaviorType type) {
   switch (type) {
-    case SubmissionType.text:
+    case BehaviorType.text_answer:
       return TextValidator();
-    case SubmissionType.photo:
-    case SubmissionType.movie:
-    case SubmissionType.camera:
-      return EmptyValidator();
-    case SubmissionType.number:
+    case BehaviorType.number_answer:
       return NumberValidator();
-    case SubmissionType.choice:
+    case BehaviorType.multiple_choice:
       return RadioValidator();
-    case SubmissionType.checkboxes:
+    case BehaviorType.many_choices:
       return CheckboxesValidator();
+
+    case BehaviorType.text_unverified:
+    case BehaviorType.number_unverified:
+    case BehaviorType.multiple_choice_points:
+    case BehaviorType.photo:
+    case BehaviorType.photo_and_text:
+    case BehaviorType.photo_and_text_pair:
+    case BehaviorType.photo_sequence:
+    case BehaviorType.photo_and_text_sequence:
+    case BehaviorType.movie:
+    case BehaviorType.movie_and_text:
+    case BehaviorType.movie_pair:
+    case BehaviorType.camera:
+      return NoValidator();
     default:
       throw ArgumentError("unsupported type $type");
   }
 }
 
-String validate(SubmissionType type, dynamic answer, variants) {
+String validate(BehaviorType type, dynamic answer, variants) {
   return getValidator(type).validate(answer, variants: variants);
 }
 
-String validateList(List<WaypointSubmissionItem> items,
+String validateList(BehaviorType type, List<WaypointSubmissionItem> items,
     {String separator = ", "}) {
   final result = items
-      .map((i) => validate(SubmissionTypeHelper.fromString(i.submission.type),
-          i.answer, i.submission.choices))
+      .map((i) => validate(type, i.answer, i.submission.choices))
       .where((v) => v != null);
 
   return result == null || result.isEmpty ? null : result.join(separator);

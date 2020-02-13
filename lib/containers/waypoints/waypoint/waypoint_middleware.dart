@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/common/dialog/dialog_action.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_action.dart';
+import 'package:tgg/containers/waypoints/submissions/behavior_types.dart';
 import 'package:tgg/containers/waypoints/submissions/submission_types.dart';
 import 'package:tgg/containers/waypoints/submissions/validate/submissions_validator.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_actions.dart';
@@ -49,13 +50,14 @@ Middleware<AppState> _submit() {
 
       final waypointId = waypoint.waypoint.id;
 
-      List<String> incorrectAnswers = new List<String>();
+      final List<String> incorrectAnswers = new List<String>();
       waypoint.items.forEach((item) {
         final typeString = item.submission.type;
 
         daoAnswer.insert(waypointId, typeString, _answerToString(item.answer));
 
-        final type = SubmissionTypeHelper.fromString(typeString);
+        final type =
+            BehaviorTypeHelper.fromString(waypoint.waypoint.step.behavior.id);
         String error = validate(type, item.answer, item.submission.choices);
         if (error != null) incorrectAnswers.add(item.answer);
         store.dispatch(WaypointShowError(error, item.submission));

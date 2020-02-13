@@ -5,6 +5,13 @@ abstract class Validator {
   String validate(input, {variants});
 }
 
+class NoValidator extends Validator {
+  @override
+  String validate(input, {variants}) {
+    return null;
+  }
+}
+
 class CompositeValidator extends Validator {
   final String separator;
   final List<Validator> subValidators;

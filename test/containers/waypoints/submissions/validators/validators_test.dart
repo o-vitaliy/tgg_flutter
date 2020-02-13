@@ -15,6 +15,13 @@ main() {
       expect(validator.validate("value"), null);
     });
 
+    test("no validatation", () async {
+      final validator = NoValidator();
+      expect(validator.validate(null), isNull);
+      expect(validator.validate(""), isNull);
+      expect(validator.validate("value"), isNull);
+    });
+
     test("email", () async {
       final validator = EmailValidator(error: invalidEmailError);
       expect(validator.validate(null), invalidEmailError);
