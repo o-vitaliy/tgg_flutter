@@ -35,7 +35,8 @@ class WaypointContainer extends StatelessWidget {
                 ..add(getHintButton(vm))
                 ..add(RaisedButton(
                   child: Text(vm.flavor.get("mission:submit")),
-                  onPressed: () => vm.onSubmit(context),
+                  onPressed:
+                      vm.isSubmitEnabled ? () => vm.onSubmit(context) : null,
                 )));
         });
   }
@@ -69,6 +70,7 @@ class _ViewModel {
   final int hintPrice;
   final int hintRemained;
   final OnHint onHint;
+  final bool isSubmitEnabled;
 
   _ViewModel({
     @required this.title,
@@ -80,6 +82,7 @@ class _ViewModel {
     @required this.hintPrice,
     @required this.hintRemained,
     @required this.onHint,
+    @required this.isSubmitEnabled,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
@@ -119,6 +122,7 @@ class _ViewModel {
         hint: state.hint,
         hintPrice: state.hintPrice,
         hintRemained: state.hintRemained,
-        onHint: onHint);
+        onHint: onHint,
+        isSubmitEnabled: state.isEnabled);
   }
 }

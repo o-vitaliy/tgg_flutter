@@ -9,6 +9,7 @@ class WaypointSubmission {
   final String placeholder;
   final choices;
   final bool galleryEnabled;
+  final bool optional;
 
   WaypointSubmission._({
     @required this.type,
@@ -16,6 +17,7 @@ class WaypointSubmission {
     this.placeholder,
     @required this.choices,
     @required this.galleryEnabled,
+    @required this.optional,
   });
 
   static List<WaypointSubmission> from(dynamic map, {step}) {
@@ -40,6 +42,7 @@ class WaypointSubmission {
       galleryEnabled: step != null
           ? getBoolValue(step, "select_gallery_media_enabled")
           : false,
+      optional: map["optional"] ?? false,
     );
   }
 
@@ -50,6 +53,7 @@ class WaypointSubmission {
       galleryEnabled: step != null
           ? getBoolValue(step, "select_gallery_media_enabled")
           : false,
+      optional: false
     );
   }
 
