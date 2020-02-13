@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tgg/containers/camera/camera_capture_mode.dart';
-import 'package:tgg/containers/camera/camera_container.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/value_widget.dart';
-import 'package:tgg/ui/pages/navigation_arguments.dart';
+
+import 'media_launcer.dart';
 
 class TakeVideoWidget extends ValueWidget {
   TakeVideoWidget(OnValueChange onValueChange, OnSubmit onSubmit,
@@ -42,10 +41,6 @@ class _TakeVideoInputState extends State<TakeVideoWidget> {
   }
 
   _takeVideo() {
-    Navigator.pushNamed(context, CameraContainer.routeName,
-            arguments: CaptureArguments(mode: CameraCaptureMode.SINGE_VIDEO))
-        .then((result) {
-      onValueChange(result);
-    });
+    MediaLauncher.startPhoto(context, false).then(onValueChange);
   }
 }

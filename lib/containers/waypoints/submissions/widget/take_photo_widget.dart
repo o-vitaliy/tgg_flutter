@@ -4,6 +4,8 @@ import 'package:tgg/containers/camera/camera_container.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/value_widget.dart';
 import 'package:tgg/ui/pages/navigation_arguments.dart';
 
+import 'media_launcer.dart';
+
 class TakePhotoWidget extends ValueWidget {
   TakePhotoWidget(OnValueChange onValueChange, OnSubmit onSubmit,
       String initialValue, String error)
@@ -42,9 +44,6 @@ class _TakePhotoInputState extends State<TakePhotoWidget> {
   }
 
   _takePhoto() async {
-    final result = await Navigator.pushNamed(context, CameraContainer.routeName,
-        arguments: CaptureArguments(mode: CameraCaptureMode.PHOTO));
-
-    onValueChange(result);
+    MediaLauncher.startPhoto(context, false).then(onValueChange);
   }
 }

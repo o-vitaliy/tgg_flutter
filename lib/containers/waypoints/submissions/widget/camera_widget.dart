@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tgg/containers/camera/camera_capture_mode.dart';
-import 'package:tgg/containers/camera/camera_container.dart';
+import 'package:tgg/containers/waypoints/submissions/widget/media_launcer.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/value_widget.dart';
-import 'package:tgg/ui/pages/navigation_arguments.dart';
 
 class CameraWidget extends ValueWidget {
   CameraWidget(OnValueChange onValueChange, OnSubmit onSubmit,
@@ -29,36 +27,14 @@ class _CameraInputState extends State<CameraWidget> {
         Text(initialValue ?? "image/video is not selected"),
         RaisedButton(
           child: Text("Take image/video"),
-          onPressed: _captureMedia,
+          onPressed: ()=>_captureMedia(context),
         ),
         error != null ? Text(error) : SizedBox.shrink()
       ],
     );
   }
 
-  void _captureMedia() async {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-              content: Text("Select bonus camera"),
-              actions: <Widget>[
-                FlatButton(
-                    onPressed: () =>
-                        _startCapture(context, CameraCaptureMode.PHOTO),
-                    child: Text("Photo")),
-                FlatButton(
-                    onPressed: () =>
-                        _startCapture(context, CameraCaptureMode.SINGE_VIDEO),
-                    child: Text("Video")),
-              ],
-            ).build(context));
-  }
-
-  void _startCapture(BuildContext context, CameraCaptureMode mode) async {
-    Navigator.of(context).pop();
-    final result = await Navigator.pushNamed(context, CameraContainer.routeName,
-        arguments: CaptureArguments(mode: CameraCaptureMode.PHOTO));
-
-    onValueChange(result);
+  void _captureMedia(BuildContext context) async {
+    MediaLauncher.startCamera(context, false).then(onValueChange);
   }
 }

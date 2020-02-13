@@ -70,5 +70,11 @@ main() {
       final result = WaypointStep.fromJsonMap(map);
       expect(result.behavior.hints, isNull);
     });
+
+    test("timelimit ", () {
+      final map = json.decode(mockedVerifiedText);
+      final result = WaypointStep.fromJsonMap(map);
+      expect(result.behavior.hints, isNull);
+    });
   });
 }

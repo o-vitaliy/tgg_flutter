@@ -1,4 +1,5 @@
 import 'package:tgg/helpers/map_utils.dart';
+import 'package:tgg/models/waypoints/waypoint_parser_utils.dart';
 import 'package:tgg/models/waypoints/waypoint_submission.dart';
 
 class WaypointBehavior {
@@ -23,24 +24,11 @@ class WaypointBehavior {
 
   static int getNumAttempts(step) {
     final key = "num_attempts";
-    final value = getAt(step, "content.$key");
-    if (value != null) return int.tryParse(value);
-    final fieldValue = getField(key, "default", step);
-    return fieldValue != null ? fieldValue as int : null;
+    return getIntValue(step, key);
   }
 
   static List<String> getHints(step) {
     final value = getAt(step, "content.hints");
     return value != null ? List<String>.from(value) : null;
-  }
-
-  static dynamic getField(String key, String valueKey, step) {
-    final List fields = getAt(step, "behavior.fields");
-    final value =
-        fields.firstWhere((field) => field["name"] == key, orElse: () => null);
-    if (value != null) {
-      return value[valueKey];
-    }
-    return null;
   }
 }

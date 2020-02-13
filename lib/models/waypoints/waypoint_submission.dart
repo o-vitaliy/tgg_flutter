@@ -1,18 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:tgg/helpers/map_utils.dart';
 import 'package:tgg/models/waypoints/submission_choice.dart';
+import 'package:tgg/models/waypoints/waypoint_parser_utils.dart';
 
 class WaypointSubmission {
   final String type;
   final String defaultPlaceholder;
   final String placeholder;
   final choices;
+  final bool galleryEnabled;
 
   WaypointSubmission._({
     @required this.type,
     this.defaultPlaceholder,
     this.placeholder,
     @required this.choices,
+    @required this.galleryEnabled,
   });
 
   static List<WaypointSubmission> from(dynamic map, {step}) {
@@ -29,15 +32,25 @@ class WaypointSubmission {
 
   static WaypointSubmission _fromMap(Map<String, dynamic> map, {step}) {
     return WaypointSubmission._(
-        type: map["type"],
-        defaultPlaceholder: map["default_placeholder"],
-        placeholder: map["placeholder"],
-        choices: SubmissionChoice.from(getAt(step, map["choices"])) ??
-            _getTextVariants(step));
+      type: map["type"],
+      defaultPlaceholder: map["default_placeholder"],
+      placeholder: map["placeholder"],
+      choices: SubmissionChoice.from(getAt(step, map["choices"])) ??
+          _getTextVariants(step),
+      galleryEnabled: step != null
+          ? getBoolValue(step, "select_gallery_media_enabled")
+          : false,
+    );
   }
 
   static WaypointSubmission _fromString(String type, {step}) {
-    return WaypointSubmission._(type: type, choices: _getTextVariants(step));
+    return WaypointSubmission._(
+      type: type,
+      choices: _getTextVariants(step),
+      galleryEnabled: step != null
+          ? getBoolValue(step, "select_gallery_media_enabled")
+          : false,
+    );
   }
 
   static List<String> _getTextVariants(step) {
