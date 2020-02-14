@@ -41,6 +41,8 @@ class _TakeVideoInputState extends State<TakeVideoWidget> {
   }
 
   _takeVideo() {
-    MediaLauncher.startPhoto(context, false).then(onValueChange);
+    MediaLauncher.startPhoto(context, false).then((value) {
+      if (value != null) onValueChange(value);
+    });
   }
 }
