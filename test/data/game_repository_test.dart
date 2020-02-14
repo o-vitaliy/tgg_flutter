@@ -18,6 +18,7 @@ main() {
       );
       final response = await repo.getPlaythrough(playthroughs);
       expect(response.id, equals("5e07304dd71f10001a444b3b"));
+      expect(response.startedAt, isNotNull);
     });
   });
 }

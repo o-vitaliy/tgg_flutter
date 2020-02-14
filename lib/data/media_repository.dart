@@ -46,6 +46,8 @@ class MediaRepo {
     return mime.split('/').first;
   }
 
+  /// /uploads/ + {media.upload_key}
+  /// где upload = {playthrough.started_at:YYYY-MM-DD}/{playthrough_name}/{playthrough.started_at:hh-mm}/{team.name}/{mission.name}-{YYYY-MM-DD-hh-mm-ss}.{extension}
   String getKey(
     String mediaFile,
     Playthrough playthrough,
@@ -54,13 +56,18 @@ class MediaRepo {
   ) {
     File file = File(mediaFile);
 
-    final String date = DateFormat("yyyyMMdd").format(file.lastModifiedSync());
+    final String datePlaythrough =
+        DateFormat("yyyy-MM-dd").format(playthrough.startedAt);
+    final String timePlaythrough =
+        DateFormat("HH-mm").format(playthrough.startedAt);
+    final String dateTime =
+        DateFormat("yyyy-MM-dd-HH-mm").format(file.lastModifiedSync());
     final String playthroughName = Slugify(playthrough.name);
     final String teamName = Slugify(team.name);
     final String missionName = Slugify(mission.step.title);
     final String extension = mediaFile.substring(mediaFile.lastIndexOf("."));
 
-    return "uploads/$date/$playthroughName/$teamName/$missionName$extension";
+    return "uploads/$datePlaythrough/$playthroughName/$timePlaythrough/$teamName/$missionName-$dateTime$extension";
   }
 
   Future<Map> _getValues(

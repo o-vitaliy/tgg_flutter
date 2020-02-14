@@ -19,7 +19,11 @@ class DaoMedia {
   }
 
   Future<MediaTableData> findByKey(String key) {
-    return (_appDatabase.selectMediaTable..where((t) => t.key.equals(key)))
+    return (_appDatabase.selectMediaTable
+          ..where((t) => t.key.equals(key))
+          ..orderBy(
+              [(u) => OrderingTerm(expression: u.id, mode: OrderingMode.desc)])
+          ..limit(1))
         .getSingle();
   }
 
