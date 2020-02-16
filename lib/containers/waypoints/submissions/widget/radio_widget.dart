@@ -2,25 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/value_widget.dart';
 import 'package:tgg/models/waypoints/submission_choice.dart';
 
-class RadioWidget extends ValueWidget {
+class RadioWidget extends StatelessValueWidget {
   final List<SubmissionChoice> choices;
 
   RadioWidget(OnValueChange onValueChange, OnSubmit onSubmit,
-      String initialValue, this.choices)
-      : super(onValueChange, onSubmit, initialValue);
-
-  @override
-  State createState() => _RadioState();
-}
-
-class _RadioState extends State<RadioWidget> {
-  List<SubmissionChoice> get choices => widget.choices;
-
-  OnValueChange get onValueChange => widget.onValueChange;
-
-  OnSubmit get onSubmit => widget.onSubmit;
-
-  String get initialValue => widget.initialValue;
+      String initialValue, this.choices,
+      {Key key})
+      : super(onValueChange, onSubmit, initialValue, key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -3,26 +3,11 @@ import 'package:tgg/containers/waypoints/submissions/widget/value_widget.dart';
 
 import 'media_launcer.dart';
 
-class TakeVideoWidget extends ValueWidget {
+class TakeVideoWidget extends StatelessValueWidget {
   TakeVideoWidget(
-      OnValueChange onValueChange, OnSubmit onSubmit, String initialValue)
-      : super(onValueChange, onSubmit, initialValue);
-
-  @override
-  State createState() => _TakeVideoInputState();
-}
-
-class _TakeVideoInputState extends State<TakeVideoWidget> {
-  OnValueChange get onValueChange => widget.onValueChange;
-
-  OnSubmit get onSubmit => widget.onSubmit;
-
-  String get initialValue => widget.initialValue;
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+      OnValueChange onValueChange, OnSubmit onSubmit, String initialValue,
+      {Key key})
+      : super(onValueChange, onSubmit, initialValue, key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +16,13 @@ class _TakeVideoInputState extends State<TakeVideoWidget> {
         Text(initialValue ?? "image is not selected"),
         RaisedButton(
           child: Text("Take video"),
-          onPressed: _takeVideo,
+          onPressed: () => _takeVideo(context),
         ),
       ],
     );
   }
 
-  _takeVideo() {
+  _takeVideo(BuildContext context) {
     MediaLauncher.startVideo(context, false).then((value) {
       if (value != null) onValueChange(value);
     });

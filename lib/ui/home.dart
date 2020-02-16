@@ -62,8 +62,10 @@ class _HomeStateContent extends State<_HomePageContent> {
 
     return Column(children: <Widget>[
       HomeToolbar(changeMode, modes, selectedMode),
-      UploadContainer(
-          widgetBuilder: (context) => mapper.map(selectedMode?.name ?? "home"))
+      UploadContainer(),
+      Expanded(
+        child: mapper.map(selectedMode?.name ?? "home"),
+      ),
     ]);
   }
 }

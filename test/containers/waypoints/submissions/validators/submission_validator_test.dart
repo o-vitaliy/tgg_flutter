@@ -18,6 +18,7 @@ main() {
 
     test("validate not empty text in list", () async {
       final item = WaypointSubmissionItem(
+          id: 1,
           submission: WaypointSubmission.from("text").first,
           answer: "not empty text");
       final result = validateList(BehaviorType.text_answer, [item]);
@@ -25,6 +26,7 @@ main() {
     });
     test("validate empty text in list", () async {
       final item = WaypointSubmissionItem(
+        id: 1,
         submission: WaypointSubmission.from("text").first,
         answer: null,
       );
@@ -35,6 +37,7 @@ main() {
     });
     test("validate empty text in list twice", () async {
       final item = WaypointSubmissionItem(
+        id: 1,
         submission: WaypointSubmission.from("text").first,
         answer: null,
       );

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/value_widget.dart';
 
-class NumberWidget extends ValueWidget {
+class NumberWidget extends StatefulValueWidget {
   NumberWidget(
-      OnValueChange onValueChange, OnSubmit onSubmit, String initialValue)
-      : super(onValueChange, onSubmit, initialValue);
+      OnValueChange onValueChange, OnSubmit onSubmit, String initialValue,
+      {Key key})
+      : super(onValueChange, onSubmit, initialValue, key: key);
 
   @override
   State createState() => _NumberInputState();

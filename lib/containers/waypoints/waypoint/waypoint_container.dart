@@ -25,19 +25,26 @@ class WaypointContainer extends StatelessWidget {
         },
         distinct: true,
         builder: (BuildContext context, _ViewModel vm) {
-          return Column(
-              children: [
+          final List<Widget> list = [
             Text(vm.title),
-            MarkdownBody(data: vm.text),
+            MarkdownBody(data: vm.text)
           ]
-                ..addAll(vm.builder(context))
-                ..add(getHintView(vm))
-                ..add(getHintButton(vm))
-                ..add(RaisedButton(
-                  child: Text(vm.flavor.get("mission:submit")),
-                  onPressed:
-                      vm.isSubmitEnabled ? () => vm.onSubmit(context) : null,
-                )));
+            ..addAll(vm.builder(context))
+            ..add(getHintView(vm))
+            ..add(getHintButton(vm))
+            ..add(RaisedButton(
+              child: Text(vm.flavor.get("mission:submit")),
+              onPressed: vm.isSubmitEnabled ? () => vm.onSubmit(context) : null,
+            ));
+          final items = list
+              .map((item) =>
+                  Padding(padding: EdgeInsets.only(top: 8), child: item))
+              .toList();
+
+          return SingleChildScrollView(
+              child: Column(
+            children: items,
+          ));
         });
   }
 
@@ -100,7 +107,7 @@ class _ViewModel {
         final type = SubmissionTypeHelper.fromString(item.submission.type);
         final answer = item.answer;
         final OnValueChange onChange = (value) {
-          store.dispatch(WaypointUpdateAnswer(value, item.submission));
+          store.dispatch(WaypointUpdateAnswer(item.id, value, item.submission));
         };
         return build(
           type,

@@ -19,22 +19,29 @@ class WaypointStarted {
 }
 
 class WaypointUpdateAnswer {
+  final int itemId;
   final answer;
   final WaypointSubmission submission;
 
-  WaypointUpdateAnswer(this.answer, this.submission);
+  WaypointUpdateAnswer(this.itemId, this.answer, this.submission);
 
   @override
   String toString() {
-    return 'WaypointUpdateAnswer{answer: $answer, submission: $submission}';
+    return 'WaypointUpdateAnswer{temId: $itemId answer: $answer, submission: ${submission.type}}';
   }
 }
 
 class WaypointSaveAnswer {
+  final int itemId;
   final answer;
   final WaypointSubmission submission;
 
-  WaypointSaveAnswer(this.answer, this.submission);
+  WaypointSaveAnswer(this.itemId, this.answer, this.submission);
+
+  @override
+  String toString() {
+    return 'WaypointSaveAnswer{itemId: $itemId answer: $answer, submission: ${submission.type}';
+  }
 }
 
 class WaypointSubmit {
@@ -60,4 +67,4 @@ class WaypointShowError {
   WaypointShowError(this.error, this.submission);
 }
 
-class WaypointIncrementAttemptAction{}
+class WaypointIncrementAttemptAction {}

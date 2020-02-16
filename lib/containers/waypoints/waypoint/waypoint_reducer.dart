@@ -1,4 +1,3 @@
-import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_actions.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
@@ -23,9 +22,18 @@ WaypointState _init(WaypointState state, action) {
 
 WaypointState _saveAnswer(WaypointState state, action) {
   final a = action as WaypointSaveAnswer;
-  final item = state.items.where((i) => i.submission == a.submission).first;
-  final items = state.items.where((i) => i.submission != a.submission).toList()
-    ..add(item.copyWith(answer: a.answer, error: Optional.absent()));
+  final item = state.items
+      .where((i) => i.id == a.itemId)
+      .first
+      .copyWith(answer: a.answer);
+
+  final items = state.items.map((i) {
+    if (i.id == a.itemId) {
+      return item;
+    } else {
+      return i;
+    }
+  }).toList(growable: false);
   return state.copyWith(items: items);
 }
 

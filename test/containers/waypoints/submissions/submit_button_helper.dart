@@ -6,6 +6,7 @@ import 'package:tgg/models/waypoints/waypoint_submission.dart';
 main() {
   WaypointSubmissionItem _getItem(bool optional, answer) {
     return WaypointSubmissionItem(
+        id: 1,
         submission:
             WaypointSubmission.from({"type": "text", "optional": optional})
                 .first,

@@ -10,6 +10,7 @@ import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart';
 import 'package:tgg/containers/waypoints/waypoints_actions.dart';
 import 'package:tgg/data/providers.dart';
+import 'package:tgg/helpers/expandable_list.dart';
 import 'package:tgg/redux_model/app_state.dart';
 
 import '../../../constants.dart';
@@ -32,7 +33,8 @@ Middleware<AppState> _initWaypoint() {
       if (action.waypoint != null) {
         final waypoint = action.waypoint;
         final items = waypoint.step.behavior.submissionType
-            .map((item) => WaypointSubmissionItem.initial(item))
+            .mapIndex(
+                (item, index) => WaypointSubmissionItem.initial(index, item))
             .toList();
         store.dispatch(WaypointInit(waypoint, items));
       } else {
@@ -116,11 +118,12 @@ Middleware<AppState> _updateAnswer() {
           state.loginResponse.team,
           state.waypointState.waypoint,
         );
+
         store.dispatch(AddFileToUploadAction(action.answer, key));
         answer = key;
       }
-
-      store.dispatch(WaypointSaveAnswer(answer, action.submission));
+      store.dispatch(
+          WaypointSaveAnswer(action.itemId, answer, action.submission));
     }
     next(action);
   };
@@ -139,7 +142,9 @@ Middleware<AppState> _showHint() {
 }
 
 String _answerToString(answer) {
-  if (answer is String) {
+  if (answer == null) {
+    return null;
+  } else if (answer is String) {
     return answer;
   } else if (answer is List) {
     return answer.join(answerDelimiter);

@@ -6,16 +6,11 @@ import 'package:tgg/redux_model/app_state.dart';
 import 'package:tgg/ui/colors.dart';
 
 class UploadContainer extends StatelessWidget {
-  final WidgetBuilder widgetBuilder;
-
-  const UploadContainer({Key key, @required this.widgetBuilder})
-      : super(key: key);
+  const UploadContainer({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[_UploadProgress(), widgetBuilder(context)],
-    );
+    return _UploadProgress();
   }
 }
 

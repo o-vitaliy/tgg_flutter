@@ -2,21 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/media_launcer.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/value_widget.dart';
 
-class CameraWidget extends ValueWidget {
+class CameraWidget extends StatelessValueWidget {
   CameraWidget(
-      OnValueChange onValueChange, OnSubmit onSubmit, String initialValue)
-      : super(onValueChange, onSubmit, initialValue);
-
-  @override
-  State createState() => _CameraInputState();
-}
-
-class _CameraInputState extends State<CameraWidget> {
-  OnValueChange get onValueChange => widget.onValueChange;
-
-  OnSubmit get onSubmit => widget.onSubmit;
-
-  String get initialValue => widget.initialValue;
+      OnValueChange onValueChange, OnSubmit onSubmit, String initialValue,
+      {Key key})
+      : super(onValueChange, onSubmit, initialValue, key: key);
 
   @override
   Widget build(BuildContext context) {
