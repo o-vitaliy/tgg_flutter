@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/value_widget.dart';
 
 class NumberWidget extends ValueWidget {
-  NumberWidget(OnValueChange onValueChange, OnSubmit onSubmit,
-      String initialValue, String error)
-      : super(onValueChange, onSubmit, initialValue, error);
+  NumberWidget(
+      OnValueChange onValueChange, OnSubmit onSubmit, String initialValue)
+      : super(onValueChange, onSubmit, initialValue);
 
   @override
   State createState() => _NumberInputState();
@@ -16,8 +16,6 @@ class _NumberInputState extends State<NumberWidget> {
   OnValueChange get onValueChange => widget.onValueChange;
 
   OnSubmit get onSubmit => widget.onSubmit;
-
-  String get error => widget.error;
 
   String get initialValue => widget.initialValue;
 
@@ -44,7 +42,6 @@ class _NumberInputState extends State<NumberWidget> {
           keyboardType: TextInputType.number,
           controller: controller,
         ),
-        error != null ? Text(error) : SizedBox.shrink()
       ],
     );
   }

@@ -6,8 +6,8 @@ class RadioWidget extends ValueWidget {
   final List<SubmissionChoice> choices;
 
   RadioWidget(OnValueChange onValueChange, OnSubmit onSubmit,
-      String initialValue, String error, this.choices)
-      : super(onValueChange, onSubmit, initialValue, error);
+      String initialValue, this.choices)
+      : super(onValueChange, onSubmit, initialValue);
 
   @override
   State createState() => _RadioState();
@@ -20,14 +20,11 @@ class _RadioState extends State<RadioWidget> {
 
   OnSubmit get onSubmit => widget.onSubmit;
 
-  String get error => widget.error;
-
   String get initialValue => widget.initialValue;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: List<Widget>.of(choices.map((choice) {
+    return Column(children: List<Widget>.of(choices.map((choice) {
       return RadioListTile<String>(
         title: Text(choice.text),
         key: ValueKey(choice.text),
@@ -37,7 +34,6 @@ class _RadioState extends State<RadioWidget> {
           onValueChange(value);
         },
       );
-    }))
-          ..add(Text(error ?? "")));
+    })));
   }
 }

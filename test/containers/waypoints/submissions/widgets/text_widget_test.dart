@@ -15,7 +15,7 @@ void main() {
     String value;
 
     await tester.pumpWidget(
-        MaterialWrapper((c) => build(SubmissionType.text, null, (newValue) {
+        MaterialWrapper((c) => build(SubmissionType.text, (newValue) {
               value = newValue;
             }, (_) {})));
 
@@ -25,7 +25,7 @@ void main() {
     expect(value, testText);
   });
 
- /* testWidgets('TextField clicked button', (WidgetTester tester) async {
+  /* testWidgets('TextField clicked button', (WidgetTester tester) async {
     bool clicked;
 
     await tester.pumpWidget(

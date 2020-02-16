@@ -8,7 +8,6 @@ abstract class ValueWidget extends StatefulWidget {
   final OnValueChange onValueChange;
   final OnSubmit onSubmit;
   final initialValue;
-  final String error;
 
-  ValueWidget(this.onValueChange, this.onSubmit, this.initialValue, this.error);
+  ValueWidget(this.onValueChange, this.onSubmit, this.initialValue);
 }

@@ -6,9 +6,8 @@ class CheckboxWidget extends ValueWidget {
   final List<SubmissionChoice> choices;
 
   CheckboxWidget(OnValueChange onValueChange, OnSubmit onSubmit,
-      List<String> initialValue, String error, this.choices)
-      : super(onValueChange, onSubmit, initialValue ?? List<String>.of([]),
-            error);
+      List<String> initialValue, this.choices)
+      : super(onValueChange, onSubmit, initialValue ?? List<String>.of([]));
 
   @override
   State createState() => _ChoiceInputState();
@@ -21,14 +20,11 @@ class _ChoiceInputState extends State<CheckboxWidget> {
 
   OnSubmit get onSubmit => widget.onSubmit;
 
-  String get error => widget.error;
-
   List<String> get initialValue => widget.initialValue;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: List<Widget>.of(choices.map((choice) {
+    return Column(children: List<Widget>.of(choices.map((choice) {
       return CheckboxListTile(
         key: ValueKey(choice.text),
         value: initialValue.contains(choice.text),
@@ -41,7 +37,6 @@ class _ChoiceInputState extends State<CheckboxWidget> {
           onValueChange(initialValue);
         },
       );
-    }))
-          ..add(Text(error ?? "")));
+    })));
   }
 }

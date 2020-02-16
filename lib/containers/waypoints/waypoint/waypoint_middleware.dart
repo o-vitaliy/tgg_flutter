@@ -52,15 +52,15 @@ Middleware<AppState> _submit() {
 
       final List<String> incorrectAnswers = new List<String>();
       waypoint.items.forEach((item) {
-        final typeString = item.submission.type;
+        final subType = item.submission.type;
 
-        daoAnswer.insert(waypointId, typeString, _answerToString(item.answer));
+        daoAnswer.insert(waypointId, subType, _answerToString(item.answer));
 
-        final type =
+        final behaviourType =
             BehaviorTypeHelper.fromString(waypoint.waypoint.step.behavior.id);
-        String error = validate(type, item.answer, item.submission.choices);
+        String error =
+            validate(behaviourType, item.answer, item.submission.choices);
         if (error != null) incorrectAnswers.add(item.answer);
-        store.dispatch(WaypointShowError(error, item.submission));
       });
 
       if (incorrectAnswers.isEmpty) {

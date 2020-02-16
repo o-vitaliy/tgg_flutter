@@ -5,12 +5,10 @@ import 'package:tgg/models/waypoints/waypoint_submission.dart';
 class WaypointSubmissionItem {
   final WaypointSubmission submission;
   final answer;
-  final String error;
 
   WaypointSubmissionItem({
     @required this.submission,
     this.answer,
-    this.error,
   });
 
   WaypointSubmissionItem copyWith({
@@ -22,7 +20,6 @@ class WaypointSubmissionItem {
       WaypointSubmissionItem(
         submission: submission ?? this.submission,
         answer: answer ?? this.answer,
-        error: error != null ? error.orNull : this.error,
       );
 
   factory WaypointSubmissionItem.initial(WaypointSubmission submission) {

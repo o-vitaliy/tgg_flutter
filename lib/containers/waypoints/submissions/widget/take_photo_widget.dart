@@ -4,9 +4,9 @@ import 'package:tgg/containers/waypoints/submissions/widget/value_widget.dart';
 import 'media_launcer.dart';
 
 class TakePhotoWidget extends ValueWidget {
-  TakePhotoWidget(OnValueChange onValueChange, OnSubmit onSubmit,
-      String initialValue, String error)
-      : super(onValueChange, onSubmit, initialValue, error);
+  TakePhotoWidget(
+      OnValueChange onValueChange, OnSubmit onSubmit, String initialValue)
+      : super(onValueChange, onSubmit, initialValue);
 
   @override
   State createState() => _TakePhotoInputState();
@@ -16,8 +16,6 @@ class _TakePhotoInputState extends State<TakePhotoWidget> {
   OnValueChange get onValueChange => widget.onValueChange;
 
   OnSubmit get onSubmit => widget.onSubmit;
-
-  String get error => widget.error;
 
   String get initialValue => widget.initialValue;
 
@@ -35,7 +33,6 @@ class _TakePhotoInputState extends State<TakePhotoWidget> {
           child: Text("Take photo"),
           onPressed: _takePhoto,
         ),
-        error != null ? Text(error) : SizedBox.shrink(),
       ],
     );
   }

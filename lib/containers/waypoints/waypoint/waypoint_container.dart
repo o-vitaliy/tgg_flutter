@@ -98,14 +98,12 @@ class _ViewModel {
     final WidgetsBuilder builder = (BuildContext context) {
       return items.map((item) {
         final type = SubmissionTypeHelper.fromString(item.submission.type);
-        final error = item.error;
         final answer = item.answer;
         final OnValueChange onChange = (value) {
           store.dispatch(WaypointUpdateAnswer(value, item.submission));
         };
         return build(
           type,
-          error,
           onChange,
           onSubmit,
           value: answer,

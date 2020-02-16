@@ -12,8 +12,6 @@ class PlaythroughRepo {
 
   PlaythroughRepo({@required this.apiProvider, @required this.staticRepo});
 
-  Future<Game> getGame() async {}
-
   Future<Playthrough> getPlaythrough(String playthroughId) async {
     final response = await apiProvider.playthroughs(playthroughId);
     final map = json.decode(response);

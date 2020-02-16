@@ -3,8 +3,8 @@ import 'package:tgg/containers/waypoints/submissions/widget/value_widget.dart';
 
 class TextWidget extends ValueWidget {
   TextWidget(OnValueChange onValueChange, OnSubmit onSubmit,
-      String initialValue, String error)
-      : super(onValueChange, onSubmit, initialValue, error);
+      String initialValue)
+      : super(onValueChange, onSubmit, initialValue);
 
   @override
   State createState() => _TextInputState();
@@ -16,8 +16,6 @@ class _TextInputState extends State<TextWidget> {
   OnValueChange get onValueChange => widget.onValueChange;
 
   OnSubmit get onSubmit => widget.onSubmit;
-
-  String get error => widget.error;
 
   String get initialValue => widget.initialValue;
 
@@ -43,7 +41,6 @@ class _TextInputState extends State<TextWidget> {
         TextField(
           controller: controller,
         ),
-        error != null ? Text(error) : SizedBox.shrink(),
       ],
     );
   }
