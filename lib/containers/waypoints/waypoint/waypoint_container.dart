@@ -3,7 +3,6 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/common/flavor/flavor.dart';
-import 'package:tgg/containers/waypoints/submissions/submission_types.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/value_widget.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_actions.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
@@ -104,17 +103,13 @@ class _ViewModel {
 
     final WidgetsBuilder builder = (BuildContext context) {
       return items.map((item) {
-        final type = SubmissionTypeHelper.fromString(item.submission.type);
-        final answer = item.answer;
         final OnValueChange onChange = (value) {
           store.dispatch(WaypointUpdateAnswer(item.id, value, item.submission));
         };
         return build(
-          type,
+          item,
           onChange,
           onSubmit,
-          value: answer,
-          variants: item.submission.choices,
         );
       });
     };

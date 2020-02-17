@@ -142,8 +142,11 @@ Middleware<AppState> _createTakePhotoMiddleware() {
 }
 
 void _initializeNewController(Store store, CameraDescription current) async {
+  final CameraState state = store.state.cameraState;
+  final quality = state.captureArgs.videoParams.quality;
+
   CameraController controller =
-      CameraController(current, ResolutionPreset.high, enableAudio: false);
+      CameraController(current, getPreset(quality), enableAudio: false);
 
   await controller.initialize();
   store.dispatch(InitializedCameraControllerAction(controller));
@@ -176,3 +179,16 @@ Future<String> getVideoTmpFile() {
 }
 
 String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
+
+ResolutionPreset getPreset(String quality) {
+  switch (quality) {
+    case "low":
+      return ResolutionPreset.low;
+    case "med":
+      return ResolutionPreset.medium;
+    case "high":
+      return ResolutionPreset.high;
+    default:
+      return ResolutionPreset.medium;
+  }
+}

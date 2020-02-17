@@ -17,10 +17,11 @@ final cameraReducer = combineReducers<CameraState>([
 ]);
 
 CameraState _initCamera(CameraState state, action) {
+  final args = (action as InitCameraAction).args;
   return CameraState(
-      captureArgs: (action as InitCameraAction).args,
+      captureArgs: args,
       key: (action as InitCameraAction).state,
-      timerDuration: Duration(seconds: 30),
+      timerDuration: Duration(seconds: args.videoParams.length),
       files: List<String>(),
       processingResult: false,
       isRecordingVideo: false,

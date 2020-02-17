@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:tgg/containers/camera/camera_capture_mode.dart';
-
+import 'package:tgg/models/waypoints/video_params.dart';
 
 class ImagePreviewArguments {
   final String preview;
@@ -15,6 +15,9 @@ class ImagePreviewArguments {
 
 class CaptureArguments {
   final CameraCaptureMode mode;
+  final VideoParams videoParams;
 
-  CaptureArguments({@required this.mode}) : assert(mode != null);
+  CaptureArguments({@required this.mode, @required this.videoParams})
+      : assert(mode != null),
+        assert(videoParams != null);
 }

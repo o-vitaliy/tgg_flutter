@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/value_widget.dart';
+import 'package:tgg/models/waypoints/video_params.dart';
 
 import 'media_launcer.dart';
 
 class TakePhotoWidget extends StatelessValueWidget {
-  TakePhotoWidget(
-      OnValueChange onValueChange, OnSubmit onSubmit, String initialValue,
+  final bool allowGallery;
+  final VideoParams videoParams;
+
+  TakePhotoWidget(OnValueChange onValueChange, OnSubmit onSubmit,
+      String initialValue, this.allowGallery, this.videoParams,
       {Key key})
       : super(onValueChange, onSubmit, initialValue, key: key);
 
@@ -23,7 +27,7 @@ class TakePhotoWidget extends StatelessValueWidget {
   }
 
   _takePhoto(BuildContext context) async {
-    MediaLauncher.startPhoto(context, false).then((value) {
+    MediaLauncher.startPhoto(context, allowGallery, videoParams).then((value) {
       if (value != null) {
         onValueChange(value);
       }

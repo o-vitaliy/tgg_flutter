@@ -8,6 +8,10 @@ bool getBoolValue(step, String key) {
   return getValue(step, key, (v) => v) ?? false;
 }
 
+String getStringValue(step, String key) {
+  return getValue(step, key, (v) => v);
+}
+
 T getValue<T>(step, String key, T Function(dynamic v) transformer) {
   final value = getAt(step, "content.$key");
   if (value != null) return transformer(value);

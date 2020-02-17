@@ -35,7 +35,7 @@ class CameraState {
       (captureArgs?.mode != CameraCaptureMode.PHOTO) && !isRecordingVideo;
 
   bool get showPauseRecordingButton =>
-      isRecordingVideo && captureArgs?.mode == CameraCaptureMode.MULTI_VIDEO;
+      isRecordingVideo && captureArgs?.videoParams?.pauseRecord == true;
 
   bool get showStopRecordingButton {
     if (captureArgs?.mode == CameraCaptureMode.PHOTO) return false;

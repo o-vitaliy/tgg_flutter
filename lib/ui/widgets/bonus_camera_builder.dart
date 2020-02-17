@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tgg/containers/camera/camera_capture_mode.dart';
 import 'package:tgg/containers/camera/camera_container.dart';
+import 'package:tgg/models/waypoints/video_params.dart';
 import 'package:tgg/ui/pages/pages.dart';
 
 typedef ButtonBuilder = Widget Function(
@@ -26,13 +27,9 @@ class BonusCameraBuilder extends StatelessWidget {
                         startBonusCamera(context, CameraCaptureMode.PHOTO),
                     child: Text("Photo")),
                 FlatButton(
-                    onPressed: () => startBonusCamera(
-                        context, CameraCaptureMode.SINGE_VIDEO),
+                    onPressed: () =>
+                        startBonusCamera(context, CameraCaptureMode.VIDEO),
                     child: Text("Video")),
-                FlatButton(
-                    onPressed: () => startBonusCamera(
-                        context, CameraCaptureMode.MULTI_VIDEO),
-                    child: Text("PausableVideo")),
               ],
             ).build(context));
   }
@@ -40,6 +37,7 @@ class BonusCameraBuilder extends StatelessWidget {
   void startBonusCamera(BuildContext context, CameraCaptureMode mode) {
     Navigator.of(context).pop();
     Navigator.pushNamed(context, CameraContainer.routeName,
-        arguments: CaptureArguments(mode: mode));
+        arguments:
+            CaptureArguments(mode: mode, videoParams: VideoParams.defaults()));
   }
 }

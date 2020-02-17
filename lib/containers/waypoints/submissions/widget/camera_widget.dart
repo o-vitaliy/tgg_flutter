@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/media_launcer.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/value_widget.dart';
+import 'package:tgg/models/waypoints/video_params.dart';
 
 class CameraWidget extends StatelessValueWidget {
-  CameraWidget(
-      OnValueChange onValueChange, OnSubmit onSubmit, String initialValue,
+  final bool allowGallery;
+  final VideoParams videoParams;
+
+  CameraWidget(OnValueChange onValueChange, OnSubmit onSubmit,
+      String initialValue, this.allowGallery, this.videoParams,
       {Key key})
       : super(onValueChange, onSubmit, initialValue, key: key);
 
@@ -22,6 +26,7 @@ class CameraWidget extends StatelessValueWidget {
   }
 
   void _captureMedia(BuildContext context) async {
-    MediaLauncher.startCamera(context, false).then(onValueChange);
+    MediaLauncher.startCamera(context, allowGallery, videoParams)
+        .then(onValueChange);
   }
 }

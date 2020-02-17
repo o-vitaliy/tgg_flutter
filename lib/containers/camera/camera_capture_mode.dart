@@ -1,3 +1,3 @@
-enum CameraCaptureMode { PHOTO, SINGE_VIDEO, MULTI_VIDEO }
+enum CameraCaptureMode { PHOTO, VIDEO }
 
 enum MediaSource { gallery, camera }

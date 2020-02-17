@@ -5,40 +5,44 @@ import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tgg/containers/camera/camera_capture_mode.dart';
 import 'package:tgg/containers/camera/camera_container.dart';
+import 'package:tgg/models/waypoints/video_params.dart';
 import 'package:tgg/ui/pages/navigation_arguments.dart';
 
 class MediaLauncher {
   static Future<String> startCamera(
     BuildContext context,
     bool galleryEnabled,
+    VideoParams videoParams,
   ) async {
     final CameraCaptureMode mode = await _selectCaptureMode(context);
     final entry = await _selectMediaSource(context, mode, galleryEnabled);
-    return _startMediaPicking(context, entry.key, entry.value);
+    return _startMediaPicking(context, entry.key, entry.value, videoParams);
   }
 
   static Future<String> startPhoto(
     BuildContext context,
     bool galleryEnabled,
+    VideoParams videoParams,
   ) async {
     final entry = await _selectMediaSource(
       context,
       CameraCaptureMode.PHOTO,
       galleryEnabled,
     );
-    return _startMediaPicking(context, entry.key, entry.value);
+    return _startMediaPicking(context, entry.key, entry.value, videoParams);
   }
 
   static Future<String> startVideo(
     BuildContext context,
     bool galleryEnabled,
+    VideoParams videoParams,
   ) async {
     final entry = await _selectMediaSource(
       context,
-      CameraCaptureMode.SINGE_VIDEO,
+      CameraCaptureMode.VIDEO,
       galleryEnabled,
     );
-    return _startMediaPicking(context, entry.key, entry.value);
+    return _startMediaPicking(context, entry.key, entry.value, videoParams);
   }
 
   static Future<CameraCaptureMode> _selectCaptureMode(BuildContext context) {
@@ -54,7 +58,7 @@ class MediaLauncher {
                     child: Text("Photo")),
                 FlatButton(
                     onPressed: () =>
-                        Navigator.pop(context, CameraCaptureMode.SINGE_VIDEO),
+                        Navigator.pop(context, CameraCaptureMode.VIDEO),
                     child: Text("Video")),
               ],
             ).build(context));
@@ -89,11 +93,13 @@ class MediaLauncher {
     BuildContext context,
     CameraCaptureMode cameraCaptureMode,
     MediaSource mediaSource,
+    VideoParams videoParams,
   ) async {
     if (mediaSource == MediaSource.camera) {
       final Future result = Navigator.pushNamed(
           context, CameraContainer.routeName,
-          arguments: CaptureArguments(mode: cameraCaptureMode));
+          arguments: CaptureArguments(
+              mode: cameraCaptureMode, videoParams: videoParams));
       final r = await result;
       return r;
     } else {
