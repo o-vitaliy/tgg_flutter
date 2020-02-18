@@ -33,9 +33,8 @@ class HomeTab extends StatelessWidget {
   }
 
   Widget logoutButton(BuildContext context) {
-    //final LoginBloc authenticationBloc = BlocProvider.of<LoginBloc>(context);
     return RaisedButton(
-        onPressed: logout, //authenticationBloc.dispatch(Logout()),
+        onPressed: logout,
         child:
             Padding(padding: EdgeInsets.only(left: 8), child: Text("Logout")),
         textColor: Colors.white);

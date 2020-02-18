@@ -27,6 +27,11 @@ Validator getValidator(BehaviorType type) {
     case BehaviorType.movie_and_text:
     case BehaviorType.movie_pair:
     case BehaviorType.camera:
+    case BehaviorType.profile_team_name:
+    case BehaviorType.profile_phone:
+    case BehaviorType.profile_multiple_choice:
+    case BehaviorType.profile_other:
+    case BehaviorType.profile_photo:
       return NoValidator();
     default:
       throw ArgumentError("unsupported type $type");

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/value_widget.dart';
 import 'package:tgg/models/waypoints/video_params.dart';
 
+import 'decoration.dart';
 import 'media_launcer.dart';
 
 class TakePhotoWidget extends StatelessValueWidget {
@@ -15,14 +16,25 @@ class TakePhotoWidget extends StatelessValueWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Text(initialValue ?? "image is not selected"),
-        RaisedButton(
-          child: Text("Take photo"),
-          onPressed: () => _takePhoto(context),
+    return Material(
+      shape: DashRectPainter(),
+      color: Color.fromARGB(0, 0, 0, 0),
+      child: InkWell(
+        onTap: () => _takePhoto(context),
+        child: Container(
+          height: 160,
+          child: Stack(
+            children: <Widget>[
+              Center(
+                child: Text(
+                  "Tap to take photo",
+                  style: TextStyle(color: const Color(0xFF999999)),
+                ),
+              ),
+            ],
+          ),
         ),
-      ],
+      ),
     );
   }
 

@@ -21,6 +21,17 @@ final mockedVideoDefaults = """
 {"id":"5e33237ad71f100020fd24e0","title":"movie","instructions":"Submit a movie, no caption.","position":0,"mission_id":"5e331e72d71f100020fd24d1","behavior":{"id":"movie","title":"Movie","description":"Submit a movie, no caption.","fields":[{"name":"success_message","type":"text","label":"Success message","required":false},{"name":"timelimit","type":"int","label":"Time limit","default":null,"required":false,"placeholder":"Time limit (in minutes)"},{"name":"video_max_length","type":"int","default":30,"label":"Max video length","placeholder":"(seconds)","required":false},{"name":"video_quality","type":"select","options":[{"value":"med","label":"Medium (480p)"},{"value":"high","label":"High (720p)"},{"value":"very high","label":"Very High (1080p)"}],"label":"Video quality","default":"med","required":false},{"name":"video_pause_record","type":"bool","default":false,"label":"Pause record","required":false},{"name":"video_disable_rotation","type":"bool","default":false,"label":"Video Disable Rotation","required":false},{"name":"select_gallery_media_enabled","type":"bool","default":false,"label":"Allow submission from existing media","required":false},{"name":"presentation_text","type":"text:long","label":"Presentation text","required":false,"placeholder":"Presentation Text"},{"name":"presentation_image","type":"upload","label":"Presentation image","required":false,"placeholder":"Image key","object_key":"media_key","s3":{"bucket":"gogame-breadcrumb-display-media","folder":"GameShow"}},{"name":"presentation_title","type":"text","label":"Presentation title","required":false,"placeholder":"Presentation Title (overrides mission step title)"},{"name":"display_answer","type":"text","label":"GGP Display answer","required":false,"placeholder":"Correct display answer. Will display on screen view"},{"name":"question_type","type":"text","label":"GGP Question type","required":false,"placeholder":"Question type"},{"name":"timer","type":"int","label":"GGP Timer","required":false},{"name":"stop_auto_play","type":"bool","default":false,"label":"GGP Stop autoplay","required":false},{"name":"is_one_time_mission","type":"bool","default":false,"label":"Is Mission available only once per playthrough","required":false}],"submission_type":"movie"},"scoring":0}
 """;
 
+final mockedPlaceholderInContent = """
+{"id":"5e42b07dd71f1000102ca16b","title":"A text submission","instructions":"A text submission, anything will be correct.","position":0,"mission_id":"5e42b069d71f1000102ca16a","behavior":{"id":"profile_team_name","title":"Profile: Team Name","description":"Team's submission for this mission is assigned as their team name.","fields":[{"name":"success_message","type":"text","label":"Success message","required":false},{"name":"presentation_text","type":"text:long","label":"Presentation text","required":false,"placeholder":"Presentation Text"},{"name":"presentation_image","type":"upload","label":"Presentation image","required":false,"placeholder":"Image key","object_key":"media_key","s3":{"bucket":"gogame-breadcrumb-display-media","folder":"GameShow"}},{"name":"presentation_title","type":"text","label":"Presentation title","required":false,"placeholder":"Presentation Title (overrides mission step title)"},{"name":"display_answer","type":"text","label":"GGP Display answer","required":false,"placeholder":"Correct display answer. Will display on screen view"},{"name":"question_type","type":"text","label":"GGP Question type","required":false,"placeholder":"Question type"},{"name":"timer","type":"int","label":"GGP Timer","required":false},{"name":"stop_auto_play","type":"bool","default":false,"label":"GGP Stop autoplay","required":false},{"name":"teamname_placeholder","type":"text","label":"Placeholder for TeamName field","default":"Team name","required":false,"placeholder":"Team Name"},{"name":"is_one_time_mission","type":"bool","default":false,"label":"Is Mission available only once per playthrough","required":false}],"submission_type":{"type":"text","default_placeholder":"Team name","placeholder":"content.teamname_placeholder"}},"content":{"teamname_placeholder":"First name"},"scoring":0}
+    """;
+
+final mockedPlaceholderDefault = """
+{"id":"5e42b07dd71f1000102ca16b","title":"A text submission","instructions":"A text submission, anything will be correct.","position":0,"mission_id":"5e42b069d71f1000102ca16a","behavior":{"id":"profile_team_name","title":"Profile: Team Name","description":"Team's submission for this mission is assigned as their team name.","fields":[{"name":"success_message","type":"text","label":"Success message","required":false},{"name":"presentation_text","type":"text:long","label":"Presentation text","required":false,"placeholder":"Presentation Text"},{"name":"presentation_image","type":"upload","label":"Presentation image","required":false,"placeholder":"Image key","object_key":"media_key","s3":{"bucket":"gogame-breadcrumb-display-media","folder":"GameShow"}},{"name":"presentation_title","type":"text","label":"Presentation title","required":false,"placeholder":"Presentation Title (overrides mission step title)"},{"name":"display_answer","type":"text","label":"GGP Display answer","required":false,"placeholder":"Correct display answer. Will display on screen view"},{"name":"question_type","type":"text","label":"GGP Question type","required":false,"placeholder":"Question type"},{"name":"timer","type":"int","label":"GGP Timer","required":false},{"name":"stop_auto_play","type":"bool","default":false,"label":"GGP Stop autoplay","required":false},{"name":"teamname_placeholder","type":"text","label":"Placeholder for TeamName field","default":"Team name","required":false,"placeholder":"Team Name"},{"name":"is_one_time_mission","type":"bool","default":false,"label":"Is Mission available only once per playthrough","required":false}],"submission_type":{"type":"text","default_placeholder":"Team name"}},"scoring":0}
+    """;
+final mockedPlaceholder = """
+{"id":"5e4aebd8d71f10001fb8fa40","title":"Phone number","instructions":"*","position":1,"mission_id":"5e42b069d71f1000102ca16a","behavior":{"id":"profile_phone","title":"Profile: Phone Number","description":"Team's submission is logged as their phone number.","fields":[{"name":"success_message","type":"text","label":"Success message","required":false},{"name":"presentation_text","type":"text:long","label":"Presentation text","required":false,"placeholder":"Presentation Text"},{"name":"presentation_image","type":"upload","label":"Presentation image","required":false,"placeholder":"Image key","object_key":"media_key","s3":{"bucket":"gogame-breadcrumb-display-media","folder":"GameShow"}},{"name":"presentation_title","type":"text","label":"Presentation title","required":false,"placeholder":"Presentation Title (overrides mission step title)"},{"name":"display_answer","type":"text","label":"GGP Display answer","required":false,"placeholder":"Correct display answer. Will display on screen view"},{"name":"question_type","type":"text","label":"GGP Question type","required":false,"placeholder":"Question type"},{"name":"timer","type":"int","label":"GGP Timer","required":false},{"name":"stop_auto_play","type":"bool","default":false,"label":"GGP Stop autoplay","required":false},{"name":"is_one_time_mission","type":"bool","default":false,"label":"Is Mission available only once per playthrough","required":false}],"submission_type":[{"type":"number","placeholder":"Phone number"}]},"content":{},"scoring":0}
+    """;
+
 final mockedNotOptional = mockedWithGallery;
 
 main() {
@@ -90,6 +101,26 @@ main() {
       final map = json.decode(mockedVideoDefaults);
       final result = WaypointStep.fromJsonMap(map);
       expect(result.behavior.submissionType[0].videoParams.pauseRecord, false);
+    });
+  });
+
+  group("placeholder ", () {
+    test("in content", () {
+      final map = json.decode(mockedPlaceholderInContent);
+      final result = WaypointStep.fromJsonMap(map);
+      expect(result.behavior.submissionType[0].placeholder, "First name");
+    });
+
+    test("default", () {
+      final map = json.decode(mockedPlaceholderDefault);
+      final result = WaypointStep.fromJsonMap(map);
+      expect(result.behavior.submissionType[0].placeholder, "Team name");
+    });
+
+    test("value", () {
+      final map = json.decode(mockedPlaceholder);
+      final result = WaypointStep.fromJsonMap(map);
+      expect(result.behavior.submissionType[0].placeholder, "Phone number");
     });
   });
 }

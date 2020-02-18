@@ -15,6 +15,12 @@ enum BehaviorType {
   movie_and_text,
   movie_pair,
   camera,
+
+  profile_team_name,
+  profile_phone,
+  profile_other,
+  profile_multiple_choice,
+  profile_photo,
 }
 
 class BehaviorTypeHelper {
@@ -47,6 +53,11 @@ class BehaviorTypeHelper {
       case BehaviorType.movie_and_text:
       case BehaviorType.movie_pair:
       case BehaviorType.camera:
+      case BehaviorType.profile_team_name:
+      case BehaviorType.profile_phone:
+      case BehaviorType.profile_other:
+      case BehaviorType.profile_multiple_choice:
+      case BehaviorType.profile_photo:
         return false;
 
       default:

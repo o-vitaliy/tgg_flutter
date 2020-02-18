@@ -6,7 +6,6 @@ import 'package:tgg/models/waypoints/waypoint_parser_utils.dart';
 
 class WaypointSubmission {
   final String type;
-  final String defaultPlaceholder;
   final String placeholder;
   final choices;
   final bool galleryEnabled;
@@ -15,7 +14,6 @@ class WaypointSubmission {
 
   WaypointSubmission._({
     @required this.type,
-    this.defaultPlaceholder,
     this.placeholder,
     @required this.choices,
     @required this.galleryEnabled,
@@ -38,8 +36,7 @@ class WaypointSubmission {
   static WaypointSubmission _fromMap(Map<String, dynamic> map, {step}) {
     return WaypointSubmission._(
       type: map["type"],
-      defaultPlaceholder: map["default_placeholder"],
-      placeholder: map["placeholder"],
+      placeholder: _getPlaceholder(map, step),
       choices: SubmissionChoice.from(getAt(step, map["choices"])) ??
           _getTextVariants(step),
       galleryEnabled: _getGalleryEnabled(step),
@@ -90,16 +87,23 @@ class WaypointSubmission {
     return variants != null ? List<String>.from(variants) : null;
   }
 
+  static String _getPlaceholder(map, step) {
+    final String placeholder = map["placeholder"];
+    if (placeholder != null) {
+      return getAt(step, placeholder) ?? placeholder;
+    } else {
+      return map["default_placeholder"];
+    }
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is WaypointSubmission &&
           runtimeType == other.runtimeType &&
           type == other.type &&
-          defaultPlaceholder == other.defaultPlaceholder &&
           placeholder == other.placeholder;
 
   @override
-  int get hashCode =>
-      type.hashCode ^ defaultPlaceholder.hashCode ^ placeholder.hashCode;
+  int get hashCode => type.hashCode ^ type.hashCode ^ placeholder.hashCode;
 }

@@ -25,8 +25,11 @@ class WaypointContainer extends StatelessWidget {
         distinct: true,
         builder: (BuildContext context, _ViewModel vm) {
           final List<Widget> list = [
-            Text(vm.title),
-            MarkdownBody(data: vm.text)
+            Text(
+              vm.title,
+              textAlign: TextAlign.center,
+            ),
+            MarkdownBody(data: vm.text),
           ]
             ..addAll(vm.builder(context))
             ..add(getHintView(vm))
@@ -41,9 +44,14 @@ class WaypointContainer extends StatelessWidget {
               .toList();
 
           return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(16),
               child: Column(
-            children: items,
-          ));
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: items,
+              ),
+            ),
+          );
         });
   }
 

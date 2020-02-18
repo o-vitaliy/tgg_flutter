@@ -22,13 +22,15 @@ Widget build(
   final variants = item.submission.choices;
   switch (type) {
     case SubmissionType.text:
-      return TextWidget(onValueChange, onSubmit, value, key: ValueKey(type));
+      return TextWidget(
+          onValueChange, onSubmit, value, item.submission.placeholder,
+          key: ValueKey(type));
     case SubmissionType.photo:
       return TakePhotoWidget(onValueChange, onSubmit, value,
           item.submission.galleryEnabled, item.submission.videoParams,
           key: ValueKey(type));
     case SubmissionType.number:
-      return NumberWidget(onValueChange, onSubmit, value, key: ValueKey(type));
+      return NumberWidget(onValueChange, onSubmit, value,  item.submission.placeholder, key: ValueKey(type));
     case SubmissionType.choice:
       return RadioWidget(onValueChange, onSubmit, value, variants,
           key: ValueKey(type));
