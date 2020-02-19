@@ -1,0 +1,309 @@
+{
+  "id": "5e07304dd71f10001a444b3b",
+  "name": "Native app test Vitaliy",
+  "pin": "kzk",
+  "slug": "native-app-test-vitaliy",
+  "task_id": null,
+  "status": 300,
+  "pause_message": null,
+  "is_active": true,
+  "is_real": false,
+  "is_archiving": false,
+  "num_teams": 97,
+  "started_at": "2019-12-28T13:51:20Z",
+  "end_at": null,
+  "ended_at": null,
+  "options": {
+    "upload_immediately": true
+  },
+  "gallery_is_public": false,
+  "gallery_url": null,
+  "gallery_password": null,
+  "gallery_archive_path": null,
+  "survey_is_enabled": true,
+  "survey_gameday_id": null,
+  "survey_hubspot_deal_id": null,
+  "tournament_media_archive_url": null,
+  "tournament_media_archive_waiting_emails": [],
+  "tournament_media_archive_sent_emails": [],
+  "tournament_media_archivation_task_id": null,
+  "game_id": "5d6580bcd71f10000e0552c9",
+  "game": {
+    "id": "5d6580bcd71f10000e0552c9",
+    "name": "test native app (DONT MESS WITH IT)",
+    "city": "Plovdiv, Bulgaria",
+    "city_location": [
+      24.74529039999993,
+      42.1354079
+    ],
+    "type": "game",
+    "updated_at": "2019-12-28T13:51:23Z",
+    "updated_by": "Tech Dev",
+    "last_ran_at": "2019-12-28T13:51:20Z",
+    "organization_id": 15,
+    "deal_type": null,
+    "title": "test native app",
+    "template": null,
+    "gamezone": null,
+    "blueprint": {
+      "id": "gogame",
+      "title": "Classic Game",
+      "version": 1,
+      "categories": [
+        {
+          "id": "sneak",
+          "title": "Sneak",
+          "icon": "fa-search",
+          "sort_order": null
+        },
+        {
+          "id": "plant",
+          "title": "Plant",
+          "icon": "fa-user",
+          "sort_order": null
+        },
+        {
+          "id": "creative",
+          "title": "Creative",
+          "icon": "fa-camera",
+          "sort_order": null
+        },
+        {
+          "id": "trivia",
+          "title": "Trivia",
+          "icon": "fa-question",
+          "sort_order": null
+        },
+        {
+          "id": "intro",
+          "title": "Intro",
+          "icon": "fa-briefcase",
+          "sort_order": null
+        },
+        {
+          "id": "recall",
+          "title": "Recall",
+          "icon": "fa-bell",
+          "sort_order": null
+        },
+        {
+          "id": "brainburner",
+          "title": "Brain Burner",
+          "icon": "fa-lightbulb",
+          "sort_order": null
+        },
+        {
+          "id": "anytime",
+          "title": "Anytime",
+          "icon": "fa-bars",
+          "sort_order": null
+        },
+        {
+          "id": "camera",
+          "title": "Bonus Cam",
+          "icon": "fa-eye",
+          "sort_order": null
+        },
+        {
+          "id": "head_to_head",
+          "title": "Head to Head",
+          "icon": "fa-users",
+          "sort_order": null
+        },
+        {
+          "id": "filler",
+          "title": "Filler",
+          "icon": "fa-lemon",
+          "sort_order": null
+        },
+        {
+          "id": "unrouted",
+          "title": "Unrouted",
+          "icon": "fa-ellipsis-h",
+          "sort_order": null
+        }
+      ],
+      "roles": [
+        {
+          "name": "main",
+          "title": "Main",
+          "modes": [
+            "main",
+            "head_to_head",
+            "camera",
+            "anytime"
+          ],
+          "voting": true,
+          "login_roles": [
+            "camera"
+          ]
+        },
+        {
+          "name": "camera",
+          "title": "Bonus Cam",
+          "modes": [
+            "camera"
+          ],
+          "voting": false
+        }
+      ],
+      "routing": {
+        "version": 1,
+        "votables": {
+          "max": null
+        },
+        "modes": [
+          {
+            "name": "main",
+            "title": "Main",
+            "icon": "icon-screenshot",
+            "type": "routed",
+            "features": {
+              "route_ahead": 2
+            },
+            "rules": [
+              {
+                "category": "411",
+                "sort": "priority"
+              },
+              {
+                "category": "sneak",
+                "sort": "spread, priority, distance",
+                "max": 1
+              },
+              {
+                "category": "plant",
+                "sort": "cluster",
+                "timer": true,
+                "max": 4,
+                "allow_repeat": false
+              },
+              {
+                "category": "creative",
+                "max": 3,
+                "timer": true,
+                "sort": "priority, spread",
+                "allow_repeat": false
+              },
+              {
+                "category": "trivia",
+                "max": 5,
+                "timer": true,
+                "allow_repeat": false,
+                "sort": "priority, random"
+              },
+              {
+                "category": "sneak",
+                "sort": "cluster"
+              },
+              {
+                "category": "trivia",
+                "sort": "priority, random"
+              },
+              {
+                "category": "brainburner",
+                "sort": "priority, random"
+              }
+            ],
+            "sorting": {
+              "cluster": [
+                {
+                  "has_location": true,
+                  "is_nearby": true,
+                  "sort": "priority, distance"
+                },
+                {
+                  "has_location": false,
+                  "sort": "priority, spread"
+                },
+                {
+                  "has_location": true,
+                  "is_nearby": false,
+                  "sort": "distance"
+                }
+              ]
+            },
+            "categories": [
+              "sneak",
+              "plant",
+              "creative",
+              "trivia",
+              "411",
+              "recall",
+              "brainburner",
+              "filler",
+              "unrouted"
+            ]
+          },
+          {
+            "name": "head_to_head",
+            "title": "H2H",
+            "icon": "icon-group",
+            "type": "challenge",
+            "category": "head_to_head",
+            "enabled": true,
+            "delay": 10,
+            "max_total": 5,
+            "max_per_team": 2
+          },
+          {
+            "name": "camera",
+            "type": "persistent",
+            "source": "queued",
+            "title": "Camera",
+            "category": "camera",
+            "icon": "icon-camera"
+          },
+          {
+            "name": "anytime",
+            "type": "persistent",
+            "source": "uncompleted",
+            "enabled": false,
+            "title": "Anytime",
+            "category": "anytime",
+            "icon": "icon-reorder"
+          }
+        ]
+      },
+      "category_default": "unrouted",
+      "options": {
+        "duration": 120
+      }
+    },
+    "created_at": "2019-08-27T13:35:42.894000Z",
+    "created_by": "Tech Dev",
+    "welcome_message": null,
+    "ended_message": null,
+    "ended_early_message": null,
+    "team_gated_message": null,
+    "info_message": null,
+    "notes": null,
+    "options": {
+      "is_social_enabled": false,
+      "points_for_sharing": 0,
+      "leaderboard_enabled": false,
+      "select_gallery_media_enabled": false,
+      "gallery_enabled": false,
+      "gallery_show_all_teams": false,
+      "video_quality": "med",
+      "video_max_length": 30,
+      "video_pause_record": null
+    },
+    "variables": {
+      "gameproducer": "Igor",
+      "clientname": "Igor Kurochka",
+      "endvenuename": null,
+      "endvenueaddress": "San Francisco Zoo"
+    },
+    "deal_id": 268375855,
+    "hull": null,
+    "center_location": [
+      24.74529039999993,
+      42.1354079
+    ],
+    "can_sync": true
+  },
+  "created_by_id": 104,
+  "updated_by_id": 104,
+  "organization_id": 1
+}

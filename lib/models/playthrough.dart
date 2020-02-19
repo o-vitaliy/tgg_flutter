@@ -1,3 +1,5 @@
+import 'package:tgg/models/playthrough_status.dart';
+
 import 'models.dart';
 
 class Playthrough {
@@ -5,11 +7,13 @@ class Playthrough {
   String id;
   String name;
   DateTime startedAt;
+  PlaythroughStatus status;
 
   Playthrough.fromJsonMap(Map<String, dynamic> map) {
     game = Game.fromJsonMap(map["game"]);
     id = map["id"];
     name = map["name"];
     startedAt = DateTime.parse(map["started_at"]);
+    status = PlaythroughStatusHelper.getFromInt(map["status"]);
   }
 }
