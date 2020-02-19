@@ -2,6 +2,7 @@ import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/actions/auth_actions.dart';
 import 'package:tgg/actions/login_actions.dart';
+import 'package:tgg/common/blueprint/blueprint_actions.dart';
 import 'package:tgg/common/flavor/flavor_actions.dart';
 import 'package:tgg/containers/waypoints/waypoints_actions.dart';
 import 'package:tgg/data/providers.dart';
@@ -62,11 +63,9 @@ void doAfterLogin(Store store, LoginResponse response) async {
   staticRepo.getFlavor(playthrough.game.blueprint.name).then((v) {
     store.dispatch(UpdateFlavorAction(v));
   });
+  store.dispatch(UpdateBlueprint(playthrough.game.blueprint));
   store.dispatch(new LogInSuccessful(
-    loginResponse: response,
-    playthrough: playthrough,
-    routing: routing
-  ));
+      loginResponse: response, playthrough: playthrough, routing: routing));
   store.dispatch(NavigateToAction.replace(HomePage.routeName));
   store.dispatch(WaypointsStartLoadAction());
 }

@@ -3,28 +3,17 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tgg/data/providers/api_provider.dart';
-import 'package:tgg/data/providers/static_api_provider.dart';
 import 'package:tgg/helpers/map_utils.dart';
 
 const defaultFlavor = "gogame";
 
 class StaticRepo {
-  final StaticApiProvider staticApiProvider;
   final ApiProvider apiProvider;
-  Map<String, dynamic> _blueprint;
   Map<String, dynamic> _flavor;
 
-  StaticRepo({@required this.staticApiProvider, @required this.apiProvider});
+  StaticRepo({@required this.apiProvider});
 
-  Future<Map<String, dynamic>> getBluePrint() async {
-    if (_blueprint == null) {
-      String response = await staticApiProvider.fetchBlueprint();
-      _blueprint = json.decode(response);
-    }
-    return _blueprint;
-  }
-
-  Future<Map<String, dynamic>> getFlavor(blueprintId) async {
+  Future<Map<String, dynamic>> getFlavor(String blueprintId) async {
     if (_flavor == null) {
       if (blueprintId == defaultFlavor) {
         _flavor = await loadFlavor(defaultFlavor).first;

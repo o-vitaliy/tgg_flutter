@@ -29,11 +29,9 @@ DaoAnswer daoAnswer = DaoAnswer(database);
 DaoWaypoint daoWaypoint = DaoWaypoint(database);
 
 // repos
-StaticRepo staticRepo =
-    StaticRepo(staticApiProvider: staticApiProvider, apiProvider: apiProvider);
+StaticRepo staticRepo = StaticRepo(apiProvider: apiProvider);
 LoginRepo loginRepo = LoginRepo(apiProvider: apiProvider, prefs: prefsProvider);
-PlaythroughRepo playthroughRepo =
-    PlaythroughRepo(apiProvider: apiProvider, staticRepo: staticRepo);
+PlaythroughRepo playthroughRepo = PlaythroughRepo(apiProvider: apiProvider);
 MediaRepo mediaRepo = MediaRepo(apiProvider: apiProvider, daoMedia: daoMedia);
 RoutingRepo routingRepo = RoutingRepo(apiProvider: apiProvider);
 

@@ -9,6 +9,7 @@ import 'package:tgg/containers/camera/camera_state.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
 import 'package:tgg/containers/waypoints/waypoints_state.dart';
 import 'package:tgg/helpers/theme_helper.dart';
+import 'package:tgg/models/blueprint_model.dart';
 import 'package:tgg/models/login_response.dart';
 import 'package:tgg/redux_model/login_state.dart';
 
@@ -26,6 +27,7 @@ class AppState {
   final WaypointsState waypointsState;
   final WaypointState waypointState;
   final Flavor flavor;
+  final BlueprintModel blueprint;
 
   AppState({
     @required this.themeData,
@@ -40,6 +42,7 @@ class AppState {
     @required this.waypointsState,
     @required this.waypointState,
     @required this.flavor,
+    @required this.blueprint,
   });
 
   factory AppState.initial() {
@@ -56,6 +59,7 @@ class AppState {
       waypointsState: WaypointsState.initial(),
       waypointState: null,
       flavor: Flavor.initial(),
+      blueprint: null,
     );
   }
 
@@ -73,6 +77,7 @@ class AppState {
       waypointsState: waypointsState ?? this.waypointsState,
       waypointState: waypointState ?? this.waypointState,
       flavor: flavor ?? this.flavor,
+      blueprint: blueprint ?? this.blueprint,
     );
   }
 }
