@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tgg/models/modes.dart';
@@ -45,6 +46,7 @@ class CollapsibleTabBar extends StatelessWidget {
         .map((data) => _CollapsibleTabBarItem(
             icon: data.icon,
             data: data.data,
+            title: data.title,
             clickCallback: data.clickCallback,
             selected: index++ == indexOfSelected))
         .toList();
@@ -129,7 +131,26 @@ class _CollapsibleTabBarItem extends StatelessWidget {
                       ? Theme.of(context).primaryColorDark
                       : Theme.of(context).primaryColor,
                   height: 56,
-                  child: Icon(IconMapper.map(icon)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Icon(
+                        IconMapper.map(icon),
+                        color: Colors.white,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4.0),
+                        child: title != null
+                            ? Text(
+                                title,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.white),
+                              )
+                            : SizedBox.shrink(),
+                      )
+                    ],
+                  ),
                 ))));
   }
 }

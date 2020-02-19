@@ -3,6 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/actions/auth_actions.dart';
 import 'package:tgg/actions/home_actions.dart';
+import 'package:tgg/common/flavor/flavor.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_container.dart';
 import 'package:tgg/containers/home/post_location_container.dart';
 import 'package:tgg/models/modes.dart';
@@ -43,7 +44,7 @@ class _HomeStateContent extends State<_HomePageContent> {
           converter: _ViewModel.fromStore,
           builder: (BuildContext context, _ViewModel vm) {
             return buildPage(
-                vm.selectedMode, vm.modes, vm.changeMode, vm.logout);
+                vm.flavor, vm.selectedMode, vm.modes, vm.changeMode, vm.logout);
           },
         ),
       ),
@@ -51,17 +52,18 @@ class _HomeStateContent extends State<_HomePageContent> {
   }
 
   Widget buildPage(
+    Flavor flavor,
     RouteMode selectedMode,
     List<RouteMode> modes,
     Function(RouteMode) changeMode,
     Function logout,
   ) {
     final homeTabBuilder =
-        (key) => HomeTab(modes, changeMode, logout, key: key);
+        (key) => HomeTab(flavor, modes, changeMode, logout, key: key);
     RouteTabMapper mapper = RouteTabMapper(homeTabBuilder: homeTabBuilder);
 
     return Column(children: <Widget>[
-      HomeToolbar(changeMode, modes, selectedMode),
+      HomeToolbar(flavor,changeMode, modes, selectedMode),
       UploadContainer(),
       Expanded(
         child: mapper.map(selectedMode?.name ?? "home"),
@@ -71,17 +73,25 @@ class _HomeStateContent extends State<_HomePageContent> {
 }
 
 class _ViewModel {
+  final Flavor flavor;
   final RouteMode selectedMode;
   final List<RouteMode> modes;
 
   final Function(RouteMode) changeMode;
   final Function logout;
 
-  _ViewModel({this.selectedMode, this.modes, this.changeMode, this.logout});
+  _ViewModel({
+    this.flavor,
+    this.selectedMode,
+    this.modes,
+    this.changeMode,
+    this.logout,
+  });
 
   static _ViewModel fromStore(Store<AppState> store) {
     final state = store.state.homePageState;
     return _ViewModel(
+        flavor: store.state.flavor,
         selectedMode: state.selectedMode,
         modes: state.modes,
         changeMode: (RouteMode mode) =>

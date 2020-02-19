@@ -1,35 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:tgg/common/flavor/flavor.dart';
 import 'package:tgg/models/modes.dart';
 import 'package:tgg/ui/helpers/icon_mapper.dart';
-import 'package:tgg/ui/routes.dart';
 
 class HomeTab extends StatelessWidget {
+  final Flavor _flavor;
   final List<RouteMode> modes;
   final Function(RouteMode) pageSelected;
   final Function logout;
 
-  const HomeTab(this.modes, this.pageSelected, this.logout, {Key key})
+  const HomeTab(this._flavor, this.modes, this.pageSelected, this.logout,
+      {Key key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final buttons = modes.map(buildButton).toList();
-    buttons.add(buildBonus());
     buttons.add(logoutButton(context));
     return Align(
         widthFactor: 0.8,
         child: Column(
           children: buttons,
         ));
-  }
-
-  Widget buildBonus() {
-    RouteMode mode = RouteMode();
-    mode.icon = "icon-camera";
-    mode.title = "Bonus camera";
-    mode.name = TAB_ROUTE_BONUS_CAMERA;
-    return buildButton(mode);
   }
 
   Widget logoutButton(BuildContext context) {
@@ -48,7 +41,7 @@ class HomeTab extends StatelessWidget {
           Padding(
               padding: EdgeInsets.only(left: 8),
               child: Text(
-                mode.title,
+                _flavor.get("modes:${mode.name}:title"),
               ))
         ],
       ),

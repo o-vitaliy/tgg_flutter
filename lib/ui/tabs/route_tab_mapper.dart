@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:tgg/containers/waypoints/waypoints_container.dart';
-import 'package:tgg/ui/routes.dart';
 import 'package:tgg/ui/tabs/bonus_tab.dart';
 import 'package:tgg/ui/tabs/head_to_head_tab.dart';
 import 'package:tgg/ui/tabs/stub_tab.dart';
@@ -18,12 +17,12 @@ class RouteTabMapper {
     final key = Keys.homeTab(name);
     switch (name) {
       case 'home':
-        return  homeTabBuilder(key) ;
+        return homeTabBuilder(key);
       case 'main':
         return WaypointsContainer(key);
       case 'head_to_head':
         return HeadToHeadTab(key: key);
-      case TAB_ROUTE_BONUS_CAMERA:
+      case 'camera':
         return BonusTab(key: key);
       default:
         return StubTab(title: name, key: key);
