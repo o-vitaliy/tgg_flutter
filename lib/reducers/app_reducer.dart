@@ -4,6 +4,8 @@ import 'package:tgg/common/playthrought/playthrought_reducer.dart';
 import 'package:tgg/common/routing/routing_reducer.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_reducer.dart';
 import 'package:tgg/containers/camera/camera_reducer.dart';
+import 'package:tgg/containers/mission/anytime/anytime_reducer.dart';
+import 'package:tgg/containers/mission/bonus/bonus_reducer.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_reducer.dart';
 import 'package:tgg/containers/waypoints/waypoints_reducer.dart';
 import 'package:tgg/reducers/auth_reducer.dart';
@@ -24,8 +26,10 @@ AppState appReducer(AppState state, action) {
     uploadFilesState: awsUploadFilesReducer(state.uploadFilesState, action),
     cameraState: cameraReducer(state.cameraState, action),
     waypointsState: waypointsReducer(state.waypointsState, action),
-    waypointState: waypointReducer(state.waypointState, action),
+    waypointsPassingState: waypointReducer(state.waypointsPassingState, action),
     flavor: flavorReducer(state.flavor, action),
     blueprint: blueprintReducer(state.blueprint, action),
+    anytime: anytimeReducer(state.anytime, action),
+    bonus: bonusReducer(state.bonus, action),
   );
 }

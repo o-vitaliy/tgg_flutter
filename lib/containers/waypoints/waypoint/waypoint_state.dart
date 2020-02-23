@@ -1,55 +1,33 @@
-import 'package:flutter/foundation.dart';
-import 'package:tgg/containers/waypoints/submissions/submit_button_helper.dart';
-import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart';
+import 'package:tgg/containers/waypoints/waypoint/waypoint_item_state.dart';
 import 'package:tgg/models/waypoints/waypoint.dart';
+import 'package:tgg/models/waypoints/waypoint_mode.dart';
 
-const double hintPenalty = 0.25;
-
-@immutable
 class WaypointState {
-  final Waypoint waypoint;
-  final List<WaypointSubmissionItem> items;
-  final String hint;
-  final int hintsUsed;
-  final int attemptsUsed;
+  WaypointState._();
 
-  int get attemptsRemained => waypoint.step.behavior.numAttempts != null
-      ? waypoint.step.behavior.numAttempts - attemptsUsed
-      : 1;
+  Map<String, WaypointItemState> _map = Map<String, WaypointItemState>();
 
-  int get _hintsCount => (waypoint.step.behavior.hints?.length ?? 0);
+  bool containsKey(String key) => _map.containsKey(key);
 
-  int get hintRemained => _hintsCount - hintsUsed;
+  WaypointItemState operator [](String key) => _map[key];
 
-  int get hintPrice {
-    if (_hintsCount > 0)
-      return (waypoint.points / _hintsCount * hintPenalty).floor();
-    else
-      return 0;
+  void operator []=(String key, WaypointItemState state) {
+    if (ModeHelper.removeOnDuplicatedInState(state.waypoint.mode)) {
+      _map.removeWhere(
+          (key, value) => value.waypoint.mode == state.waypoint.mode);
+    }
+    _map[key] = state;
   }
 
-  bool get isEnabled => SubmitButtonHelper().isEnabledList(items);
+  void put(String key, WaypointItemState state) => this[key] = state;
 
-  WaypointState({
-    @required this.waypoint,
-    @required this.items,
-    @required this.hint,
-    @required this.hintsUsed,
-    @required this.attemptsUsed,
-  });
+  void remove(String key) => _map.remove(key);
 
-  WaypointState copyWith({
-    Waypoint waypoint,
-    List<WaypointSubmissionItem> items,
-    String hint,
-    int hintsUsed,
-    int attemptsUsed,
-  }) =>
-      WaypointState(
-        waypoint: waypoint ?? this.waypoint,
-        items: items ?? this.items,
-        hint: hint ?? this.hint,
-        hintsUsed: hintsUsed ?? this.hintsUsed,
-        attemptsUsed: attemptsUsed ?? this.attemptsUsed,
-      );
+  Waypoint getWaypointForType(Mode mode) => _map.values
+      ?.firstWhere((w) => w.waypoint.mode == mode, orElse: () => null)
+      ?.waypoint;
+
+  factory WaypointState.initial() {
+    return WaypointState._();
+  }
 }

@@ -10,6 +10,7 @@ import 'package:tgg/data/dao/dao_waypoints.dart';
 import 'package:tgg/data/providers/api_provider.dart';
 import 'package:tgg/data/providers/location_provider.dart';
 import 'package:tgg/models/waypoints/waypoint.dart';
+import 'package:tgg/models/waypoints/waypoint_mode.dart';
 
 import '../constants.dart';
 import 'dao/dao_submission.dart';
@@ -54,14 +55,7 @@ class WaypointsRepo {
           "name": "start",
           "params": {
             "started_at": time.toIso8601String(),
-            "location_fix": {
-              "time": time.toIso8601String(),
-              "coords": [
-                location.latitude,
-                location.longitude,
-              ],
-              "accuracy": location.accuracy.toInt()
-            },
+            "location_fix": locationProvider.toFix(location)
           }
         },
       );
@@ -89,7 +83,7 @@ class WaypointsRepo {
     }).toList(growable: false);
     final Map values = await Future.value({
       "submissions": await Future.wait(types.map((type) async {
-        final List list = await getSubmission(waypointId, type);
+        final List list = await _getSubmission(waypointId, type);
         return {"time": DateTime.now().toIso8601String(), "submission": list};
       })),
       "num_hints_used": hintsUsed,
@@ -108,13 +102,13 @@ class WaypointsRepo {
     await daoWaypoint.saveSynced(waypointId);
   }
 
-  Future<List> getSubmission(String waypointId, String type) async {
+  Future<List> _getSubmission(String waypointId, String type) async {
     List<String> answers = await daoAnswer.getAnswerByType(waypointId, type);
     return await Future.wait(
-        answers.map((a) async => {type: await getAnswerValue(type, a)}));
+        answers.map((a) async => {type: await _getAnswerValue(type, a)}));
   }
 
-  Future<dynamic> getAnswerValue(String type, String answer) async {
+  Future<dynamic> _getAnswerValue(String type, String answer) async {
     final submissionType = SubmissionTypeHelper.fromString(type);
     if (SubmissionTypeHelper.isMedia(submissionType)) {
       final media = (await daoMedia.findByKey(answer));
@@ -127,6 +121,7 @@ class WaypointsRepo {
   }
 
   Future _saveWaypoint(Waypoint waypoint, Map map) async {
-    await daoWaypoint.insert(waypoint.id, json.encode(map));
+    await daoWaypoint.insert(
+        waypoint.id, ModeHelper.to(waypoint.mode), json.encode(map));
   }
 }

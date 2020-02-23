@@ -11,7 +11,7 @@ class CollapsibleTabBar extends StatelessWidget {
   CollapsibleTabBar(
     this.children,
     this.selected, {
-    this.maxItemsInRow = 4,
+    this.maxItemsInRow = 5,
   });
 
   final List<CollapsibleTabBarItemData> children;

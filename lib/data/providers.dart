@@ -1,3 +1,4 @@
+import 'package:tgg/data/bonus_repo.dart';
 import 'package:tgg/data/dao/dao_answer.dart';
 import 'package:tgg/data/dao/dao_hints.dart';
 import 'package:tgg/data/dao/dao_media.dart';
@@ -14,10 +15,10 @@ import 'package:tgg/data/routing_repository.dart';
 import 'package:tgg/data/statics_repo.dart';
 import 'package:tgg/data/waypoint_repository.dart';
 
+import 'anytime_repo.dart';
 import 'media_repository.dart';
 
 ApiProvider apiProvider = ApiProvider();
-StaticApiProvider staticApiProvider = StaticApiProvider();
 PrefsProvider prefsProvider = PrefsProvider();
 LocationProvider locationProvider = new LocationProvider();
 
@@ -44,6 +45,17 @@ WaypointsRepo waypointsRepo = WaypointsRepo(
   locationProvider: locationProvider,
   daoWaypoint: daoWaypoint,
 );
+
+AnytimeRepo anytimeRepo = AnytimeRepo(
+  apiProvider: apiProvider,
+  waypointsRepo: waypointsRepo,
+);
+
+BonusRepo bonusRepo = BonusRepo(
+  apiProvider: apiProvider,
+  waypointsRepo: waypointsRepo,
+);
+
 LocationRepo locationRepo = LocationRepo(
   apiProvider: apiProvider,
   loginRepo: loginRepo,

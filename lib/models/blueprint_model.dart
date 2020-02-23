@@ -1,11 +1,11 @@
 class BlueprintModel {
-  String name;
-  String title;
-  int version;
-  int duration;
+  final String id;
+  final String title;
+  final int version;
+  final int duration;
 
   BlueprintModel.fromJsonMap(Map<String, dynamic> map)
-      : name = map["name"],
+      : id = map["id"],
         title = map["title"],
         version = map["version"],
         duration = map["duration"];

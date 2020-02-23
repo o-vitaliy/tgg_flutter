@@ -30,5 +30,14 @@ main() {
         expect(BehaviorTypeHelper.isVerified(type), isNotNull);
       });
     });
+
+    test("noSubmissions", () {
+      waypoints.forEach((w) {
+        final type = BehaviorTypeHelper.fromString(w.step.behavior.id);
+        expect(BehaviorTypeHelper.noSubmissions(type), isNotNull);
+      });
+
+      expect(BehaviorTypeHelper.noSubmissions(BehaviorType.info), true);
+    });
   });
 }

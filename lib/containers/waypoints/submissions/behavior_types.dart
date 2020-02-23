@@ -15,12 +15,12 @@ enum BehaviorType {
   movie_and_text,
   movie_pair,
   camera,
-
   profile_team_name,
   profile_phone,
   profile_other,
   profile_multiple_choice,
   profile_photo,
+  info
 }
 
 class BehaviorTypeHelper {
@@ -58,10 +58,20 @@ class BehaviorTypeHelper {
       case BehaviorType.profile_other:
       case BehaviorType.profile_multiple_choice:
       case BehaviorType.profile_photo:
+      case BehaviorType.info:
         return false;
 
       default:
         throw ArgumentError("unsupported type $type");
+    }
+  }
+
+  static bool noSubmissions(BehaviorType type) {
+    switch (type) {
+      case BehaviorType.info:
+        return true;
+      default:
+        return false;
     }
   }
 }

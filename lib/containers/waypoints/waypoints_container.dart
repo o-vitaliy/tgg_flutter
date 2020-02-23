@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/containers/waypoints/waypoints_state.dart';
+import 'package:tgg/models/waypoints/waypoint_mode.dart';
 import 'package:tgg/redux_model/app_state.dart';
 import 'package:tgg/ui/widgets/loading_indicator.dart';
 
@@ -20,7 +21,7 @@ class WaypointsContainer extends StatelessWidget {
           if (vm.isLoading)
             return LoadingIndicator();
           else if (vm.hasMoreGames) {
-            return WaypointContainer();
+            return WaypointContainer(vm.waypointId);
           } else {
             return WaypointsDoneContainer();
           }
@@ -31,14 +32,16 @@ class WaypointsContainer extends StatelessWidget {
 class _ViewModel {
   final bool isLoading;
   final bool hasMoreGames;
+  final String waypointId;
 
-  _ViewModel({this.isLoading, this.hasMoreGames});
+  _ViewModel({this.isLoading, this.hasMoreGames, this.waypointId});
 
   static _ViewModel fromStore(Store<AppState> store) {
     final WaypointsState state = store.state.waypointsState;
     return _ViewModel(
       isLoading: state.isLoading,
-      hasMoreGames: store.state.waypointState != null,
+      hasMoreGames: store.state.waypointsState.hasGameForMode(Mode.main),
+      waypointId: store.state.waypointsPassingState.getWaypointForType(Mode.main)?.id,
     );
   }
 

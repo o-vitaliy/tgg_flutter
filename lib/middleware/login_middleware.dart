@@ -56,16 +56,22 @@ Middleware<AppState> _createLogInMiddleware() {
   };
 }
 
-void doAfterLogin(Store store, LoginResponse response) async {
+void doAfterLogin(final Store store, final LoginResponse response) async {
   final playthroughId = response.team.playthroughId;
   final playthrough = await playthroughRepo.getPlaythrough(playthroughId);
   final routing = await routingRepo.getRouting(playthrough.game.id);
-  staticRepo.getFlavor(playthrough.game.blueprint.name).then((v) {
-    store.dispatch(UpdateFlavorAction(v));
-  });
+
   store.dispatch(UpdateBlueprint(playthrough.game.blueprint));
   store.dispatch(new LogInSuccessful(
-      loginResponse: response, playthrough: playthrough, routing: routing));
+    loginResponse: response,
+    playthrough: playthrough,
+    routing: routing,
+  ));
   store.dispatch(NavigateToAction.replace(HomePage.routeName));
-  store.dispatch(WaypointsStartLoadAction());
+
+  staticRepo.getFlavor(playthrough.game.blueprint.id).then((v) {
+    store.dispatch(UpdateFlavorAction(v));
+  }).then((_) {
+    store.dispatch(WaypointsStartLoadAction());
+  });
 }

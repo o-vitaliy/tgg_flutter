@@ -7,10 +7,11 @@ class DaoWaypoint {
 
   DaoWaypoint(this._appDatabase);
 
-  Future<int> insert(String waypointId, String waypointJson) {
+  Future<int> insert(String waypointId, String mode, String waypointJson) {
     return _appDatabase.intoWaypointTable.insert(
         WaypointTableCompanion.insert(
           waypointId: waypointId,
+          mode: mode,
           waypointJson: waypointJson,
         ),
         mode: InsertMode.insertOrIgnore);

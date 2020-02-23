@@ -5,7 +5,7 @@ import 'package:redux/redux.dart';
 import 'package:tgg/common/flavor/flavor.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/value_widget.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_actions.dart';
-import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
+import 'package:tgg/containers/waypoints/waypoint/waypoint_item_state.dart';
 import 'package:tgg/models/waypoints/waypoint.dart';
 import 'package:tgg/redux_model/app_state.dart';
 
@@ -14,12 +14,18 @@ import '../submissions/widget/submissions_builder.dart';
 typedef WidgetsBuilder = Iterable<Widget> Function(BuildContext context);
 
 class WaypointContainer extends StatelessWidget {
+  final String waypointId;
+
+  const WaypointContainer(
+    this.waypointId, {
+    Key key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
-        converter: _ViewModel.fromStore,
+        converter: (store) => _ViewModel.fromStore(store, waypointId),
         onInit: (store) {
-          final waypointId = store.state.waypointState.waypoint.id;
           store.dispatch(WaypointStarted(waypointId));
         },
         distinct: true,
@@ -99,20 +105,23 @@ class _ViewModel {
     @required this.isSubmitEnabled,
   });
 
-  static _ViewModel fromStore(Store<AppState> store) {
-    final WaypointState state = store.state.waypointState;
+  static _ViewModel fromStore(Store<AppState> store, String waypointId) {
+    final WaypointItemState state =
+        store.state.waypointsPassingState[waypointId];
     final Waypoint waypoint = state.waypoint;
 
     final items = state.items;
 
     final OnSubmit onSubmit =
-        (context) => store.dispatch(WaypointSubmit(context));
-    final OnHint onHint = () => store.dispatch(WaypointShowHintAction());
+        (context) => store.dispatch(WaypointSubmit(context, waypointId));
+    final OnHint onHint =
+        () => store.dispatch(WaypointShowHintAction(waypointId));
 
     final WidgetsBuilder builder = (BuildContext context) {
       return items.map((item) {
         final OnValueChange onChange = (value) {
-          store.dispatch(WaypointUpdateAnswer(item.id, value, item.submission));
+          store.dispatch(WaypointUpdateAnswer(
+              waypointId, item.id, value, item.submission));
         };
         return build(
           item,

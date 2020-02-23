@@ -6,7 +6,7 @@ import 'package:tgg/containers/waypoints/submissions/behavior_types.dart';
 import 'package:tgg/containers/waypoints/submissions/submission_types.dart';
 import 'package:tgg/containers/waypoints/submissions/validate/submissions_validator.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_actions.dart';
-import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
+import 'package:tgg/containers/waypoints/waypoint/waypoint_item_state.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart';
 import 'package:tgg/containers/waypoints/waypoints_actions.dart';
 import 'package:tgg/data/providers.dart';
@@ -30,16 +30,12 @@ List<Middleware<AppState>> createWaypointMiddleware() {
 Middleware<AppState> _initWaypoint() {
   return (Store store, action, NextDispatcher next) async {
     if (action is WaypointsSelectCurrentAction) {
-      if (action.waypoint != null) {
-        final waypoint = action.waypoint;
-        final items = waypoint.step.behavior.submissionType
-            .mapIndex(
-                (item, index) => WaypointSubmissionItem.initial(index, item))
-            .toList();
-        store.dispatch(WaypointInit(waypoint, items));
-      } else {
-        store.dispatch(WaypointRemoveAction());
-      }
+      final waypoint = action.waypoint;
+      final items = waypoint.step.behavior.submissionType
+          .mapIndex(
+              (item, index) => WaypointSubmissionItem.initial(index, item))
+          .toList();
+      store.dispatch(WaypointInit(waypoint.id, waypoint, items));
     }
     next(action);
   };
@@ -48,22 +44,27 @@ Middleware<AppState> _initWaypoint() {
 Middleware<AppState> _submit() {
   return (Store<AppState> store, action, NextDispatcher next) async {
     if (action is WaypointSubmit) {
-      final WaypointState waypoint = store.state.waypointState;
-
-      final waypointId = waypoint.waypoint.id;
-
       final List<String> incorrectAnswers = new List<String>();
-      waypoint.items.forEach((item) {
-        final subType = item.submission.type;
 
-        daoAnswer.insert(waypointId, subType, _answerToString(item.answer));
+      final String waypointId = action.waypointId;
+      final WaypointItemState waypoint =
+          store.state.waypointsPassingState[waypointId];
+      final BehaviorType behaviorType =
+          BehaviorTypeHelper.fromString(waypoint.waypoint.step.behavior.id);
 
-        final behaviourType =
-            BehaviorTypeHelper.fromString(waypoint.waypoint.step.behavior.id);
-        String error =
-            validate(behaviourType, item.answer, item.submission.choices);
-        if (error != null) incorrectAnswers.add(item.answer);
-      });
+      if (BehaviorTypeHelper.noSubmissions(behaviorType)) {
+        daoAnswer.insert(waypointId, null, null);
+      } else {
+        waypoint.items.forEach((item) {
+          final subType = item.submission.type;
+          daoAnswer.insert(waypointId, subType, _answerToString(item.answer));
+          final behaviourType =
+              BehaviorTypeHelper.fromString(waypoint.waypoint.step.behavior.id);
+          String error =
+              validate(behaviourType, item.answer, item.submission.choices);
+          if (error != null) incorrectAnswers.add(item.answer);
+        });
+      }
 
       if (incorrectAnswers.isEmpty) {
         final dialogBuilder = (context) {
@@ -73,6 +74,7 @@ Middleware<AppState> _submit() {
             () {
               Navigator.pop(context);
               store.dispatch(WaypointsStartLoadAction());
+              store.dispatch(WaypointRemoveAction(waypointId));
             },
           );
         };
@@ -89,7 +91,7 @@ Middleware<AppState> _submit() {
             },
           );
         };
-        store.dispatch(WaypointIncrementAttemptAction());
+        store.dispatch(WaypointIncrementAttemptAction(waypointId));
         store.dispatch(DialogAction(action.context, dialogBuilder));
       }
     }
@@ -109,6 +111,7 @@ Middleware<AppState> _trackStarted() {
 Middleware<AppState> _updateAnswer() {
   return (Store store, action, NextDispatcher next) async {
     if (action is WaypointUpdateAnswer) {
+      final String waypointId = action.waypointId;
       dynamic answer = action.answer;
       if (SubmissionTypeHelper.isMediaFromString(action.submission.type)) {
         final AppState state = store.state;
@@ -116,14 +119,14 @@ Middleware<AppState> _updateAnswer() {
           action.answer,
           state.playthrough.playthrough,
           state.loginResponse.team,
-          state.waypointState.waypoint,
+          state.waypointsPassingState[waypointId].waypoint,
         );
 
         store.dispatch(AddFileToUploadAction(action.answer, key));
         answer = key;
       }
-      store.dispatch(
-          WaypointSaveAnswer(action.itemId, answer, action.submission));
+      store.dispatch(WaypointSaveAnswer(
+          waypointId, action.itemId, answer, action.submission));
     }
     next(action);
   };
@@ -132,10 +135,12 @@ Middleware<AppState> _updateAnswer() {
 Middleware<AppState> _showHint() {
   return (Store<AppState> store, action, NextDispatcher next) async {
     if (action is WaypointShowHintAction) {
-      final WaypointState state = store.state.waypointState;
+      final String waypointId = action.waypointId;
+      final WaypointItemState state =
+          store.state.waypointsPassingState[waypointId];
       final hintIndex = state.hintsUsed;
       final hint = state.waypoint.step.behavior.hints[hintIndex];
-      store.dispatch(WaypointHintShown(hint, state.hintsUsed + 1));
+      store.dispatch(WaypointHintShown(waypointId, hint, state.hintsUsed + 1));
     }
     next(action);
   };

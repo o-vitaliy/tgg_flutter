@@ -14,11 +14,9 @@ final mockedWithNumAttempts = """
 
 final mockedWithHints = mockedWithNumAttempts;
 
-final mockedWithoutNumAttempts =
-"""
+final mockedWithoutNumAttempts = """
 {"id":"5e332213d71f100020fd24d7","title":"Multiple Choices with points","instructions":"Choose one from a multiple of choices, each are worth a different a different amount of points.Radio buttons with points","position":5,"mission_id":"5e331e72d71f100020fd24d1","behavior":{"id":"multiple_choice_points","title":"Multiple Choice w/Points","description":"Choose one from a multiple of choices, each are worth a different a different amount of points.","fields":[{"name":"choices_with_points","type":"list:text+number","label":"Options","required":true},{"name":"presentation_text","type":"text:long","label":"Presentation text","required":false,"placeholder":"Presentation Text"},{"name":"presentation_image","type":"upload","label":"Presentation image","required":false,"placeholder":"Image key","object_key":"media_key","s3":{"bucket":"gogame-breadcrumb-display-media","folder":"GameShow"}},{"name":"presentation_title","type":"text","label":"Presentation title","required":false,"placeholder":"Presentation Title (overrides mission step title)"},{"name":"display_answer","type":"text","label":"GGP Display answer","required":false,"placeholder":"Correct display answer. Will display on screen view"},{"name":"question_type","type":"text","label":"GGP Question type","required":false,"placeholder":"Question type"},{"name":"timer","type":"int","label":"GGP Timer","required":false},{"name":"stop_auto_play","type":"bool","default":false,"label":"GGP Stop autoplay","required":false},{"name":"is_one_time_mission","type":"bool","default":false,"label":"Is Mission available only once per playthrough","required":false}],"submission_type":{"type":"choice","choices":"content.choices_with_points"}},"content":{"choices_with_points":[{"text":"choice","value":"5"},{"text":"choice 2","value":"6"},{"text":"choice 3","value":"7"}]},"scoring":0}
 """;
-
 
 main() {
   group("parse waypoint step with ", () {
@@ -26,6 +24,7 @@ main() {
       final map = json.decode(mockedChoices);
       final result = WaypointStep.fromJsonMap(map);
       expect(result.id, "5e25ff4bd71f10001e0e455b");
+      expect(result.missionId, isNotNull);
       expect(result.behavior.id, "multiple_choice");
       expect(result.behavior.submissionType.first.type, "choice");
 

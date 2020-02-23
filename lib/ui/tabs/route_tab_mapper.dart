@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
+import 'package:tgg/containers/mission/anytime/anytime_list_container.dart';
+import 'package:tgg/containers/mission/bonus/bonus_container.dart';
 import 'package:tgg/containers/waypoints/waypoints_container.dart';
-import 'package:tgg/ui/tabs/bonus_tab.dart';
 import 'package:tgg/ui/tabs/head_to_head_tab.dart';
 import 'package:tgg/ui/tabs/stub_tab.dart';
 
@@ -23,7 +24,9 @@ class RouteTabMapper {
       case 'head_to_head':
         return HeadToHeadTab(key: key);
       case 'camera':
-        return BonusTab(key: key);
+        return BonusContainer(key: key);
+      case 'anytime':
+        return AnytimeListContainer(key: key);
       default:
         return StubTab(title: name, key: key);
     }

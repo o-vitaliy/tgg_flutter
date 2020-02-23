@@ -1,6 +1,5 @@
 import 'package:tgg/models/waypoints/waypoint.dart';
 
-
 class WaypointsStartLoadAction {}
 
 class WaypointsStartedLoadingAction {}
@@ -11,9 +10,8 @@ class WaypointsCompletedLoadingAction {
   WaypointsCompletedLoadingAction(this.waypoints);
 }
 
-class WaypointsSelectCurrentAction{
+class WaypointsSelectCurrentAction {
   final Waypoint waypoint;
 
   WaypointsSelectCurrentAction(this.waypoint);
-
 }

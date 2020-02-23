@@ -27,11 +27,24 @@ class ApiProvider {
     return apiRequest(url, token: token, method: httpMethod.get);
   }
 
+  Future<String> availableMissions(String teamId, String mode) async {
+    final url = "$_baseUrl/play/teams/$teamId/available_missions/?mode=$mode";
+    return apiRequest(url, token: token, method: httpMethod.get);
+  }
+
   Future<String> waypointTriggerAction({
     waypointId: String,
     values: Map,
   }) async {
     final url = "$_baseUrl/play/waypoints/$waypointId/trigger_action/";
+    return apiRequest(url, token: token, params: values);
+  }
+
+  Future<String> teamTriggerAction({
+    teamId: String,
+    values: Map,
+  }) async {
+    final url = "$_baseUrl/play/teams/$teamId/trigger_action/";
     return apiRequest(url, token: token, params: values);
   }
 

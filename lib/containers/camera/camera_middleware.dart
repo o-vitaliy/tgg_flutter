@@ -143,7 +143,7 @@ Middleware<AppState> _createTakePhotoMiddleware() {
 
 void _initializeNewController(Store store, CameraDescription current) async {
   final CameraState state = store.state.cameraState;
-  final quality = state.captureArgs.videoParams?.quality;
+  final quality = state.captureArgs?.videoParams?.quality;
 
   CameraController controller =
       CameraController(current, getPreset(quality), enableAudio: false);

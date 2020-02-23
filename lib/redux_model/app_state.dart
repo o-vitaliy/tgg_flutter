@@ -6,6 +6,8 @@ import 'package:tgg/common/playthrought/playthrought_state.dart';
 import 'package:tgg/common/routing/routing_state.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_state.dart';
 import 'package:tgg/containers/camera/camera_state.dart';
+import 'package:tgg/containers/mission/anytime/anytime_state.dart';
+import 'package:tgg/containers/mission/bonus/bonus_state.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
 import 'package:tgg/containers/waypoints/waypoints_state.dart';
 import 'package:tgg/helpers/theme_helper.dart';
@@ -25,9 +27,11 @@ class AppState {
   final AwsUploadState uploadFilesState;
   final CameraState cameraState;
   final WaypointsState waypointsState;
-  final WaypointState waypointState;
+  final WaypointState waypointsPassingState;
   final Flavor flavor;
   final BlueprintModel blueprint;
+  final AnytimeState anytime;
+  final BonusState bonus;
 
   AppState({
     @required this.themeData,
@@ -40,9 +44,11 @@ class AppState {
     @required this.uploadFilesState,
     @required this.cameraState,
     @required this.waypointsState,
-    @required this.waypointState,
+    @required this.waypointsPassingState,
     @required this.flavor,
     @required this.blueprint,
+    @required this.anytime,
+    @required this.bonus,
   });
 
   factory AppState.initial() {
@@ -57,9 +63,11 @@ class AppState {
       uploadFilesState: AwsUploadState.initial(),
       cameraState: CameraState(),
       waypointsState: WaypointsState.initial(),
-      waypointState: null,
+      waypointsPassingState: WaypointState.initial(),
       flavor: Flavor.initial(),
       blueprint: null,
+      anytime: AnytimeState.initial(),
+      bonus: BonusState.initial(),
     );
   }
 
@@ -75,9 +83,12 @@ class AppState {
       uploadFilesState: uploadFilesState ?? this.uploadFilesState,
       cameraState: cameraState ?? this.cameraState,
       waypointsState: waypointsState ?? this.waypointsState,
-      waypointState: waypointState ?? this.waypointState,
+      waypointsPassingState:
+          waypointsPassingState ?? this.waypointsPassingState,
       flavor: flavor ?? this.flavor,
       blueprint: blueprint ?? this.blueprint,
+      anytime: anytime ?? this.anytime,
+      bonus: bonus ?? this.bonus,
     );
   }
 }

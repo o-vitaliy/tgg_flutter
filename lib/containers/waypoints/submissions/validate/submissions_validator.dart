@@ -32,6 +32,7 @@ Validator getValidator(BehaviorType type) {
     case BehaviorType.profile_multiple_choice:
     case BehaviorType.profile_other:
     case BehaviorType.profile_photo:
+    case BehaviorType.info:
       return NoValidator();
     default:
       throw ArgumentError("unsupported type $type");

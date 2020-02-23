@@ -10,12 +10,31 @@ class SplashPage extends StatelessWidget {
     StoreProvider.of<AppState>(context).dispatch(ReLogIn());
     return Container(
         color: Color(ORANGE),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/icon180.png'),
+        child: Stack(
+          children: <Widget>[
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              ),
             ),
-          ),
+            Center(
+              child: SizedBox(
+                width: 180,
+                height: 180,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/icon180.png'),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ));
   }
 }

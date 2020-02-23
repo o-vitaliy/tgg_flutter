@@ -5,6 +5,7 @@ import 'package:tgg/data/dao/db.dart';
 
 main() {
   final waypointId = "waypontId";
+  final waypointMode = "main";
   final waypontJson = "{waypontId:waypontJson}";
 
   DaoWaypoint dao;
@@ -18,26 +19,26 @@ main() {
   });
   group("dao", () {
     test("insert", () async {
-      int insertId = await dao.insert(waypointId, waypontJson);
+      int insertId = await dao.insert(waypointId, waypointMode, waypontJson);
       expect(insertId, isNotNull);
       expect(insertId, isPositive);
     });
 
     test("get json", () async {
-      await dao.insert(waypointId, waypontJson);
+      await dao.insert(waypointId, waypointMode, waypontJson);
       final result = await dao.getWaypoint(waypointId);
       expect(result.waypointJson, waypontJson);
     });
 
     test("update passed", () async {
-      await dao.insert(waypointId, waypontJson);
+      await dao.insert(waypointId, waypointMode, waypontJson);
       expect((await dao.getWaypoint(waypointId)).passed, false);
       await dao.savePassed(waypointId);
       expect((await dao.getWaypoint(waypointId)).passed, true);
     });
 
     test("update synced", () async {
-      await dao.insert(waypointId, waypontJson);
+      await dao.insert(waypointId, waypointMode, waypontJson);
       expect((await dao.getWaypoint(waypointId)).synced, false);
       await dao.saveSynced(waypointId);
       expect((await dao.getWaypoint(waypointId)).synced, true);

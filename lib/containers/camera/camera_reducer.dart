@@ -21,7 +21,7 @@ CameraState _initCamera(CameraState state, action) {
   return CameraState(
       captureArgs: args,
       key: (action as InitCameraAction).state,
-      timerDuration: Duration(seconds: args.videoParams.length),
+      timerDuration: Duration(seconds: args?.videoParams?.length ?? 0),
       files: List<String>(),
       processingResult: false,
       isRecordingVideo: false,

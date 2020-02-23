@@ -1,0 +1,57 @@
+[
+  {
+    "id": "5e4c3fe0d71f10001ee928a4",
+    "name": "Any time text",
+    "location": null,
+    "max_teams": null,
+    "points": 0,
+    "priority": 1,
+    "timelimits": "-",
+    "notes": null,
+    "tags": []
+  },
+  {
+    "id": "5e4c417bd71f10001ee928ac",
+    "name": "Anytime1",
+    "location": null,
+    "max_teams": null,
+    "points": 0,
+    "priority": 1,
+    "timelimits": "-",
+    "notes": "anytime1",
+    "tags": []
+  },
+  {
+    "id": "5e4c41c3d71f10001ee928ae",
+    "name": "Anytime2",
+    "location": null,
+    "max_teams": null,
+    "points": 0,
+    "priority": 1,
+    "timelimits": "-",
+    "notes": null,
+    "tags": []
+  },
+  {
+    "id": "5e4c41ead71f10001ee928b0",
+    "name": "Anytime3",
+    "location": null,
+    "max_teams": null,
+    "points": 0,
+    "priority": 1,
+    "timelimits": "-",
+    "notes": null,
+    "tags": []
+  },
+  {
+    "id": "5e4c42f7d71f10001ee928b2",
+    "name": "Anytime4",
+    "location": null,
+    "max_teams": null,
+    "points": 0,
+    "priority": 1,
+    "timelimits": "-",
+    "notes": "Anytime4",
+    "tags": []
+  }
+]

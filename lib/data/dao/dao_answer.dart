@@ -10,9 +10,11 @@ class DaoAnswer {
   Future<int> insert(String waypointId, String submissionType, String answer) {
     return _appDatabase.intoAnswerTable.insert(
         AnswerTableCompanion.insert(
-            waypointId: waypointId,
-            submissionType: submissionType,
-            answer: answer),
+          waypointId: waypointId,
+          submissionType:
+              submissionType != null ? Value(submissionType) : Value.absent(),
+          answer: answer != null ? Value(answer) : Value.absent(),
+        ),
         mode: InsertMode.insertOrAbort);
   }
 

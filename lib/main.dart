@@ -8,20 +8,22 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_logging/redux_logging.dart';
-import 'package:tgg/containers/camera/camera_middleware.dart';
-import 'package:tgg/containers/themed_app.dart';
-import 'package:tgg/containers/waypoints/waypoints_middleware.dart';
-import 'package:tgg/middleware/auth_middleware.dart';
-import 'package:tgg/middleware/login_middleware.dart';
-import 'package:tgg/middleware/post_location_middleware.dart';
-import 'package:tgg/reducers/app_reducer.dart';
-import 'package:tgg/redux_model/app_state.dart';
 
 import 'common/dialog/dialog_middleware.dart';
 import 'containers/aws_uploader/aws_upload_middleware.dart';
 import 'containers/camera/camera_container.dart';
+import 'containers/camera/camera_middleware.dart';
+import 'containers/mission/anytime/anytime_middleware.dart';
+import 'containers/mission/bonus/bonus_middleware.dart';
 import 'containers/preview/preview_container.dart';
+import 'containers/themed_app.dart';
 import 'containers/waypoints/waypoint/waypoint_middleware.dart';
+import 'containers/waypoints/waypoints_middleware.dart';
+import 'middleware/auth_middleware.dart';
+import 'middleware/login_middleware.dart';
+import 'middleware/post_location_middleware.dart';
+import 'reducers/app_reducer.dart';
+import 'redux_model/app_state.dart';
 import 'ui/auth/login_page.dart';
 import 'ui/home.dart';
 import 'ui/splash.dart';
@@ -46,6 +48,8 @@ class ReduxApp extends StatelessWidget {
         ..addAll(createWaypointsMiddleware())
         ..addAll(createWaypointMiddleware())
         ..addAll(createUploadMiddleware())
+        ..addAll(createAnytimeMiddleware())
+        ..addAll(createBonusMiddleware())
         ..add(LoggingMiddleware.printer())
         ..add(NavigationMiddleware<AppState>())
         ..add(DialogMiddleware<AppState>()));

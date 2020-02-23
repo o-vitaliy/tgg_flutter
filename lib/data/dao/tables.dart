@@ -15,8 +15,7 @@ class SubmissionsTable extends Table {
 
   TextColumn get waypointId => text()();
 
-  DateTimeColumn get startedAt =>
-      dateTime().clientDefault(() => DateTime.now())();
+  DateTimeColumn get startedAt => dateTime()();
 
   RealColumn get startedLocationLat => real()();
 
@@ -56,15 +55,17 @@ class AnswerTable extends Table {
 
   TextColumn get waypointId => text()();
 
-  TextColumn get submissionType => text()();
+  TextColumn get submissionType => text().nullable()();
 
-  TextColumn get answer => text()();
+  TextColumn get answer => text().nullable()();
 }
 
 class WaypointTable extends Table {
   IntColumn get id => integer().autoIncrement()();
 
   TextColumn get waypointId => text().customConstraint('UNIQUE')();
+
+  TextColumn get mode => text()();
 
   TextColumn get waypointJson => text()();
 

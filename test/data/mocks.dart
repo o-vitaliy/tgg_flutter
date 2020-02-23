@@ -7,10 +7,9 @@ import 'package:tgg/data/providers/api_provider.dart';
 import 'package:tgg/data/providers/location_provider.dart';
 import 'package:tgg/data/providers/prefs_provider.dart';
 import 'package:tgg/data/providers/providers.dart';
+import 'package:tgg/models/waypoints/waypoint_mode.dart';
 
 class MockedApiProvider extends Mock implements ApiProvider {}
-
-class MockedStaticApiProvider extends Mock implements StaticApiProvider {}
 
 class MockedPrefsProvider extends Mock implements PrefsProvider {}
 
@@ -38,9 +37,9 @@ const mockCreateMedia =
 const mockRouting = """
     {"version":1,"votables":{"max":null},"modes":[{"name":"main","title":"Main","icon":"icon-screenshot","type":"routed","features":{"route_ahead":2},"rules":[{"category":"411","sort":"priority"},{"category":"sneak","sort":"spread, priority, distance","max":1},{"category":"plant","sort":"cluster","timer":true,"max":4,"allow_repeat":false},{"category":"creative","max":3,"timer":true,"sort":"priority, spread","allow_repeat":false},{"category":"trivia","max":5,"timer":true,"allow_repeat":false,"sort":"priority, random"},{"category":"sneak","sort":"cluster"},{"category":"trivia","sort":"priority, random"},{"category":"brainburner","sort":"priority, random"}],"sorting":{"cluster":[{"has_location":true,"is_nearby":true,"sort":"priority, distance"},{"has_location":false,"sort":"priority, spread"},{"has_location":true,"is_nearby":false,"sort":"distance"}]},"categories":["sneak","plant","creative","trivia","411","recall","brainburner","filler","unrouted"]},{"name":"head_to_head","title":"H2H","icon":"icon-group","type":"challenge","category":"head_to_head","enabled":true,"delay":10,"max_total":5,"max_per_team":2},{"name":"camera","type":"persistent","source":"queued","title":"Camera","category":"camera","icon":"icon-camera"},{"name":"anytime","type":"persistent","source":"uncompleted","enabled":false,"title":"Anytime","category":"anytime","icon":"icon-reorder"}]}
     """;
+final mockedAnytime = File("test/data/mocks/anytime.json").readAsStringSync();
 
 final mockedApiProvider = MockedApiProvider();
-final mockedStaticApiProvider = MockedStaticApiProvider();
 final mockedPrefs = MockedPrefsProvider();
 final mockedLocationProvider = MockedLocationProvider();
 
@@ -76,4 +75,11 @@ void initLoginMock() {
   final position = Position.fromMap({'latitude': 50.44, 'longitude': 30.39});
   when(mockedLocationProvider.getLocation())
       .thenAnswer((_) => Future.value(position));
+
+  // anytime
+  when(mockedApiProvider.availableMissions(any, ModeHelper.to(Mode.camera)))
+      .thenAnswer((_) => Future.value(mockedAnytime));
+  when(mockedApiProvider.availableMissions(any, ModeHelper.to(Mode.anytime)))
+      .thenAnswer((_) => Future.value(mockedAnytime));
 }
+

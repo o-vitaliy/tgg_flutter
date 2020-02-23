@@ -60,9 +60,9 @@ class RouteMode {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is RouteMode &&
-              runtimeType == other.runtimeType &&
-              name == other.name;
+      other is RouteMode &&
+          runtimeType == other.runtimeType &&
+          name == other.name;
 
   @override
   int get hashCode => name.hashCode;

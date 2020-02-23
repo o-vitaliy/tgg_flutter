@@ -17,11 +17,11 @@ Future<String> apiRequest(
   HttpClientResponse response = await request.close();
   try {
     final reply = await response.transform(utf8.decoder).join();
+    print("request: $url \n ${json.encode(params)} \n ${request.headers}");
+    print("response ${response.statusCode} : $reply");
     if (response.statusCode < 400) {
       return reply;
     } else {
-      print("request: $url \n ${json.encode(params)} \n ${request.headers}");
-      print("response ${response.statusCode} : $reply");
       if (isJson(reply)) {
         final String errors =
             Map<String, dynamic>.from(json.decode(reply)).values.expand((v) {

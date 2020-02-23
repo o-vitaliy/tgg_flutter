@@ -47,5 +47,10 @@ main() {
       await dao.insert("wp2", "type2", "a2");
       expect(await dao.getAnswersByWaypointId("wp2"), ["a1", "a2", "a1", "a2"]);
     });
+    
+    test("type is null", () async {
+      await dao.insert("wp2", null, null);
+      expect(await dao.getAnswersByWaypointId("wp2"), [null]);
+    });
   });
 }

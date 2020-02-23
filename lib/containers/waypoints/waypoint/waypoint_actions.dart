@@ -4,13 +4,18 @@ import 'package:tgg/models/waypoints/waypoint.dart';
 import 'package:tgg/models/waypoints/waypoint_submission.dart';
 
 class WaypointInit {
+  final String waypointId;
   final Waypoint waypoint;
   final List<WaypointSubmissionItem> items;
 
-  WaypointInit(this.waypoint, this.items);
+  WaypointInit(this.waypointId, this.waypoint, this.items);
 }
 
-class WaypointRemoveAction {}
+class WaypointRemoveAction {
+  final String waypointId;
+
+  WaypointRemoveAction(this.waypointId);
+}
 
 class WaypointStarted {
   final String waypointId;
@@ -19,11 +24,13 @@ class WaypointStarted {
 }
 
 class WaypointUpdateAnswer {
+  final String waypointId;
   final int itemId;
   final answer;
   final WaypointSubmission submission;
 
-  WaypointUpdateAnswer(this.itemId, this.answer, this.submission);
+  WaypointUpdateAnswer(
+      this.waypointId, this.itemId, this.answer, this.submission);
 
   @override
   String toString() {
@@ -32,11 +39,13 @@ class WaypointUpdateAnswer {
 }
 
 class WaypointSaveAnswer {
+  final String waypointId;
   final int itemId;
   final answer;
   final WaypointSubmission submission;
 
-  WaypointSaveAnswer(this.itemId, this.answer, this.submission);
+  WaypointSaveAnswer(
+      this.waypointId, this.itemId, this.answer, this.submission);
 
   @override
   String toString() {
@@ -45,26 +54,40 @@ class WaypointSaveAnswer {
 }
 
 class WaypointSubmit {
+  final String waypointId;
   final BuildContext context;
 
-  WaypointSubmit(this.context);
+  WaypointSubmit(
+    this.context,
+    this.waypointId,
+  );
 }
 
-class WaypointShowHintAction {}
+class WaypointShowHintAction {
+  final String waypointId;
+
+  WaypointShowHintAction(this.waypointId);
+}
 
 class WaypointHintShown {
+  final String waypointId;
   final String hint;
   final int usedCount;
 
-  WaypointHintShown(this.hint, this.usedCount);
+  WaypointHintShown(this.waypointId, this.hint, this.usedCount);
 }
 
 @deprecated
 class WaypointShowError {
+  final String waypointId;
   final String error;
   final WaypointSubmission submission;
 
-  WaypointShowError(this.error, this.submission);
+  WaypointShowError(this.waypointId, this.error, this.submission);
 }
 
-class WaypointIncrementAttemptAction {}
+class WaypointIncrementAttemptAction {
+  final String waypointId;
+
+  WaypointIncrementAttemptAction(this.waypointId);
+}
