@@ -1,3 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:tgg/data/bonus_repo.dart';
 import 'package:tgg/data/dao/dao_answer.dart';
 import 'package:tgg/data/dao/dao_hints.dart';
@@ -13,30 +15,38 @@ import 'package:tgg/data/providers/location_provider.dart';
 import 'package:tgg/data/providers/providers.dart';
 import 'package:tgg/data/routing_repository.dart';
 import 'package:tgg/data/statics_repo.dart';
+import 'package:tgg/data/team_repo.dart';
 import 'package:tgg/data/waypoint_repository.dart';
 
 import 'anytime_repo.dart';
+import 'h2h_repo.dart';
 import 'media_repository.dart';
 
-ApiProvider apiProvider = ApiProvider();
-PrefsProvider prefsProvider = PrefsProvider();
-LocationProvider locationProvider = new LocationProvider();
+final FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+final FirebaseAnalytics _analytics = FirebaseAnalytics();
 
-AppDatabase database = AppDatabase();
-DaoSubmission daoSubmission = DaoSubmission(database);
-DaoMedia daoMedia = DaoMedia(database);
-DaoHint daoHint = DaoHint(database);
-DaoAnswer daoAnswer = DaoAnswer(database);
-DaoWaypoint daoWaypoint = DaoWaypoint(database);
+final ApiProvider apiProvider = ApiProvider();
+final PrefsProvider prefsProvider = PrefsProvider();
+final LocationProvider locationProvider = new LocationProvider();
+
+final AppDatabase database = AppDatabase();
+final DaoSubmission daoSubmission = DaoSubmission(database);
+final DaoMedia daoMedia = DaoMedia(database);
+final DaoHint daoHint = DaoHint(database);
+final DaoAnswer daoAnswer = DaoAnswer(database);
+final DaoWaypoint daoWaypoint = DaoWaypoint(database);
 
 // repos
-StaticRepo staticRepo = StaticRepo(apiProvider: apiProvider);
-LoginRepo loginRepo = LoginRepo(apiProvider: apiProvider, prefs: prefsProvider);
-PlaythroughRepo playthroughRepo = PlaythroughRepo(apiProvider: apiProvider);
-MediaRepo mediaRepo = MediaRepo(apiProvider: apiProvider, daoMedia: daoMedia);
-RoutingRepo routingRepo = RoutingRepo(apiProvider: apiProvider);
+final StaticRepo staticRepo = StaticRepo(apiProvider: apiProvider);
+final LoginRepo loginRepo =
+    LoginRepo(apiProvider: apiProvider, prefs: prefsProvider);
+final PlaythroughRepo playthroughRepo =
+    PlaythroughRepo(apiProvider: apiProvider);
+final MediaRepo mediaRepo =
+    MediaRepo(apiProvider: apiProvider, daoMedia: daoMedia);
+final RoutingRepo routingRepo = RoutingRepo(apiProvider: apiProvider);
 
-WaypointsRepo waypointsRepo = WaypointsRepo(
+final WaypointsRepo waypointsRepo = WaypointsRepo(
   apiProvider: apiProvider,
   daoMedia: daoMedia,
   daoSubmission: daoSubmission,
@@ -46,18 +56,28 @@ WaypointsRepo waypointsRepo = WaypointsRepo(
   daoWaypoint: daoWaypoint,
 );
 
-AnytimeRepo anytimeRepo = AnytimeRepo(
+final AnytimeRepo anytimeRepo = AnytimeRepo(
   apiProvider: apiProvider,
   waypointsRepo: waypointsRepo,
 );
 
-BonusRepo bonusRepo = BonusRepo(
+final BonusRepo bonusRepo = BonusRepo(
   apiProvider: apiProvider,
   waypointsRepo: waypointsRepo,
 );
 
-LocationRepo locationRepo = LocationRepo(
+final LocationRepo locationRepo = LocationRepo(
   apiProvider: apiProvider,
   loginRepo: loginRepo,
   locationProvider: locationProvider,
+);
+
+final H2HRepo h2hRepo = H2HRepo(
+  apiProvider: apiProvider,
+  firebaseMessaging: firebaseMessaging,
+  locationProvider: locationProvider,
+);
+
+final TeamRepo teamRepo = TeamRepo(
+  apiProvider: apiProvider,
 );

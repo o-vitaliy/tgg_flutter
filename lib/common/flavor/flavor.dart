@@ -36,7 +36,7 @@ class Flavor {
     return text;
   }
 
-  static Flavor initial() {
+  factory Flavor.initial() {
     return Flavor._(Map<String, dynamic>());
   }
 

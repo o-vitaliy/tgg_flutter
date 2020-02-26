@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:tgg/containers/waypoints/submissions/answer_transformer.dart';
 import 'package:tgg/containers/waypoints/submissions/submission_types.dart';
 
 main() {
@@ -61,7 +62,7 @@ main() {
   group("is mutli choice", () {
     test("checks all types are covered ", () async {
       SubmissionType.values
-          .forEach((type) => SubmissionTypeHelper.isMedia(type));
+          .forEach((type) => SubmissionTypeHelper.isMultiChoice(type));
     });
 
     test("checks", () async {
@@ -74,6 +75,36 @@ main() {
       expect(SubmissionTypeHelper.isMultiChoice(SubmissionType.photo), false);
       expect(SubmissionTypeHelper.isMultiChoice(SubmissionType.movie), false);
       expect(SubmissionTypeHelper.isMultiChoice(SubmissionType.camera), false);
+    });
+  });
+
+  group("get transform", () {
+    test("checks all types are covered ", () {
+      SubmissionType.values.forEach((type) {
+        final result = SubmissionTypeHelper.getTransformer(type);
+        expect(result, isInstanceOf<AnswerTransformer>());
+      });
+    });
+
+    test("checks", () async {
+      expect(SubmissionTypeHelper.getTransformer(SubmissionType.choice),
+          isInstanceOf<ListStringTransformer>());
+      expect(SubmissionTypeHelper.getTransformer(SubmissionType.checkboxes),
+          isInstanceOf<ListStringTransformer>());
+
+      expect(SubmissionTypeHelper.getTransformer(SubmissionType.text),
+          isInstanceOf<StringTransformer>());
+      expect(SubmissionTypeHelper.getTransformer(SubmissionType.number),
+          isInstanceOf<StringTransformer>());
+      expect(SubmissionTypeHelper.getTransformer(SubmissionType.photo),
+          isInstanceOf<StringTransformer>());
+      expect(SubmissionTypeHelper.getTransformer(SubmissionType.movie),
+          isInstanceOf<StringTransformer>());
+      expect(SubmissionTypeHelper.getTransformer(SubmissionType.camera),
+          isInstanceOf<StringTransformer>());
+
+      expect(SubmissionTypeHelper.getTransformer(SubmissionType.yesno),
+          isInstanceOf<BooleanTransformer>());
     });
   });
 }

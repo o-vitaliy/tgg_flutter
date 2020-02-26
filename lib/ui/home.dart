@@ -7,6 +7,7 @@ import 'package:tgg/common/flavor/flavor.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_container.dart';
 import 'package:tgg/containers/home/post_location_container.dart';
 import 'package:tgg/models/modes.dart';
+import 'package:tgg/models/waypoints/waypoint_mode.dart';
 import 'package:tgg/redux_model/app_state.dart';
 import 'package:tgg/ui/keys.dart';
 import 'package:tgg/ui/tabs/home_tab.dart';
@@ -63,10 +64,15 @@ class _HomeStateContent extends State<_HomePageContent> {
     RouteTabMapper mapper = RouteTabMapper(homeTabBuilder: homeTabBuilder);
 
     return Column(children: <Widget>[
-      HomeToolbar(flavor,changeMode, modes, selectedMode),
+      HomeToolbar(flavor, changeMode, modes, selectedMode),
       UploadContainer(),
       Expanded(
-        child: mapper.map(selectedMode?.name ?? "home"),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: mapper.map(selectedMode?.name ?? "home"),
+          ),
+        ),
       ),
     ]);
   }
@@ -90,10 +96,14 @@ class _ViewModel {
 
   static _ViewModel fromStore(Store<AppState> store) {
     final state = store.state.homePageState;
+    final hasAnyTime = store.state.anytime?.missions?.isNotEmpty ?? false;
+    final hasBonus =
+        store.state.waypointsPassingState?.getWaypointForType(Mode.camera) !=
+            null;
     return _ViewModel(
         flavor: store.state.flavor,
         selectedMode: state.selectedMode,
-        modes: state.modes,
+        modes: state.getModesFiltered(hasAnyTime, hasBonus),
         changeMode: (RouteMode mode) =>
             store.dispatch(ChangeRouteModeAction(mode)),
         logout: () => store.dispatch(LogOut()));

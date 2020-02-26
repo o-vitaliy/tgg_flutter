@@ -17,7 +17,7 @@ void main() {
     return build(
         WaypointSubmissionItem.initial(0, WaypointSubmission.from(t).first),
         onChange,
-        (_) {});
+        () {});
   }
 
   testWidgets('TextField is not empty if text was typed',

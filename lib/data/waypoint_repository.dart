@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:tgg/containers/waypoints/submissions/behavior_types.dart';
 import 'package:tgg/containers/waypoints/submissions/submission_types.dart';
 import 'package:tgg/data/dao/dao_answer.dart';
 import 'package:tgg/data/dao/dao_hints.dart';
@@ -12,7 +13,6 @@ import 'package:tgg/data/providers/location_provider.dart';
 import 'package:tgg/models/waypoints/waypoint.dart';
 import 'package:tgg/models/waypoints/waypoint_mode.dart';
 
-import '../constants.dart';
 import 'dao/dao_submission.dart';
 
 class WaypointsRepo {
@@ -71,8 +71,12 @@ class WaypointsRepo {
 
   Future submitAnswer(String waypointId) async {
     daoWaypoint.savePassed(waypointId);
+
     final location = await locationProvider.getLocation();
     final hintsUsed = await daoHint.getUsedHints(waypointId);
+
+    final Waypoint waypoint = Waypoint.fromJsonMap(
+        json.decode((await daoWaypoint.getWaypoint(waypointId)).waypointJson));
 
     final types = await daoAnswer.getAnswerSubmissionTypes(waypointId);
     final allAnswers = await daoAnswer.getAnswersByWaypointId(waypointId);
@@ -88,7 +92,7 @@ class WaypointsRepo {
       })),
       "num_hints_used": hintsUsed,
       "started_at": DateTime.now().toIso8601String(),
-      "completed_at": DateTime.now().toIso8601String(),
+      "completed_at": _getCompletedAt(waypoint.step.behavior.id),
       "completed_location": [
         location.latitude,
         location.longitude,
@@ -104,8 +108,25 @@ class WaypointsRepo {
 
   Future<List> _getSubmission(String waypointId, String type) async {
     List<String> answers = await daoAnswer.getAnswerByType(waypointId, type);
-    return await Future.wait(
-        answers.map((a) async => {type: await _getAnswerValue(type, a)}));
+    return await Future.wait(answers.map(
+        (a) async => {_getSubmitType(type): await _getAnswerValue(type, a)}));
+  }
+
+  String _getCompletedAt(String type) {
+    if (BehaviorTypeHelper.fromString(type) ==
+        BehaviorType.linked_head_to_head) {
+      return null;
+    } else {
+      return DateTime.now().toIso8601String();
+    }
+  }
+
+  String _getSubmitType(String type) {
+    if (SubmissionTypeHelper.fromString(type) == SubmissionType.yesno) {
+      return "choice";
+    } else {
+      return type;
+    }
   }
 
   Future<dynamic> _getAnswerValue(String type, String answer) async {
@@ -113,10 +134,9 @@ class WaypointsRepo {
     if (SubmissionTypeHelper.isMedia(submissionType)) {
       final media = (await daoMedia.findByKey(answer));
       return media != null ? media.mediaId : null;
-    } else if (SubmissionTypeHelper.isMultiChoice(submissionType)) {
-      return answer.split(answerDelimiter);
     } else {
-      return answer;
+      return SubmissionTypeHelper.getTransformerFromString(type)
+          .transform(answer);
     }
   }
 

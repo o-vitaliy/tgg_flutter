@@ -18,18 +18,16 @@ class HomeTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final buttons = modes.map(buildButton).toList();
     buttons.add(logoutButton(context));
-    return Align(
-        widthFactor: 0.8,
-        child: Column(
-          children: buttons,
-        ));
+    return Column(
+      children: buttons,
+    );
   }
 
   Widget logoutButton(BuildContext context) {
     return RaisedButton(
         onPressed: logout,
-        child:
-            Padding(padding: EdgeInsets.only(left: 8), child: Text("Logout")),
+        child: Padding(
+            padding: EdgeInsets.only(left: 8, right: 8), child: Text("Logout")),
         textColor: Colors.white);
   }
 

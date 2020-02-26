@@ -20,7 +20,8 @@ enum BehaviorType {
   profile_other,
   profile_multiple_choice,
   profile_photo,
-  info
+  info,
+  linked_head_to_head
 }
 
 class BehaviorTypeHelper {
@@ -69,6 +70,24 @@ class BehaviorTypeHelper {
   static bool noSubmissions(BehaviorType type) {
     switch (type) {
       case BehaviorType.info:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  static bool autoSubmit(String type) {
+    switch (fromString(type)) {
+      case BehaviorType.linked_head_to_head:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  static bool postponedResult(BehaviorType type) {
+    switch (type) {
+      case BehaviorType.linked_head_to_head:
         return true;
       default:
         return false;

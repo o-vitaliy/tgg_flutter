@@ -1,4 +1,6 @@
-import 'package:tgg/models/challenges.dart';
+import 'package:tgg/helpers/expandable_list.dart';
+import 'package:tgg/models/challenge.dart';
+import 'package:tgg/models/challenge_state.dart';
 import 'package:tgg/models/profile.dart';
 import 'package:tgg/models/progress.dart';
 import 'package:tgg/models/social_info.dart';
@@ -16,7 +18,7 @@ class Team {
   SocialInfo socialInfo;
   int status;
   List<Object> history;
-  Challenges challenges;
+  List<Challenge> challenges;
   Progress progress;
   int pointsTotal;
   int pointsFromPlay;
@@ -37,7 +39,7 @@ class Team {
         socialInfo = SocialInfo.fromJsonMap(map["social_info"]),
         status = map["status"],
         history = map["history"],
-        challenges = Challenges.fromJsonMap(map["challenges"]),
+        challenges = Challenge.from(map["challenges"]),
         progress = Progress.fromJsonMap(map["progress"]),
         pointsTotal = map["points_total"],
         pointsFromPlay = map["points_from_play"],
@@ -45,27 +47,11 @@ class Team {
         organizationId = map["organization_id"],
         playthroughId = map["playthrough_id"];
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = id;
-    data['name'] = name;
-    data['pin'] = pin;
-    data['number'] = number;
-    data['track'] = track;
-    data['game_runner'] = gameRunner;
-    data['is_archived'] = isArchived;
-    data['external_user_id'] = externalUserId;
-    data['profile'] = profile == null ? null : profile.toJson();
-    data['social_info'] = socialInfo == null ? null : socialInfo.toJson();
-    data['status'] = status;
-    data['history'] = history;
-    data['challenges'] = challenges == null ? null : challenges.toJson();
-    data['progress'] = progress == null ? null : progress.toJson();
-    data['points_total'] = pointsTotal;
-    data['points_from_play'] = pointsFromPlay;
-    data['points_from_voting'] = pointsFromVoting;
-    data['organization_id'] = organizationId;
-    data['playthrough_id'] = playthroughId;
-    return data;
+  Challenge getWaitingOpponentToAccept() {
+    return challenges?.firstOrNull((c) => c.state == ChallengeState.sent);
+  }
+
+  Challenge getReceivedInvite() {
+    return challenges?.firstOrNull((c) => c.state == ChallengeState.received);
   }
 }

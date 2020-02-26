@@ -22,7 +22,6 @@ class SubmissionChoice {
         print(e);
       }
     }
-
     return results;
   }
 }

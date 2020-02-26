@@ -9,4 +9,8 @@ extension ExtendedIterable<E> on Iterable<E> {
     var i = 0;
     this.forEach((e) => f(e, i++));
   }
+
+  E firstOrNull(bool test(E element)) {
+    return firstWhere(test, orElse: () => null);
+  }
 }

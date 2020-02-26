@@ -70,5 +70,13 @@ main() {
       final params = {"given0": given0, "given1": given1};
       expect(flavor.applyParams(text, params), "lorem $given1   $given0");
     });
+
+    test("extra arguments ", () {
+      final text = "lorem";
+      final given1 = "1111";
+      final given0 = "0000";
+      final params = {"given0": given0, "given1": given1};
+      expect(flavor.applyParams(text, params), "lorem");
+    });
   });
 }

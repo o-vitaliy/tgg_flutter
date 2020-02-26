@@ -11,6 +11,7 @@ import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart'
 import 'package:tgg/containers/waypoints/waypoints_actions.dart';
 import 'package:tgg/data/providers.dart';
 import 'package:tgg/helpers/expandable_list.dart';
+import 'package:tgg/models/waypoints/waypoint.dart';
 import 'package:tgg/redux_model/app_state.dart';
 
 import '../../../constants.dart';
@@ -66,33 +67,37 @@ Middleware<AppState> _submit() {
         });
       }
 
-      if (incorrectAnswers.isEmpty) {
-        final dialogBuilder = (context) {
-          return createSuccessDialog(
-            waypoint.attemptsUsed,
-            store.state.flavor,
-            () {
-              Navigator.pop(context);
-              store.dispatch(WaypointsStartLoadAction());
-              store.dispatch(WaypointRemoveAction(waypointId));
-            },
-          );
-        };
-        store.dispatch(DialogAction(action.context, dialogBuilder));
-        await waypointsRepo.submitAnswer(waypointId);
+      if (!BehaviorTypeHelper.postponedResult(behaviorType)) {
+        if (incorrectAnswers.isEmpty) {
+          final dialogBuilder = (context) {
+            return createSuccessDialog(
+              waypoint.attemptsUsed,
+              store.state.flavor,
+              () {
+                Navigator.pop(context);
+                store.dispatch(WaypointsStartLoadAction());
+                store.dispatch(WaypointRemoveAction(waypointId));
+              },
+            );
+          };
+          store.dispatch(DialogAction(dialogBuilder));
+          await waypointsRepo.submitAnswer(waypointId);
+        } else {
+          final dialogBuilder = (context) {
+            return createErrorDialog(
+              incorrectAnswers.join(","),
+              waypoint.attemptsUsed,
+              store.state.flavor,
+              () {
+                Navigator.pop(context);
+              },
+            );
+          };
+          store.dispatch(WaypointIncrementAttemptAction(waypointId));
+          store.dispatch(DialogAction(dialogBuilder));
+        }
       } else {
-        final dialogBuilder = (context) {
-          return createErrorDialog(
-            incorrectAnswers.join(","),
-            waypoint.attemptsUsed,
-            store.state.flavor,
-            () {
-              Navigator.pop(context);
-            },
-          );
-        };
-        store.dispatch(WaypointIncrementAttemptAction(waypointId));
-        store.dispatch(DialogAction(action.context, dialogBuilder));
+        waypointsRepo.submitAnswer(waypointId).then((_) {});
       }
     }
     next(action);
@@ -111,22 +116,25 @@ Middleware<AppState> _trackStarted() {
 Middleware<AppState> _updateAnswer() {
   return (Store store, action, NextDispatcher next) async {
     if (action is WaypointUpdateAnswer) {
+      final AppState state = store.state;
+
       final String waypointId = action.waypointId;
+      final Waypoint waypoint =
+          state.waypointsPassingState[waypointId].waypoint;
       dynamic answer = action.answer;
       if (SubmissionTypeHelper.isMediaFromString(action.submission.type)) {
-        final AppState state = store.state;
         String key = mediaRepo.getKey(
-          action.answer,
-          state.playthrough.playthrough,
-          state.loginResponse.team,
-          state.waypointsPassingState[waypointId].waypoint,
-        );
+            action.answer, state.playthrough.playthrough, state.team, waypoint);
 
         store.dispatch(AddFileToUploadAction(action.answer, key));
         answer = key;
       }
       store.dispatch(WaypointSaveAnswer(
           waypointId, action.itemId, answer, action.submission));
+
+      if (BehaviorTypeHelper.autoSubmit(waypoint.step.behavior.id)) {
+        store.dispatch(WaypointSubmit(waypointId));
+      }
     }
     next(action);
   };
@@ -149,6 +157,8 @@ Middleware<AppState> _showHint() {
 String _answerToString(answer) {
   if (answer == null) {
     return null;
+  } else if (answer is bool) {
+    return answer.toString();
   } else if (answer is String) {
     return answer;
   } else if (answer is List) {

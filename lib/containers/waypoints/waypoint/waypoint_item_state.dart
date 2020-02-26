@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:tgg/containers/waypoints/submissions/behavior_types.dart';
 import 'package:tgg/containers/waypoints/submissions/submit_button_helper.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart';
 import 'package:tgg/models/waypoints/waypoint.dart';
@@ -28,7 +29,10 @@ class WaypointItemState {
       return 0;
   }
 
-  bool get isEnabled => SubmitButtonHelper().isEnabledList(items);
+  bool get isVisible =>
+      !BehaviorTypeHelper.autoSubmit(waypoint.step.behavior.id);
+
+  bool get isEnabled => isVisible && SubmitButtonHelper().isEnabledList(items);
 
   WaypointItemState({
     @required this.waypoint,

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart';
 import 'package:tgg/models/waypoints/waypoint.dart';
 import 'package:tgg/models/waypoints/waypoint_submission.dart';
@@ -55,10 +54,8 @@ class WaypointSaveAnswer {
 
 class WaypointSubmit {
   final String waypointId;
-  final BuildContext context;
 
   WaypointSubmit(
-    this.context,
     this.waypointId,
   );
 }

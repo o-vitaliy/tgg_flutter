@@ -4,7 +4,7 @@ class LocationProvider {
   Future<Position> getLocation() async => await Geolocator()
       .getCurrentPosition(desiredAccuracy: LocationAccuracy.lowest);
 
-  Map toFix(Position location) {
+  Map toFix(final Position location) {
     return {
       "time": DateTime.now().toIso8601String(),
       "coords": [

@@ -21,8 +21,9 @@ T getValue<T>(step, String key, T Function(dynamic v) transformer) {
 
 dynamic _getField(String key, String valueKey, step) {
   final List fields = getAt(step, "behavior.fields");
-  final value =
-      fields.firstWhere((field) => field["name"] == key, orElse: () => null);
+  final value = fields != null
+      ? fields.firstWhere((field) => field["name"] == key, orElse: () => null)
+      : null;
   if (value != null) {
     return value[valueKey];
   }

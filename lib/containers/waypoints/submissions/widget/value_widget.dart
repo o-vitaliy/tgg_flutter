@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 typedef OnValueChange = void Function(dynamic newValue);
-typedef OnSubmit = void Function(BuildContext);
+typedef OnSubmit = void Function();
 typedef OnHint = void Function();
 
 abstract class ValueWidget {

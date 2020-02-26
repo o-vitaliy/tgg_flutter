@@ -1,0 +1,33 @@
+{
+  "status": {
+    "ok": true,
+    "result": "sent"
+  },
+  "team": {
+    "id": "5e0dd20bd71f100014a5d10f",
+    "name": "Team #95",
+    "pin": "fbm",
+    "number": 95,
+    "track": 95,
+    "game_runner": false,
+    "is_archived": false,
+    "external_user_id": null,
+    "profile": {},
+    "social_info": {},
+    "status": 100,
+    "history": [],
+    "challenges": {},
+    "progress": {
+      "points": 0
+    },
+    "last_logged_in_at": null,
+    "last_location": null,
+    "last_located_at": null,
+    "last_location_accuracy": null,
+    "points_total": 0,
+    "points_from_play": 0,
+    "points_from_voting": 0,
+    "organization_id": null,
+    "playthrough_id": "5e07304dd71f10001a444b3b"
+  }
+}

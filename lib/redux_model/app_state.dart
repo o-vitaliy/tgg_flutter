@@ -6,20 +6,21 @@ import 'package:tgg/common/playthrought/playthrought_state.dart';
 import 'package:tgg/common/routing/routing_state.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_state.dart';
 import 'package:tgg/containers/camera/camera_state.dart';
+import 'package:tgg/containers/h2h/h2h_state.dart';
 import 'package:tgg/containers/mission/anytime/anytime_state.dart';
 import 'package:tgg/containers/mission/bonus/bonus_state.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
 import 'package:tgg/containers/waypoints/waypoints_state.dart';
 import 'package:tgg/helpers/theme_helper.dart';
 import 'package:tgg/models/blueprint_model.dart';
-import 'package:tgg/models/login_response.dart';
+import 'package:tgg/models/models.dart';
 import 'package:tgg/redux_model/login_state.dart';
 
 @immutable
 class AppState {
   final ThemeData themeData;
   final bool isLoading;
-  final LoginResponse loginResponse;
+  final Team team;
   final PlaythroughtState playthrough;
   final Timer postLocationTimer;
   final LoginState loginState;
@@ -32,11 +33,12 @@ class AppState {
   final BlueprintModel blueprint;
   final AnytimeState anytime;
   final BonusState bonus;
+  final H2HState h2h;
 
   AppState({
     @required this.themeData,
     @required this.isLoading,
-    @required this.loginResponse,
+    @required this.team,
     @required this.playthrough,
     @required this.postLocationTimer,
     @required this.loginState,
@@ -49,13 +51,14 @@ class AppState {
     @required this.blueprint,
     @required this.anytime,
     @required this.bonus,
+    @required this.h2h,
   });
 
   factory AppState.initial() {
     return AppState(
       themeData: getDefaultTheme(),
       isLoading: false,
-      loginResponse: null,
+      team: null,
       playthrough: PlaythroughtState.initial(),
       postLocationTimer: null,
       loginState: null,
@@ -68,6 +71,7 @@ class AppState {
       blueprint: null,
       anytime: AnytimeState.initial(),
       bonus: BonusState.initial(),
+      h2h: H2HState.initial(),
     );
   }
 
@@ -75,7 +79,7 @@ class AppState {
     return new AppState(
       themeData: themeData ?? this.themeData,
       isLoading: isLoading ?? this.isLoading,
-      loginResponse: loginResponse ?? this.loginResponse,
+      team: team ?? this.team,
       playthrough: playthrough ?? this.playthrough,
       postLocationTimer: postLocationTimer ?? this.postLocationTimer,
       loginState: loginState ?? this.loginState,
@@ -89,6 +93,7 @@ class AppState {
       blueprint: blueprint ?? this.blueprint,
       anytime: anytime ?? this.anytime,
       bonus: bonus ?? this.bonus,
+      h2h: h2h ?? this.h2h,
     );
   }
 }

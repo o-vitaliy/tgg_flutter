@@ -16,7 +16,7 @@ class BonusState {
     this.bonusMissions,
   });
 
-  static BonusState initial() => BonusState._(
+  factory BonusState.initial() => BonusState._(
         listLoading: true,
         waypointLoading: false,
       );

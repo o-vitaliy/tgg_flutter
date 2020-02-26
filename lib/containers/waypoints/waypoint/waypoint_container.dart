@@ -40,23 +40,20 @@ class WaypointContainer extends StatelessWidget {
             ..addAll(vm.builder(context))
             ..add(getHintView(vm))
             ..add(getHintButton(vm))
-            ..add(RaisedButton(
-              child: Text(vm.flavor.get("mission:submit")),
-              onPressed: vm.isSubmitEnabled ? () => vm.onSubmit(context) : null,
-            ));
+            ..add(vm.isSubmitVisible
+                ? RaisedButton(
+                    child: Text(vm.flavor.get("mission:submit")),
+                    onPressed: vm.isSubmitEnabled ? () => vm.onSubmit() : null,
+                  )
+                : SizedBox.shrink());
           final items = list
               .map((item) =>
                   Padding(padding: EdgeInsets.only(top: 8), child: item))
               .toList();
 
-          return SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: items,
-              ),
-            ),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: items,
           );
         });
   }
@@ -90,6 +87,7 @@ class _ViewModel {
   final int hintPrice;
   final int hintRemained;
   final OnHint onHint;
+  final bool isSubmitVisible;
   final bool isSubmitEnabled;
 
   _ViewModel({
@@ -102,6 +100,7 @@ class _ViewModel {
     @required this.hintPrice,
     @required this.hintRemained,
     @required this.onHint,
+    @required this.isSubmitVisible,
     @required this.isSubmitEnabled,
   });
 
@@ -112,8 +111,7 @@ class _ViewModel {
 
     final items = state.items;
 
-    final OnSubmit onSubmit =
-        (context) => store.dispatch(WaypointSubmit(context, waypointId));
+    final OnSubmit onSubmit = () => store.dispatch(WaypointSubmit(waypointId));
     final OnHint onHint =
         () => store.dispatch(WaypointShowHintAction(waypointId));
 
@@ -140,6 +138,7 @@ class _ViewModel {
         hintPrice: state.hintPrice,
         hintRemained: state.hintRemained,
         onHint: onHint,
+        isSubmitVisible: state.isVisible,
         isSubmitEnabled: state.isEnabled);
   }
 }

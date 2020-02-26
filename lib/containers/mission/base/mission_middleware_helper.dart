@@ -13,7 +13,7 @@ class LoadMissionMiddlewareHelper {
     final List<Waypoint> waypoints,
     final Mode mode,
   ) async {
-    final teamId = store.state.loginResponse.team.id;
+    final teamId = store.state.team.id;
     final anytime = await repo.getMissions(teamId);
     final fromWayponts = waypoints
         .where((w) => w.mode == mode)
@@ -32,7 +32,7 @@ class LoadMissionMiddlewareHelper {
         .first;
 
     if (waypoint == null) {
-      final teamId = store.state.loginResponse.team.id;
+      final teamId = store.state.team.id;
       await bonusRepo.startMission(teamId, missionId);
       waypoint = (await waypointsRepo.getActiveWaypoints())
           .where((w) => w.step.missionId == missionId)

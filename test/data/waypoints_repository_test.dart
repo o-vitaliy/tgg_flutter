@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,6 +14,7 @@ import 'package:tgg/data/dao/dao_submission.dart';
 import 'package:tgg/data/dao/dao_waypoints.dart';
 import 'package:tgg/data/dao/db.dart';
 import 'package:tgg/data/waypoint_repository.dart';
+import 'package:tgg/models/waypoints/waypoint_mode.dart';
 
 import 'mocks.dart';
 
@@ -105,7 +107,8 @@ main() {
       when(mockedLocationProvider.getLocation())
           .thenAnswer((_) => Future.value(position));
 
-      final waypointId = "waypointId";
+      final waypoints = await repo.getActiveWaypoints();
+      final waypointId = waypoints.first.id;
 
       daoHint.getUsedHints(waypointId);
       daoAnswer.insert(waypointId, "text", "a1");
@@ -127,7 +130,8 @@ main() {
       when(mockedLocationProvider.getLocation())
           .thenAnswer((_) => Future.value(position));
 
-      final waypointId = "waypointId";
+      final waypoints = await repo.getActiveWaypoints();
+      final waypointId = waypoints.first.id;
 
       daoHint.getUsedHints(waypointId);
       daoAnswer.insert(waypointId, "text", "a1");
@@ -151,7 +155,8 @@ main() {
       )).called(1);
     });
     test("sumbit answer with media", () async {
-      final waypointId = "waypointId";
+      final waypoints = await repo.getActiveWaypoints();
+      final waypointId = waypoints.first.id;
 
       await daoMedia.insert("mediaId", "url", "key");
       daoAnswer.insert(waypointId, "photo", "key");
@@ -168,7 +173,8 @@ main() {
       ));
     });
     test("sumbit answer checkbox", () async {
-      final waypointId = "waypointId";
+      final waypoints = await repo.getActiveWaypoints();
+      final waypointId = waypoints.first.id;
 
       daoAnswer.insert(waypointId, "checkboxes", "a1,a2");
 
@@ -199,6 +205,18 @@ main() {
     test("sumbit getActiveWaypoints twice", () async {
       await repo.getActiveWaypoints();
       await repo.getActiveWaypoints();
+    });
+
+    test("all modes", () async {
+      when(mockedApiProvider.activeWaypoints()).thenAnswer((_) => Future.value(
+          File("test/data/mocks/activeWaypointAllModes.json")
+              .readAsStringSync()));
+
+      final waypoints = await repo.getActiveWaypoints();
+      expect(waypoints.where((w) => w.mode == Mode.main), isNotEmpty);
+      expect(waypoints.where((w) => w.mode == Mode.head_to_head), isNotEmpty);
+      expect(waypoints.where((w) => w.mode == Mode.camera), isNotEmpty);
+      expect(waypoints.where((w) => w.mode == Mode.anytime), isNotEmpty);
     });
   });
 }

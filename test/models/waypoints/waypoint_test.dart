@@ -1,20 +1,31 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tgg/models/waypoints/waypoint.dart';
 
 import '../../data/mocks.dart';
 
-Waypoint get _waypoint =>
-    Waypoint.fromJsonMap(json.decode(mockedActiveWaypoints).first);
-
 main() {
   group("waypoint", () {
     test("fromJsonMap", () {
-      expect(_waypoint.id, isNotNull);
-      expect(_waypoint.step, isNotNull);
-      expect(_waypoint.points, isNotNull);
-      expect(_waypoint.mode, isNotNull);
+      (json.decode(mockedActiveWaypoints) as Iterable).forEach((w) {
+        final waypoint = Waypoint.fromJsonMap(w);
+        expect(waypoint.id, isNotNull);
+        expect(waypoint.step, isNotNull);
+        expect(waypoint.points, isNotNull);
+        expect(waypoint.mode, isNotNull);
+      });
+    });
+
+    test("fromJsonMap All modes", () {
+      (json.decode(File("test/data/mocks/activeWaypointAllModes.json").readAsStringSync()) as Iterable).forEach((w) {
+        final waypoint = Waypoint.fromJsonMap(w);
+        expect(waypoint.id, isNotNull);
+        expect(waypoint.step, isNotNull);
+        expect(waypoint.points, isNotNull);
+        expect(waypoint.mode, isNotNull);
+      });
     });
   });
 }

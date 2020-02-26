@@ -18,7 +18,7 @@ main() {
         WaypointSubmissionItem.initial(
             0, WaypointSubmission.from(t).first),
         (_) {},
-        (_) {});
+        () {});
   }
 
   group("submissions_builder_test", () {

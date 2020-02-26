@@ -16,7 +16,7 @@ class AnytimeState {
     this.missions,
   });
 
-  static AnytimeState initial() => AnytimeState._(
+  factory AnytimeState.initial() => AnytimeState._(
         listLoading: true,
         waypointLoading: false,
       );

@@ -40,6 +40,11 @@ class ApiProvider {
     return apiRequest(url, token: token, params: values);
   }
 
+  Future<String> team({teamId: String}) async {
+    final url = "$_baseUrl/play/teams/$teamId/trigger_action/";
+    return apiRequest(url, token: token, method: httpMethod.get);
+  }
+
   Future<String> teamTriggerAction({
     teamId: String,
     values: Map,

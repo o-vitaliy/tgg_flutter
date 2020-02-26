@@ -1,4 +1,15 @@
-enum SubmissionType { text, photo, number, choice, movie, checkboxes, camera }
+import 'answer_transformer.dart';
+
+enum SubmissionType {
+  text,
+  photo,
+  number,
+  choice,
+  movie,
+  checkboxes,
+  camera,
+  yesno
+}
 
 class SubmissionTypeHelper {
   static SubmissionType fromString(String value) {
@@ -19,6 +30,7 @@ class SubmissionTypeHelper {
       case SubmissionType.number:
       case SubmissionType.choice:
       case SubmissionType.checkboxes:
+      case SubmissionType.yesno:
         return false;
 
       default:
@@ -36,6 +48,7 @@ class SubmissionTypeHelper {
       case SubmissionType.camera:
       case SubmissionType.text:
       case SubmissionType.number:
+      case SubmissionType.yesno:
         return false;
 
       default:
@@ -45,5 +58,28 @@ class SubmissionTypeHelper {
 
   static bool isMediaFromString(String type) {
     return isMedia(fromString(type));
+  }
+
+  static AnswerTransformer getTransformerFromString(String type) {
+    return getTransformer(fromString(type));
+  }
+
+  static AnswerTransformer getTransformer(SubmissionType type) {
+    switch (type) {
+      case SubmissionType.choice:
+      case SubmissionType.checkboxes:
+        return ListStringTransformer();
+      case SubmissionType.photo:
+      case SubmissionType.movie:
+      case SubmissionType.camera:
+      case SubmissionType.text:
+      case SubmissionType.number:
+        return StringTransformer();
+      case SubmissionType.yesno:
+        return BooleanTransformer();
+
+      default:
+        throw ArgumentError("unsupported type $type");
+    }
   }
 }

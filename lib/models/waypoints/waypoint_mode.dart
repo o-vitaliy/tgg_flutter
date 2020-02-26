@@ -1,4 +1,4 @@
-enum Mode { main, anytime, camera }
+enum Mode { main, anytime, camera, head_to_head }
 
 class ModeHelper {
   static Mode fromString(String name) {

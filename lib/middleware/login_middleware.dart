@@ -73,5 +73,7 @@ void doAfterLogin(final Store store, final LoginResponse response) async {
     store.dispatch(UpdateFlavorAction(v));
   }).then((_) {
     store.dispatch(WaypointsStartLoadAction());
+  }).then((_) async {
+    await h2hRepo.registerFcm(response.team.id);
   });
 }

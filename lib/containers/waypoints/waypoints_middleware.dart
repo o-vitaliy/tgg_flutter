@@ -3,6 +3,7 @@ import 'package:tgg/containers/mission/anytime/anytime_action.dart';
 import 'package:tgg/containers/mission/bonus/bonus_action.dart';
 import 'package:tgg/containers/waypoints/waypoints_actions.dart';
 import 'package:tgg/data/providers.dart';
+import 'package:tgg/helpers/expandable_list.dart';
 import 'package:tgg/models/waypoints/waypoint_mode.dart';
 import 'package:tgg/redux_model/app_state.dart';
 
@@ -19,10 +20,14 @@ Middleware<AppState> _createLoadWaypointMiddleware() {
     if (action is WaypointsStartLoadAction) {
       store.dispatch(WaypointsStartedLoadingAction());
       waypointsRepo.getActiveWaypoints().then((waypoints) {
-        final selected = waypoints.firstWhere((w) => w.mode == Mode.main,
-            orElse: () => null);
-        if (selected != null) {
-          store.dispatch(WaypointsSelectCurrentAction(selected));
+        final selectedMain = waypoints.firstOrNull((w) => w.mode == Mode.main);
+        if (selectedMain != null) {
+          store.dispatch(WaypointsSelectCurrentAction(selectedMain));
+        }
+        final selectedH2H =
+            waypoints.firstOrNull((w) => w.mode == Mode.head_to_head);
+        if (selectedH2H != null) {
+          store.dispatch(WaypointsSelectCurrentAction(selectedH2H));
         }
         store.dispatch(WaypointsCompletedLoadingAction(waypoints));
         return waypoints;

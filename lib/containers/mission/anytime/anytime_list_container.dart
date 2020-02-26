@@ -40,22 +40,21 @@ class AnytimeListContainer extends StatelessWidget {
       return Stack(
         children: <Widget>[
           WaypointContainer(vm.waypointId),
-          RaisedButton(
-            child: backButton(),
-            onPressed: () => vm.onRemoveWaypoint(vm.waypointId),
+          SizedBox.fromSize(
+            size: Size(32, 32),
+            child: RaisedButton(
+              child: SizedBox.fromSize(
+                  size: Size(32, 32),
+                  child: Icon(
+                    FontAwesomeIcons.arrowLeft,
+                    color: Colors.white,
+                  )),
+              onPressed: () => vm.onRemoveWaypoint(vm.waypointId),
+            ),
           ),
         ],
       );
     }
-  }
-
-  Widget backButton() {
-    return SizedBox.fromSize(
-        size: Size(32, 32),
-        child: Icon(
-          FontAwesomeIcons.arrowLeft,
-          color: Colors.white,
-        ));
   }
 }
 

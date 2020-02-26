@@ -13,7 +13,9 @@ class Playthrough {
     game = Game.fromJsonMap(map["game"]);
     id = map["id"];
     name = map["name"];
-    startedAt = DateTime.parse(map["started_at"]);
+    startedAt = map["started_at"] != null
+        ? DateTime.parse(map["started_at"])
+        : DateTime(1970);
     status = PlaythroughStatusHelper.getFromInt(map["status"]);
   }
 }

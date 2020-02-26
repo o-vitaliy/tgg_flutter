@@ -26,5 +26,13 @@ main() {
         i++;
       });
     });
+    test("foreach indexed", () {
+      final List<String> list = ["a", "b"];
+      dynamic result = list.firstOrNull((v) => v == "a");
+      expect(result, "a");
+
+      result = list.firstOrNull((v) => v == "c");
+      expect(result, isNull);
+    });
   });
 }

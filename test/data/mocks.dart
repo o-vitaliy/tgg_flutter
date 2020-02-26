@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mockito/mockito.dart';
@@ -15,11 +16,14 @@ class MockedPrefsProvider extends Mock implements PrefsProvider {}
 
 class MockedLocationProvider extends Mock implements LocationProvider {}
 
+class MockedFirebaseMessaging extends Mock implements FirebaseMessaging {}
+
 const goodPin = "good";
 const badPin = "bad";
 const playthroughs = "playthroughs";
-const mockedLoginResponse =
-    """{"team":{"id":"5e0dd20bd71f100014a5d10f","name":"Team #95","pin":"fbm","number":95,"track":95,"game_runner":false,"is_archived":false,"external_user_id":null,"profile":{},"social_info":{},"status":100,"history":[],"challenges":{},"progress":{"points":0},"last_logged_in_at":null,"last_location":null,"last_located_at":null,"last_location_accuracy":null,"points_total":0,"points_from_play":0,"points_from_voting":0,"organization_id":null,"playthrough_id":"5e07304dd71f10001a444b3b"},"token":"7829d51b2ed023c580188d7411eb675ad37696d8"}""";
+final mockedLoginResponse =
+    File("test/data/mocks/login.json").readAsStringSync();
+final mockedTeam = File("test/data/mocks/team.json").readAsStringSync();
 const mockedLoginErrorResponse = """Pin must be 3 or 6 characters""";
 final mockedPlaythroughs =
     File("test/data/mocks/playthroughs.json").readAsStringSync();
@@ -34,14 +38,17 @@ final mockedActiveWaypoints =
 const mockCreateMedia =
     """{"media_bucket":"gogame-breadcrumb-display-media","upload_key":"2017-08-12/immaculate-conception-church-powell-11-07/camera-/art-pose-2017-08-12-11-23-38.png","media_key":"2017-08-12/immaculate-conception-church-powell-11-07/camera-/images-<size>/art-pose-2017-08-12-11-23-38.jpeg","upload_mime_type":"image/png","media_mime_type":"image/jpeg","media_timestamp":1502562059,"media_type":"image","media_filename":"photoCompressed5.png","media_size":4616904,"options":{"is_uploaded":true,"is_uploading":true,"in_gallery":true,"is_ready":true,"media_duration":4,"caption":"Donkey Kong"},"id":"5c743270cffcee7eef899092"}""";
 
-const mockRouting = """
-    {"version":1,"votables":{"max":null},"modes":[{"name":"main","title":"Main","icon":"icon-screenshot","type":"routed","features":{"route_ahead":2},"rules":[{"category":"411","sort":"priority"},{"category":"sneak","sort":"spread, priority, distance","max":1},{"category":"plant","sort":"cluster","timer":true,"max":4,"allow_repeat":false},{"category":"creative","max":3,"timer":true,"sort":"priority, spread","allow_repeat":false},{"category":"trivia","max":5,"timer":true,"allow_repeat":false,"sort":"priority, random"},{"category":"sneak","sort":"cluster"},{"category":"trivia","sort":"priority, random"},{"category":"brainburner","sort":"priority, random"}],"sorting":{"cluster":[{"has_location":true,"is_nearby":true,"sort":"priority, distance"},{"has_location":false,"sort":"priority, spread"},{"has_location":true,"is_nearby":false,"sort":"distance"}]},"categories":["sneak","plant","creative","trivia","411","recall","brainburner","filler","unrouted"]},{"name":"head_to_head","title":"H2H","icon":"icon-group","type":"challenge","category":"head_to_head","enabled":true,"delay":10,"max_total":5,"max_per_team":2},{"name":"camera","type":"persistent","source":"queued","title":"Camera","category":"camera","icon":"icon-camera"},{"name":"anytime","type":"persistent","source":"uncompleted","enabled":false,"title":"Anytime","category":"anytime","icon":"icon-reorder"}]}
-    """;
+final mockRouting = File("test/data/mocks/routing.json").readAsStringSync();
+final mockRoutingAllEnabled =
+    File("test/data/mocks/routingAllEnabled.json").readAsStringSync();
 final mockedAnytime = File("test/data/mocks/anytime.json").readAsStringSync();
+
+final mockedInvited = File("test/data/mocks/invited.json").readAsStringSync();
 
 final mockedApiProvider = MockedApiProvider();
 final mockedPrefs = MockedPrefsProvider();
 final mockedLocationProvider = MockedLocationProvider();
+final mockedFirebaseMessaging = MockedFirebaseMessaging();
 
 void initLoginMock() {
   when(mockedApiProvider.login(goodPin))
@@ -63,8 +70,14 @@ void initLoginMock() {
     values: anyNamed("values"),
   )).thenAnswer((_) => Future.value(mockCreateMedia));
 
-  when(mockedApiProvider.getRouting(captureAny))
+  when(mockedApiProvider.getRouting("mockRoutingAllEnabled"))
+      .thenAnswer((_) => Future.value(mockRoutingAllEnabled));
+  when(mockedApiProvider.getRouting("mockRouting"))
       .thenAnswer((_) => Future.value(mockRouting));
+
+  when(mockedApiProvider.teamTriggerAction(
+          teamId: anyNamed("teamId"), values: anyNamed("values")))
+      .thenAnswer((_) => Future.value(mockedInvited));
 
   //flavors
   when(mockedApiProvider.getFlavor("gogame"))
@@ -81,5 +94,12 @@ void initLoginMock() {
       .thenAnswer((_) => Future.value(mockedAnytime));
   when(mockedApiProvider.availableMissions(any, ModeHelper.to(Mode.anytime)))
       .thenAnswer((_) => Future.value(mockedAnytime));
-}
 
+  //firebase
+  when(mockedFirebaseMessaging.getToken())
+      .thenAnswer((_) => Future.value("firebase_token"));
+
+  //team
+  when(mockedApiProvider.team(teamId: anyNamed("teamId")))
+      .thenAnswer((_) => Future.value(mockedTeam));
+}

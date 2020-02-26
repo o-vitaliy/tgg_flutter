@@ -9,14 +9,12 @@ class AnytimeList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: missions.length,
-        itemBuilder: (context, index) {
-          final Mission m = missions[index];
-          return RaisedButton(
-            child: Text(m.name),
-            onPressed: () => onSelect(m),
-          );
-        });
+    return Column(
+        children: missions
+            .map((m) => RaisedButton(
+                  child: Text(m.name),
+                  onPressed: () => onSelect(m),
+                ))
+            .toList());
   }
 }

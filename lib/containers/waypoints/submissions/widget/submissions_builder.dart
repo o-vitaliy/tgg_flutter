@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tgg/containers/waypoints/submissions/widget/yesno_widget.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart';
 
 import '../submission_types.dart';
@@ -30,7 +31,9 @@ Widget build(
           item.submission.galleryEnabled, item.submission.videoParams,
           key: ValueKey(type));
     case SubmissionType.number:
-      return NumberWidget(onValueChange, onSubmit, value,  item.submission.placeholder, key: ValueKey(type));
+      return NumberWidget(
+          onValueChange, onSubmit, value, item.submission.placeholder,
+          key: ValueKey(type));
     case SubmissionType.choice:
       return RadioWidget(onValueChange, onSubmit, value, variants,
           key: ValueKey(type));
@@ -44,6 +47,9 @@ Widget build(
     case SubmissionType.camera:
       return CameraWidget(onValueChange, onSubmit, value,
           item.submission.galleryEnabled, item.submission.videoParams,
+          key: ValueKey(type));
+    case SubmissionType.yesno:
+      return YesnoWidget(onValueChange, onSubmit, value, variants,
           key: ValueKey(type));
     default:
       throw ArgumentError("unsupported type $type");

@@ -37,8 +37,7 @@ class WaypointSubmission {
     return WaypointSubmission._(
       type: map["type"],
       placeholder: _getPlaceholder(map, step),
-      choices: SubmissionChoice.from(getAt(step, map["choices"])) ??
-          _getTextVariants(step),
+      choices: _getChoices(map, step) ?? _getTextVariants(step),
       galleryEnabled: _getGalleryEnabled(step),
       optional: map["optional"] ?? false,
       videoParams: VideoParams(
@@ -79,6 +78,17 @@ class WaypointSubmission {
 
   static String _getVideoQuality(step) {
     return step != null ? getStringValue(step, "video_quality") : "med";
+  }
+
+  static List<SubmissionChoice> _getChoices(map, step) {
+    final values = map["choices"];
+    if (values == null) {
+      return null;
+    } else if (values is List) {
+      return SubmissionChoice.from(values);
+    } else {
+      return SubmissionChoice.from(getAt(step, values));
+    }
   }
 
   static List<String> _getTextVariants(step) {
