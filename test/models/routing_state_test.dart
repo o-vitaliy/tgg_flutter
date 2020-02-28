@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:moor/moor.dart' as m;
 import 'package:tgg/common/routing/routing_state.dart';
 import 'package:tgg/models/routing.dart';
 import 'package:tgg/models/waypoints/waypoint_mode.dart';
@@ -17,8 +18,9 @@ main() {
 
     test("has all routes", () {
       final routing = Routing.fromJsonMap(json.decode(mockRoutingAllEnabled));
-      final RoutingState state = RoutingState.initial(routing.modes);
-      final modes = state.getModesFiltered(true, true);
+      final RoutingState state = RoutingState.initial(routing.modes)
+          .copyWith(hasAnytimes: m.Value(true), hasBonus: m.Value(false));
+      final modes = state.activeModes;
       expect(
           modes.firstWhere((m) => m.name == ModeHelper.to(Mode.main),
               orElse: () => null),
@@ -39,8 +41,9 @@ main() {
 
     test("has any time", () {
       final routing = Routing.fromJsonMap(json.decode(mockRoutingAllEnabled));
-      final RoutingState state = RoutingState.initial(routing.modes);
-      final modes = state.getModesFiltered(true, false);
+      final RoutingState state = RoutingState.initial(routing.modes)
+          .copyWith(hasAnytimes: m.Value(true), hasBonus: m.Value(false));
+      final modes = state.activeModes;
       expect(
           modes.firstWhere((m) => m.name == ModeHelper.to(Mode.anytime),
               orElse: () => null),
@@ -48,8 +51,9 @@ main() {
     });
     test("has not any time", () {
       final routing = Routing.fromJsonMap(json.decode(mockRoutingAllEnabled));
-      final RoutingState state = RoutingState.initial(routing.modes);
-      final modes = state.getModesFiltered(false, false);
+      final RoutingState state = RoutingState.initial(routing.modes)
+          .copyWith(hasAnytimes: m.Value(false), hasBonus: m.Value(false));
+      final modes = state.activeModes;
       expect(
           modes.firstWhere((m) => m.name == ModeHelper.to(Mode.anytime),
               orElse: () => null),
@@ -57,8 +61,9 @@ main() {
     });
     test("has bonus", () {
       final routing = Routing.fromJsonMap(json.decode(mockRoutingAllEnabled));
-      final RoutingState state = RoutingState.initial(routing.modes);
-      final modes = state.getModesFiltered(false, true);
+      final RoutingState state = RoutingState.initial(routing.modes)
+          .copyWith(hasAnytimes: m.Value(true), hasBonus: m.Value(true));
+      final modes = state.activeModes;
       expect(
           modes.firstWhere((m) => m.name == ModeHelper.to(Mode.camera),
               orElse: () => null),
@@ -66,8 +71,9 @@ main() {
     });
     test("has not bonus", () {
       final routing = Routing.fromJsonMap(json.decode(mockRoutingAllEnabled));
-      final RoutingState state = RoutingState.initial(routing.modes);
-      final modes = state.getModesFiltered(false, false);
+      final RoutingState state = RoutingState.initial(routing.modes)
+          .copyWith(hasAnytimes: m.Value(false), hasBonus: m.Value(false));
+      final modes = state.activeModes;
       expect(
           modes.firstWhere((m) => m.name == ModeHelper.to(Mode.camera),
               orElse: () => null),
@@ -76,8 +82,9 @@ main() {
 
     test("any time is not eabled", () {
       final routing = Routing.fromJsonMap(json.decode(mockRouting));
-      final RoutingState state = RoutingState.initial(routing.modes);
-      final modes = state.getModesFiltered(true, true);
+      final RoutingState state = RoutingState.initial(routing.modes)
+          .copyWith(hasAnytimes: m.Value(true), hasBonus: m.Value(true));
+      final modes = state.activeModes;
       expect(
           modes.firstWhere((m) => m.name == ModeHelper.to(Mode.anytime),
               orElse: () => null),

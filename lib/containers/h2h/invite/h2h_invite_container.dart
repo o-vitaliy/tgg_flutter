@@ -4,6 +4,7 @@ import 'package:redux/redux.dart';
 import 'package:tgg/common/flavor/flavor.dart';
 import 'package:tgg/containers/h2h/h2h_widget_helper.dart';
 import 'package:tgg/models/challenge.dart';
+import 'package:tgg/models/waypoints/waypoint_mode.dart';
 import 'package:tgg/redux_model/app_state.dart';
 
 import '../h2h_actions.dart';
@@ -56,7 +57,9 @@ class _H2HInviteContainerState extends State<H2HInviteContainer> {
                   )),
               SizedBox(width: 8, height: 8),
               RaisedButton(
-                child: Text("Invite"),
+                child: Text(vm.flavor.get(
+                    "modes:head_to_head:home:pin_challenge_with_remaining",
+                    params: {"numRemaining": vm.challengesLeft})),
                 onPressed: () => vm.invite(_controller.value.text),
               ),
               Row(
@@ -115,6 +118,7 @@ class _ViewModel {
   final Function(bool) acceptInvite;
   final Challenge challengeSent;
   final Challenge challengeReceived;
+  final int challengesLeft;
 
   _ViewModel({
     this.flavor,
@@ -125,6 +129,7 @@ class _ViewModel {
     this.acceptInvite,
     this.challengeSent,
     this.challengeReceived,
+    this.challengesLeft,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
@@ -138,7 +143,9 @@ class _ViewModel {
         () => store.dispatch(H2HResendInviteAction(challengeSent.teamId));
     final Function(bool) acceptInvite = (accepted) => store
         .dispatch(H2HReactInviteAction(challengeReceived.teamId, accepted));
-
+    final int challengesLeft =
+        state.homePageState.findMode(Mode.head_to_head).maxTotal -
+            state.team.challenges.where((c) => c.state == null).length;
     return _ViewModel(
       flavor: state.flavor,
       pin: state.team.pin,
@@ -148,6 +155,7 @@ class _ViewModel {
       acceptInvite: acceptInvite,
       challengeSent: challengeSent,
       challengeReceived: challengeReceived,
+      challengesLeft: challengesLeft,
     );
   }
 }

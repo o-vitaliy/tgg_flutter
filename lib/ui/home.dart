@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/actions/auth_actions.dart';
-import 'package:tgg/actions/home_actions.dart';
 import 'package:tgg/common/flavor/flavor.dart';
+import 'package:tgg/common/routing/route_actions.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_container.dart';
 import 'package:tgg/containers/home/post_location_container.dart';
 import 'package:tgg/models/modes.dart';
-import 'package:tgg/models/waypoints/waypoint_mode.dart';
 import 'package:tgg/redux_model/app_state.dart';
 import 'package:tgg/ui/keys.dart';
 import 'package:tgg/ui/tabs/home_tab.dart';
@@ -35,8 +34,6 @@ class _HomePageContent extends StatefulWidget {
 }
 
 class _HomeStateContent extends State<_HomePageContent> {
-  RouteMode selectedMode;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -44,33 +41,27 @@ class _HomeStateContent extends State<_HomePageContent> {
         body: StoreConnector<AppState, _ViewModel>(
           converter: _ViewModel.fromStore,
           builder: (BuildContext context, _ViewModel vm) {
-            return buildPage(
-                vm.flavor, vm.selectedMode, vm.modes, vm.changeMode, vm.logout);
+            return buildPage(vm);
           },
         ),
       ),
     );
   }
 
-  Widget buildPage(
-    Flavor flavor,
-    RouteMode selectedMode,
-    List<RouteMode> modes,
-    Function(RouteMode) changeMode,
-    Function logout,
-  ) {
-    final homeTabBuilder =
-        (key) => HomeTab(flavor, modes, changeMode, logout, key: key);
+  Widget buildPage(_ViewModel vm) {
+    final homeTabBuilder = (key) => HomeTab(
+        vm.flavor, vm.startTime, vm.modes, vm.changeMode, vm.logout,
+        key: key);
     RouteTabMapper mapper = RouteTabMapper(homeTabBuilder: homeTabBuilder);
 
     return Column(children: <Widget>[
-      HomeToolbar(flavor, changeMode, modes, selectedMode),
+      HomeToolbar(vm.flavor, vm.changeMode, vm.modes, vm.selectedMode),
       UploadContainer(),
       Expanded(
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(16),
-            child: mapper.map(selectedMode?.name ?? "home"),
+            child: mapper.map(vm.selectedMode?.name ?? "home"),
           ),
         ),
       ),
@@ -82,6 +73,7 @@ class _ViewModel {
   final Flavor flavor;
   final RouteMode selectedMode;
   final List<RouteMode> modes;
+  final DateTime startTime;
 
   final Function(RouteMode) changeMode;
   final Function logout;
@@ -90,22 +82,21 @@ class _ViewModel {
     this.flavor,
     this.selectedMode,
     this.modes,
+    this.startTime,
     this.changeMode,
     this.logout,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     final state = store.state.homePageState;
-    final hasAnyTime = store.state.anytime?.missions?.isNotEmpty ?? false;
-    final hasBonus =
-        store.state.waypointsPassingState?.getWaypointForType(Mode.camera) !=
-            null;
+    final startTime = store.state.playthrough.playthrough.startedAt;
     return _ViewModel(
         flavor: store.state.flavor,
         selectedMode: state.selectedMode,
-        modes: state.getModesFiltered(hasAnyTime, hasBonus),
+        startTime: startTime,
+        modes: state.activeModes,
         changeMode: (RouteMode mode) =>
-            store.dispatch(ChangeRouteModeAction(mode)),
+            store.dispatch(RouteChangeCurrentModeAction(mode)),
         logout: () => store.dispatch(LogOut()));
   }
 }

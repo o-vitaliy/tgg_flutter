@@ -62,7 +62,7 @@ class AppState {
       playthrough: PlaythroughtState.initial(),
       postLocationTimer: null,
       loginState: null,
-      homePageState: null,
+      homePageState: RoutingState.initial([]),
       uploadFilesState: AwsUploadState.initial(),
       cameraState: CameraState(),
       waypointsState: WaypointsState.initial(),

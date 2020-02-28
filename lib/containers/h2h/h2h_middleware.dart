@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
-import 'package:tgg/actions/home_actions.dart';
+import 'package:tgg/common/routing/route_actions.dart';
 import 'package:tgg/common/dialog/dialog_action.dart';
 import 'package:tgg/common/dialog/dialog_helper.dart';
 import 'package:tgg/containers/h2h/h2h_dialogs.dart';
@@ -146,7 +146,7 @@ Middleware<AppState> _reactInvite() {
 void _reloadActivePointsAndOpenH2H(Store<AppState> store) {
   store.dispatch(WaypointsStartLoadAction());
   final route = store.state.homePageState.findMode(Mode.head_to_head);
-  store.dispatch(ChangeRouteModeAction(route));
+  store.dispatch(RouteChangeCurrentModeAction(route));
 }
 
 Middleware<AppState> _result() {

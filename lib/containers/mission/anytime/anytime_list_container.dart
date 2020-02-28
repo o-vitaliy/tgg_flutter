@@ -9,6 +9,7 @@ import 'package:tgg/containers/waypoints/waypoint/waypoint_container.dart';
 import 'package:tgg/models/mission.dart';
 import 'package:tgg/models/waypoints/waypoint_mode.dart';
 import 'package:tgg/redux_model/app_state.dart';
+import 'package:tgg/ui/widgets/base_square_icon_button.dart';
 import 'package:tgg/ui/widgets/loading_indicator.dart';
 
 import 'anytime_action.dart';
@@ -40,17 +41,11 @@ class AnytimeListContainer extends StatelessWidget {
       return Stack(
         children: <Widget>[
           WaypointContainer(vm.waypointId),
-          SizedBox.fromSize(
-            size: Size(32, 32),
-            child: RaisedButton(
-              child: SizedBox.fromSize(
-                  size: Size(32, 32),
-                  child: Icon(
-                    FontAwesomeIcons.arrowLeft,
-                    color: Colors.white,
-                  )),
-              onPressed: () => vm.onRemoveWaypoint(vm.waypointId),
-            ),
+          BaseSquareIconButton(
+            icon: FontAwesomeIcons.arrowLeft,
+            color: Colors.deepOrange,
+            dimension: 32,
+            onTap: (_) => vm.onRemoveWaypoint(vm.waypointId),
           ),
         ],
       );

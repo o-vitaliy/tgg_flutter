@@ -44,11 +44,13 @@ class CollapsibleTabBar extends StatelessWidget {
     int index = 0;
     final items = childList
         .map((data) => _CollapsibleTabBarItem(
-            icon: data.icon,
-            data: data.data,
-            title: data.title,
-            clickCallback: data.clickCallback,
-            selected: index++ == indexOfSelected))
+              icon: data.icon,
+              data: data.data,
+              title: data.title,
+              clickCallback: data.clickCallback,
+              selected: index++ == indexOfSelected,
+              enabled: data.enabled,
+            ))
         .toList();
     return Stack(children: <Widget>[
       Container(
@@ -78,6 +80,7 @@ class CollapsibleTabBar extends StatelessWidget {
     return children
         .sublist(maxItemsInRow - 1, children.length)
         .map((data) => PopupMenuItem<CollapsibleTabBarItemData>(
+            enabled: data.enabled,
             child: Row(
               children: <Widget>[
                 Icon(IconMapper.map(data.icon)),
@@ -98,9 +101,15 @@ class CollapsibleTabBarItemData {
   final String icon;
   final String title;
   final TabItemClickCallback clickCallback;
+  final bool enabled;
 
-  CollapsibleTabBarItemData(
-      {this.data, this.title, this.icon, this.clickCallback});
+  CollapsibleTabBarItemData({
+    this.data,
+    this.title,
+    this.icon,
+    this.clickCallback,
+    this.enabled = true,
+  });
 }
 
 class _CollapsibleTabBarItem extends StatelessWidget {
@@ -109,6 +118,7 @@ class _CollapsibleTabBarItem extends StatelessWidget {
   final String title;
   final TabItemClickCallback clickCallback;
   final bool selected;
+  final bool enabled;
 
   const _CollapsibleTabBarItem(
       {Key key,
@@ -116,7 +126,8 @@ class _CollapsibleTabBarItem extends StatelessWidget {
       this.data,
       this.clickCallback,
       this.selected,
-      this.title})
+      this.title,
+      this.enabled})
       : super(key: key);
 
   @override
@@ -125,11 +136,13 @@ class _CollapsibleTabBarItem extends StatelessWidget {
         child: Material(
             color: Color.fromARGB(0, 0, 0, 0),
             child: InkWell(
-                onTap: () => clickCallback(data),
+                onTap: enabled ? () => clickCallback(data) : null,
                 child: Container(
-                  color: selected
-                      ? Theme.of(context).primaryColorDark
-                      : Theme.of(context).primaryColor,
+                  color: enabled
+                      ? (selected
+                          ? Theme.of(context).primaryColorDark
+                          : Theme.of(context).primaryColor)
+                      : Theme.of(context).disabledColor,
                   height: 56,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

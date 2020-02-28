@@ -29,6 +29,11 @@ Middleware<AppState> _createLoadWaypointMiddleware() {
         if (selectedH2H != null) {
           store.dispatch(WaypointsSelectCurrentAction(selectedH2H));
         }
+        final selectedBonus =
+            waypoints.firstOrNull((w) => w.mode == Mode.camera);
+        if (selectedBonus != null) {
+          store.dispatch(WaypointsSelectCurrentAction(selectedBonus));
+        }
         store.dispatch(WaypointsCompletedLoadingAction(waypoints));
         return waypoints;
       }).then((waypoints) {

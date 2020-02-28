@@ -10,6 +10,7 @@ import 'package:tgg/containers/h2h/h2h_middleware.dart';
 
 import 'common/dialog/dialog_middleware.dart';
 import 'common/messaging/firebase_message.dart';
+import 'common/routing/routing_middleware.dart';
 import 'containers/aws_uploader/aws_upload_middleware.dart';
 import 'containers/camera/camera_container.dart';
 import 'containers/camera/camera_middleware.dart';
@@ -51,6 +52,7 @@ class ReduxApp extends StatelessWidget {
         ..addAll(createBonusMiddleware())
         ..addAll(createH2HMiddleware())
         ..addAll(createTeamMiddleware())
+        ..addAll(createRoutingMiddleware())
         ..add(LoggingMiddleware.printer())
         ..add(NavigationMiddleware<AppState>())
         ..add(DialogMiddleware<AppState>()));

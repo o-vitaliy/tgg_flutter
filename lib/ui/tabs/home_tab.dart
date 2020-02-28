@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tgg/common/flavor/flavor.dart';
 import 'package:tgg/models/modes.dart';
-import 'package:tgg/ui/helpers/icon_mapper.dart';
+import 'package:tgg/ui/tabs/route_button.dart';
 
 class HomeTab extends StatelessWidget {
   final Flavor _flavor;
+  final DateTime startTime;
   final List<RouteMode> modes;
   final Function(RouteMode) pageSelected;
   final Function logout;
 
-  const HomeTab(this._flavor, this.modes, this.pageSelected, this.logout,
+  const HomeTab(
+      this._flavor, this.startTime, this.modes, this.pageSelected, this.logout,
       {Key key})
       : super(key: key);
 
@@ -31,17 +33,10 @@ class HomeTab extends StatelessWidget {
         textColor: Colors.white);
   }
 
-  Widget buildButton(RouteMode mode) => RaisedButton(
-      onPressed: () => pageSelected(mode),
-      child: Row(
-        children: <Widget>[
-          Icon(IconMapper.map(mode.icon), color: Colors.white),
-          Padding(
-              padding: EdgeInsets.only(left: 8),
-              child: Text(
-                _flavor.get("modes:${mode.name}:title"),
-              ))
-        ],
-      ),
-      textColor: Colors.white);
+  Widget buildButton(RouteMode mode) => RouteButton(
+        flavor: _flavor,
+        mode: mode,
+        startTime: startTime,
+        onPressed: pageSelected,
+      );
 }

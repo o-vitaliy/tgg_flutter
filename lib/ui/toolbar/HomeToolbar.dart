@@ -22,6 +22,7 @@ class HomeToolbar extends StatelessWidget {
               title: _flavor.get("nav:modes:${route.name}"),
               icon: route.icon,
               clickCallback: _tabItemClickCallback,
+              enabled: !route.locked,
             ))
         .toList()
           ..insert(

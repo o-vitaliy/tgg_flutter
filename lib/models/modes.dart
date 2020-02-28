@@ -4,27 +4,37 @@ class RouteMode {
   final String icon;
   final String type;
   final bool enabled;
+  final Duration delay;
+  final int maxTotal;
+
+  bool locked = false;
 
   RouteMode.fromJsonMap(Map<String, dynamic> map)
       : name = map["name"],
         title = map["title"],
         icon = map["icon"],
         type = map["type"],
-        enabled = map["enabled"] ?? true;
+        enabled = map["enabled"] ?? true,
+        delay = map["delay"] != null ? Duration(minutes: map["delay"]) : null,
+        maxTotal = map["max_total"];
 
   RouteMode.home()
       : name = "home",
         title = "home",
         icon = "home",
         type = "home",
-        enabled = true;
+        enabled = true,
+        delay = null,
+        maxTotal = null;
 
   RouteMode.menu()
       : name = "menu",
         title = "menu",
         icon = "menu",
         type = "menu",
-        enabled = true;
+        enabled = true,
+        delay = null,
+        maxTotal = null;
 
   @override
   bool operator ==(Object other) =>

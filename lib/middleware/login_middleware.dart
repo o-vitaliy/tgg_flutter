@@ -4,6 +4,7 @@ import 'package:tgg/actions/auth_actions.dart';
 import 'package:tgg/actions/login_actions.dart';
 import 'package:tgg/common/blueprint/blueprint_actions.dart';
 import 'package:tgg/common/flavor/flavor_actions.dart';
+import 'package:tgg/common/routing/route_actions.dart';
 import 'package:tgg/containers/waypoints/waypoints_actions.dart';
 import 'package:tgg/data/providers.dart';
 import 'package:tgg/models/login_response.dart';
@@ -59,14 +60,12 @@ Middleware<AppState> _createLogInMiddleware() {
 void doAfterLogin(final Store store, final LoginResponse response) async {
   final playthroughId = response.team.playthroughId;
   final playthrough = await playthroughRepo.getPlaythrough(playthroughId);
-  final routing = await routingRepo.getRouting(playthrough.game.id);
+
+  store.dispatch(
+      new LogInSuccessful(loginResponse: response, playthrough: playthrough));
 
   store.dispatch(UpdateBlueprint(playthrough.game.blueprint));
-  store.dispatch(new LogInSuccessful(
-    loginResponse: response,
-    playthrough: playthrough,
-    routing: routing,
-  ));
+  store.dispatch(RouteLoadAction(playthrough.game.id, playthrough.startedAt));
   store.dispatch(NavigateToAction.replace(HomePage.routeName));
 
   staticRepo.getFlavor(playthrough.game.blueprint.id).then((v) {
