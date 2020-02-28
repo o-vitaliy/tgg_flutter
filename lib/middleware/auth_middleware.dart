@@ -1,11 +1,12 @@
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/actions/auth_actions.dart';
+import 'package:tgg/common/flavor/flavor_actions.dart';
+import 'package:tgg/containers/login/login_page.dart';
 import 'package:tgg/data/providers.dart';
 import 'package:tgg/redux_model/app_state.dart';
-import 'package:tgg/ui/auth/login_page.dart';
 
-import 'login_middleware.dart';
+import '../containers/login/login_middleware.dart';
 
 List<Middleware<AppState>> createAuthMiddleware() {
   /* final logIn = _createLogInMiddleware();*/
@@ -48,10 +49,12 @@ Middleware<AppState> _createReLogInMiddleware() {
         if (response != null) {
           doAfterLogin(store, response);
         } else {
+          store.dispatch(FlavorLoadDefaultAction());
           store.dispatch(LogInFails("can not relogin"));
           store.dispatch(NavigateToAction.replace(LoginPage.routeName));
         }
       } catch (error) {
+        store.dispatch(FlavorLoadDefaultAction());
         store.dispatch(LogInFails(error));
         store.dispatch(NavigateToAction.replace(LoginPage.routeName));
       }

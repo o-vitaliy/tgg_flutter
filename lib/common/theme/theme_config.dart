@@ -19,7 +19,7 @@ class ThemeConfig {
       flavor?.color("primary:color")?.color ?? const Color(0xfff47421);
 
   Color get background =>
-      flavor?.color("background:color")?.color ?? foregroundInverse;
+      flavor?.color("background:color")?.color ?? Colors.white;
 
   Color get navBarBackground =>
       flavor?.color("navBarBackground:color")?.color ?? background;
@@ -31,7 +31,7 @@ class ThemeConfig {
       flavor?.color("foreground:color")?.color ?? const Color(0xff333333);
 
   Color get foregroundInverse =>
-      flavor?.color("foregroundInverse:color")?.color ?? foreground;
+      flavor?.color("foregroundInverse:color")?.color ?? Colors.white;
 
   Color get secondaryButtonColor => TinyColor(background).darken(5).color;
 

@@ -10,7 +10,7 @@ import 'package:tgg/containers/mission/bonus/bonus_reducer.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_reducer.dart';
 import 'package:tgg/containers/waypoints/waypoints_reducer.dart';
 import 'package:tgg/containers/team/team_reducer.dart';
-import 'package:tgg/reducers/login_reducer.dart';
+import 'package:tgg/containers/login/login_reducer.dart';
 import 'package:tgg/reducers/post_location_reducer.dart';
 import 'package:tgg/redux_model/app_state.dart';
 

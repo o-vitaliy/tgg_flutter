@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:meta/meta.dart';
 import 'package:tgg/data/providers/api_provider.dart';
@@ -18,7 +19,7 @@ class LoginRepo {
     String response = await apiProvider.login(code + pin);
     final Map<String, dynamic> responseMap = json.decode(response);
     loginResponse = LoginResponse.fromJsonMap(responseMap);
-    await prefs.setGameCode(code.substring(0, 3));
+    await prefs.setGameCode(code.substring(0, max(3, code.length)));
     await prefs.setGamePin(loginResponse.team.pin);
     apiProvider.token = loginResponse.token;
     return loginResponse;

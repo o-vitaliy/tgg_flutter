@@ -13,7 +13,7 @@ import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
 import 'package:tgg/containers/waypoints/waypoints_state.dart';
 import 'package:tgg/models/blueprint_model.dart';
 import 'package:tgg/models/models.dart';
-import 'package:tgg/redux_model/login_state.dart';
+import 'package:tgg/containers/login/login_state.dart';
 
 @immutable
 class AppState {

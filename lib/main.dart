@@ -6,6 +6,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_logging/redux_logging.dart';
+import 'package:tgg/common/flavor/flavor_midlleware.dart';
 
 import 'common/dialog/dialog_middleware.dart';
 import 'common/messaging/firebase_message.dart';
@@ -23,11 +24,11 @@ import 'containers/waypoints/waypoint/waypoint_middleware.dart';
 import 'containers/waypoints/waypoints_middleware.dart';
 import 'data/providers.dart';
 import 'middleware/auth_middleware.dart';
-import 'middleware/login_middleware.dart';
+import 'containers/login/login_middleware.dart';
 import 'middleware/post_location_middleware.dart';
 import 'reducers/app_reducer.dart';
 import 'redux_model/app_state.dart';
-import 'ui/auth/login_page.dart';
+import 'containers/login/login_page.dart';
 import 'ui/home.dart';
 import 'ui/splash.dart';
 
@@ -53,6 +54,7 @@ class ReduxApp extends StatelessWidget {
         ..addAll(createH2HMiddleware())
         ..addAll(createTeamMiddleware())
         ..addAll(createRoutingMiddleware())
+        ..addAll(createFlavorMiddleware())
         ..add(LoggingMiddleware.printer())
         ..add(NavigationMiddleware<AppState>())
         ..add(DialogMiddleware<AppState>()));

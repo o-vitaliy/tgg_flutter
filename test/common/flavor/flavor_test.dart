@@ -17,6 +17,12 @@ main() {
     test("get", () {
       expect(flavor.get("facebook:color"), "#3b5998");
     });
+
+    test("contains", () {
+      expect(flavor.contains("facebook:color"), true);
+      expect(flavor.contains("not_exitsting"), false);
+    });
+
     test("not existing key", () {
       expect(flavor.get("facebook:color:color"), "facebook:color:color");
     });

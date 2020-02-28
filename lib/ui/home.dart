@@ -4,11 +4,11 @@ import 'package:redux/redux.dart';
 import 'package:tgg/actions/auth_actions.dart';
 import 'package:tgg/common/flavor/flavor.dart';
 import 'package:tgg/common/routing/route_actions.dart';
+import 'package:tgg/common/theme/theme_config.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_container.dart';
 import 'package:tgg/containers/home/post_location_container.dart';
 import 'package:tgg/models/modes.dart';
 import 'package:tgg/redux_model/app_state.dart';
-import 'package:tgg/common/theme/theme_config.dart';
 import 'package:tgg/ui/keys.dart';
 import 'package:tgg/ui/tabs/home_tab.dart';
 import 'package:tgg/ui/tabs/route_tab_mapper.dart';
@@ -23,8 +23,12 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PostLocationContainer(
-      widgetBuilder: (context) => _HomePageContent(),
+    return Scaffold(
+      body: SafeArea(
+        child: PostLocationContainer(
+          widgetBuilder: (context) => _HomePageContent(),
+        ),
+      ),
     );
   }
 }
@@ -37,15 +41,11 @@ class _HomePageContent extends StatefulWidget {
 class _HomeStateContent extends State<_HomePageContent> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: StoreConnector<AppState, _ViewModel>(
-          converter: _ViewModel.fromStore,
-          builder: (BuildContext context, _ViewModel vm) {
-            return buildPage(vm);
-          },
-        ),
-      ),
+    return StoreConnector<AppState, _ViewModel>(
+      converter: _ViewModel.fromStore,
+      builder: (BuildContext context, _ViewModel vm) {
+        return buildPage(vm);
+      },
     );
   }
 

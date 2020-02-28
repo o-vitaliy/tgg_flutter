@@ -15,6 +15,8 @@ class Flavor {
 
   Flavor._(this.values);
 
+  bool contains(String key) => values.containsKey(key);
+
   String get(String key, {Map<String, dynamic> params}) =>
       applyParams(values[key] ?? key, params);
 
@@ -52,4 +54,14 @@ class Flavor {
   static Flavor create(Map<String, dynamic> values) {
     return Flavor._(values);
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Flavor &&
+          runtimeType == other.runtimeType &&
+          values == other.values;
+
+  @override
+  int get hashCode => values?.length ?? 0;
 }
