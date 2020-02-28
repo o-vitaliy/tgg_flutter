@@ -12,13 +12,11 @@ import 'package:tgg/containers/waypoints/waypoints_reducer.dart';
 import 'package:tgg/containers/team/team_reducer.dart';
 import 'package:tgg/reducers/login_reducer.dart';
 import 'package:tgg/reducers/post_location_reducer.dart';
-import 'package:tgg/reducers/theme_data_reducer.dart';
 import 'package:tgg/redux_model/app_state.dart';
 
 AppState appReducer(AppState state, action) {
   return new AppState(
     isLoading: false,
-    themeData: themeDataReducer(state.themeData, action),
     team: teamReducer(state.team, action),
     playthrough: playthoughReducer(state.playthrough, action),
     postLocationTimer: postLocationReducer(state.postLocationTimer, action),

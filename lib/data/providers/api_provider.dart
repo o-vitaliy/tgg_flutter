@@ -86,6 +86,11 @@ class ApiProvider {
     return apiRequest(url, token: token, method: httpMethod.get);
   }
 
+  Future<String> getGameFlavor(String gameId) {
+    final url = "$_baseUrl/games/$gameId/flavor/";
+    return apiRequest(url, token: token, method: httpMethod.get);
+  }
+
   Future<String> getRouting(String gameId) {
     final url = "$_baseUrl/games/$gameId/routing/";
     return apiRequest(url, token: token, method: httpMethod.get);

@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:tgg/common/theme/theme_config.dart';
 import 'package:tgg/models/modes.dart';
 import 'package:tgg/ui/helpers/icon_mapper.dart';
 import 'package:tgg/ui/home.dart';
@@ -24,7 +24,7 @@ class CollapsibleTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final rowsCount = children.length > maxItemsInRow ? 2 : 1;
 
-    int indexOfSelected = min(
+    final int indexOfSelected = min(
         children.indexWhere((it) => it.data == selected), maxItemsInRow - 1);
 
     final childList = List<CollapsibleTabBarItemData>();
@@ -34,7 +34,7 @@ class CollapsibleTabBar extends StatelessWidget {
       childList.addAll(children.sublist(0, maxItemsInRow - 1));
       childList.add(createMoreItem());
     }
-    PopupMenuButton button = PopupMenuButton(
+    final PopupMenuButton button = PopupMenuButton(
         key: _moreKey,
         itemBuilder: (_) => _getMenuItems(),
         onSelected: (it) {
@@ -52,20 +52,24 @@ class CollapsibleTabBar extends StatelessWidget {
               enabled: data.enabled,
             ))
         .toList();
-    return Stack(children: <Widget>[
-      Container(
+    return Container(
+      color: themeConfig.navBarBackground,
+      child: Column(children: <Widget>[
+        Row(mainAxisSize: MainAxisSize.max, children: items),
+        Container(
+          color: Colors.black26,
+          height: 1,
           width: double.infinity,
-          child: Row(mainAxisSize: MainAxisSize.max, children: items)),
-      Padding(
-          padding: EdgeInsets.only(top: 56),
-          child: Align(
-              alignment: Alignment.centerRight,
-              child: Container(
-                width: 0,
-                height: 0,
-                child: button,
-              ))),
-    ]);
+        ),
+        Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+              width: 0,
+              height: 0,
+              child: button,
+            )),
+      ]),
+    );
   }
 
   CollapsibleTabBarItemData createMoreItem() => CollapsibleTabBarItemData(
@@ -139,26 +143,27 @@ class _CollapsibleTabBarItem extends StatelessWidget {
                 onTap: enabled ? () => clickCallback(data) : null,
                 child: Container(
                   color: enabled
-                      ? (selected
-                          ? Theme.of(context).primaryColorDark
-                          : Theme.of(context).primaryColor)
+                      ? (selected ? themeConfig.background : Colors.transparent)
                       : Theme.of(context).disabledColor,
                   height: 56,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      Icon(
-                        IconMapper.map(icon),
-                        color: Colors.white,
-                      ),
+                      Icon(IconMapper.map(icon),
+                          color: (selected
+                              ? themeConfig.primary
+                              : themeConfig.foregroundAlt)),
                       Padding(
                         padding: const EdgeInsets.only(top: 4.0),
                         child: title != null
                             ? Text(
                                 title,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                    color: selected
+                                        ? themeConfig.primary
+                                        : themeConfig.foregroundAlt),
                               )
                             : SizedBox.shrink(),
                       )

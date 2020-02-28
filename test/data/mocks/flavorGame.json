@@ -1,0 +1,23 @@
+{
+  "created_by_id": null,
+  "created_by": null,
+  "updated_by_id": 104,
+  "updated_by": "Tech",
+  "created_at": "2019-10-16T22:29:42+0000",
+  "updated_at": "2020-01-22T13:51:47+0000",
+  "organization_id": 15,
+  "id": "5da79b08d71f10001eb854a3",
+  "name": "Styles Imported from Portal",
+  "type": "game",
+  "parent": null,
+  "blueprint": {
+    "id": "gogame",
+    "title": "Classic Game"
+  },
+  "game": "5d6580bcd71f10000e0552c9",
+  "entries": {
+    "global:pts": "ptsssss",
+    "background:color": "#A600F9"
+  },
+  "is_locked": false
+}

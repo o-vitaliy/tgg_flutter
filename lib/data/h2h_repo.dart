@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:tgg/data/providers/api_provider.dart';
 import 'package:tgg/data/providers/location_provider.dart';
 import 'package:tgg/models/challenge_invite_result.dart';
@@ -64,10 +63,5 @@ class H2HRepo {
 
     final map = json.decode(response);
     return ChallengeInviteResult.fromJsonMap(map);
-  }
-
-  Observable<Map<String, dynamic>> loadFlavor(String blueprintId) {
-    return Observable.fromFuture(apiProvider.getFlavor(blueprintId))
-        .map((r) => json.decode(r));
   }
 }

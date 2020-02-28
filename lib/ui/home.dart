@@ -8,10 +8,11 @@ import 'package:tgg/containers/aws_uploader/aws_upload_container.dart';
 import 'package:tgg/containers/home/post_location_container.dart';
 import 'package:tgg/models/modes.dart';
 import 'package:tgg/redux_model/app_state.dart';
+import 'package:tgg/common/theme/theme_config.dart';
 import 'package:tgg/ui/keys.dart';
 import 'package:tgg/ui/tabs/home_tab.dart';
 import 'package:tgg/ui/tabs/route_tab_mapper.dart';
-import 'package:tgg/ui/toolbar/HomeToolbar.dart';
+import 'package:tgg/ui/toolbar/home_toolbar.dart';
 
 typedef TabItemClickCallback = void Function(RouteMode data);
 
@@ -55,6 +56,7 @@ class _HomeStateContent extends State<_HomePageContent> {
     RouteTabMapper mapper = RouteTabMapper(homeTabBuilder: homeTabBuilder);
 
     return Column(children: <Widget>[
+      themeConfig.navHeaderImage ?? SizedBox.shrink(),
       HomeToolbar(vm.flavor, vm.changeMode, vm.modes, vm.selectedMode),
       UploadContainer(),
       Expanded(
@@ -65,6 +67,7 @@ class _HomeStateContent extends State<_HomePageContent> {
           ),
         ),
       ),
+      themeConfig.navFooterImage ?? SizedBox.shrink(),
     ]);
   }
 }

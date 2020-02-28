@@ -19,7 +19,7 @@ main() {
     test("has all routes", () {
       final routing = Routing.fromJsonMap(json.decode(mockRoutingAllEnabled));
       final RoutingState state = RoutingState.initial(routing.modes)
-          .copyWith(hasAnytimes: m.Value(true), hasBonus: m.Value(false));
+          .copyWith(hasAnytimes: m.Value(true), hasBonus: m.Value(true));
       final modes = state.activeModes;
       expect(
           modes.firstWhere((m) => m.name == ModeHelper.to(Mode.main),

@@ -11,6 +11,8 @@ import 'package:tgg/models/login_response.dart';
 import 'package:tgg/redux_model/app_state.dart';
 import 'package:tgg/ui/home.dart';
 
+import '../common/theme/theme_config.dart';
+
 const codeErrorMessage = "code should have atleast 3 characters";
 
 List<Middleware<AppState>> createLoginMiddleware() {
@@ -57,7 +59,8 @@ Middleware<AppState> _createLogInMiddleware() {
   };
 }
 
-void doAfterLogin(final Store store, final LoginResponse response) async {
+void doAfterLogin(
+    final Store<AppState> store, final LoginResponse response) async {
   final playthroughId = response.team.playthroughId;
   final playthrough = await playthroughRepo.getPlaythrough(playthroughId);
 
@@ -68,8 +71,11 @@ void doAfterLogin(final Store store, final LoginResponse response) async {
   store.dispatch(RouteLoadAction(playthrough.game.id, playthrough.startedAt));
   store.dispatch(NavigateToAction.replace(HomePage.routeName));
 
-  staticRepo.getFlavor(playthrough.game.blueprint.id).then((v) {
+  staticRepo
+      .getFlavor(playthrough.game.blueprint.id, playthrough.game.id)
+      .then((v) {
     store.dispatch(UpdateFlavorAction(v));
+    themeConfig.flavor = store.state.flavor;
   }).then((_) {
     store.dispatch(WaypointsStartLoadAction());
   }).then((_) async {

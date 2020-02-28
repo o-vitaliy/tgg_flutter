@@ -62,7 +62,7 @@ class RoutingState {
   factory RoutingState.initial(List<RouteMode> modes) {
     return RoutingState(
         selectedMode: RouteMode.home(),
-        modes: [],
+        modes: modes,
         hasAnytimes: null,
         hasBonus: null,
         timers: null);

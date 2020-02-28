@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/redux_model/app_state.dart';
+import 'package:tinycolor/tinycolor.dart';
+
+import 'theme_config.dart';
 
 class ThemedApp extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
@@ -61,15 +64,11 @@ class ThemedApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new StoreConnector<AppState, _ViewModel>(
-        // Rather than build a method here, we'll defer this
-        // responsibilty to the _viewModel.
         converter: _ViewModel.fromStore,
         distinct: true,
-       /* ignoreChange: (state) =>
-            state.themeData.primaryColor ==
-            StoreProvider.of<AppState>(context).state.themeData.primaryColor,*/
-        // Our builder now takes in a _viewModel as a second arg
         builder: (BuildContext context, _ViewModel vm) {
+          /*  SystemChrome.setSystemUIOverlayStyle(
+              SystemUiOverlayStyle(statusBarColor: vm.primaryDark));*/
           return new MaterialApp(
             navigatorKey: navigatorKey,
             home: home,
@@ -82,7 +81,14 @@ class ThemedApp extends StatelessWidget {
             title: title,
             onGenerateTitle: onGenerateTitle,
             color: color,
-            theme: vm.theme,
+            theme: ThemeData(
+                primaryColor: vm.primary,
+                primaryColorDark: vm.primaryDark,
+                primaryColorLight: vm.primaryLight,
+                scaffoldBackgroundColor: vm.background,
+                backgroundColor: vm.background,
+                textTheme: Theme.of(context).textTheme.apply(
+                    bodyColor: vm.textColor, displayColor: vm.textColor)),
             darkTheme: darkTheme,
             themeMode: themeMode,
             locale: locale,
@@ -102,30 +108,38 @@ class ThemedApp extends StatelessWidget {
 }
 
 class _ViewModel {
-// It should take in whatever it is you want to 'watch'
-  final ThemeData theme;
+  final Color primary;
+  final Color primaryDark;
+  final Color primaryLight;
+  final Color background;
+  final Color textColor;
 
   _ViewModel({
-    @required this.theme,
+    @required this.primary,
+    @required this.primaryDark,
+    @required this.primaryLight,
+    @required this.background,
+    @required this.textColor,
   });
+
+  static _ViewModel fromStore(Store<AppState> store) {
+    final primary = TinyColor(themeConfig.primary);
+    return new _ViewModel(
+        primary: primary.color,
+        primaryDark: primary.darken(10).color,
+        primaryLight: primary.lighten(10).color,
+        background: themeConfig.background,
+        textColor: themeConfig.fontColor);
+  }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is _ViewModel &&
-              runtimeType == other.runtimeType &&
-              theme.primaryColor == other.theme.primaryColor;
+      other is _ViewModel &&
+          runtimeType == other.runtimeType &&
+          primary == other.primary &&
+          background == other.background;
 
   @override
-  int get hashCode => theme.hashCode;
-
-  // This is simply a constructor method.
-// This creates a new instance of this _viewModel
-// with the proper data from the Store.
-//
-// This is a very simple example, but it lets our
-// actual counter widget do things like call 'vm.count'
-  static _ViewModel fromStore(Store<AppState> store) {
-    return new _ViewModel(theme: store.state.themeData);
-  }
+  int get hashCode => primary.hashCode ^ background.hashCode;
 }

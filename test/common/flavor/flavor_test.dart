@@ -1,14 +1,17 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tgg/common/flavor/flavor.dart';
+import 'package:tgg/helpers/map_utils.dart';
 
 import '../../data/mocks.dart';
 
 main() {
   Flavor flavor;
   setUpAll(() {
-    flavor = Flavor.create(json.decode(mockedFlavorDefault));
+    flavor = Flavor.create(merge(json.decode(mockedFlavorDefault),
+        json.decode(mockedFlavorGame)["entries"]));
   });
   group("flavor", () {
     test("get", () {
@@ -77,6 +80,14 @@ main() {
       final given0 = "0000";
       final params = {"given0": given0, "given1": given1};
       expect(flavor.applyParams(text, params), "lorem");
+    });
+  });
+
+  group("get color", () {
+    test("background", () {
+      /// "background:color": "#A600F9" 10879225 0xFFA600F9
+      final color = flavor.color("background:color");
+      expect(color.color, Color(4289069305));
     });
   });
 }

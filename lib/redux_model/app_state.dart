@@ -11,14 +11,12 @@ import 'package:tgg/containers/mission/anytime/anytime_state.dart';
 import 'package:tgg/containers/mission/bonus/bonus_state.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
 import 'package:tgg/containers/waypoints/waypoints_state.dart';
-import 'package:tgg/helpers/theme_helper.dart';
 import 'package:tgg/models/blueprint_model.dart';
 import 'package:tgg/models/models.dart';
 import 'package:tgg/redux_model/login_state.dart';
 
 @immutable
 class AppState {
-  final ThemeData themeData;
   final bool isLoading;
   final Team team;
   final PlaythroughtState playthrough;
@@ -36,7 +34,6 @@ class AppState {
   final H2HState h2h;
 
   AppState({
-    @required this.themeData,
     @required this.isLoading,
     @required this.team,
     @required this.playthrough,
@@ -56,7 +53,6 @@ class AppState {
 
   factory AppState.initial() {
     return AppState(
-      themeData: getDefaultTheme(),
       isLoading: false,
       team: null,
       playthrough: PlaythroughtState.initial(),
@@ -77,7 +73,6 @@ class AppState {
 
   AppState copyWith({ThemeData themeData, bool isLoading}) {
     return new AppState(
-      themeData: themeData ?? this.themeData,
       isLoading: isLoading ?? this.isLoading,
       team: team ?? this.team,
       playthrough: playthrough ?? this.playthrough,

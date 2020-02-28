@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tinycolor/tinycolor.dart';
 
 const _iterableSign = "{n}";
 
@@ -16,6 +17,14 @@ class Flavor {
 
   String get(String key, {Map<String, dynamic> params}) =>
       applyParams(values[key] ?? key, params);
+
+  TinyColor color(String key) {
+    final String value = values[key];
+    if (value != null) {
+      return TinyColor.fromString(value);
+    }
+    return null;
+  }
 
   String iterable(String key, int index, {Map<String, dynamic> params}) {
     if (index < 0) throw ArgumentError("index $index < 0");

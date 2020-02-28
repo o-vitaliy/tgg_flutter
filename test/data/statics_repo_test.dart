@@ -10,21 +10,10 @@ main() {
   group("static_repo_test", () {
     test("flavor", () async {
       StaticRepo staticRepo = StaticRepo(apiProvider: mockedApiProvider);
-      final f = await staticRepo.getFlavor("gogame");
+      final f = await staticRepo.getFlavor("flavor", "gameid");
+      expect(f, isNotNull);
       expect(f, containsPair("facebook:color", "#3b5998"));
-    });
-
-    test("flavor for not default blueprint id", () async {
-      StaticRepo staticRepo = StaticRepo(apiProvider: mockedApiProvider);
-      final f = await staticRepo.getFlavor("not default");
-      expect(f, containsPair("facebook:color", "#ffffff"));
-    });
-
-    test("flavor for default blueprint id", () async {
-      StaticRepo staticRepo = StaticRepo(apiProvider: mockedApiProvider);
-      final f = await staticRepo.getFlavor("gogame");
-
-      expect(f, containsPair("facebook:color", "#3b5998"));
+      expect(f, containsPair("global:pts", "ptsssss"));
     });
   });
 }

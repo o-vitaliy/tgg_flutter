@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tgg/models/mission.dart';
+import 'package:tgg/common/theme/themed_buttons.dart';
 
 class AnytimeList extends StatelessWidget {
   final List<Mission> missions;
@@ -10,11 +11,10 @@ class AnytimeList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: missions
-            .map((m) => RaisedButton(
-                  child: Text(m.name),
-                  onPressed: () => onSelect(m),
-                ))
+            .map((m) =>
+                getMainTextButton(label: m.name, onPressed: () => onSelect(m)))
             .toList());
   }
 }

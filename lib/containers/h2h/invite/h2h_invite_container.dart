@@ -6,6 +6,8 @@ import 'package:tgg/containers/h2h/h2h_widget_helper.dart';
 import 'package:tgg/models/challenge.dart';
 import 'package:tgg/models/waypoints/waypoint_mode.dart';
 import 'package:tgg/redux_model/app_state.dart';
+import 'package:tgg/common/theme/theme_config.dart';
+import 'package:tgg/common/theme/themed_buttons.dart';
 
 import '../h2h_actions.dart';
 
@@ -42,7 +44,11 @@ class _H2HInviteContainerState extends State<H2HInviteContainer> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Text(vm.flavor.get(title), textAlign: TextAlign.center),
+              Text(
+                vm.flavor.get(title),
+                textAlign: TextAlign.center,
+                style: headerTextStyle,
+              ),
               buildSentInviteWidget(vm),
               buildReceivedInviteWidget(vm),
               SizedBox(width: 8, height: 8),
@@ -56,21 +62,25 @@ class _H2HInviteContainerState extends State<H2HInviteContainer> {
                     labelText: vm.flavor.get(placeHolder),
                   )),
               SizedBox(width: 8, height: 8),
-              RaisedButton(
-                child: Text(vm.flavor.get(
-                    "modes:head_to_head:home:pin_challenge_with_remaining",
-                    params: {"numRemaining": vm.challengesLeft})),
+              getButton(
+                true,
+                child: Text(
+                  vm.flavor.get(
+                      "modes:head_to_head:home:pin_challenge_with_remaining",
+                      params: {"numRemaining": vm.challengesLeft}),
+                  style: themeConfigButtonTextStyle,
+                ),
                 onPressed: () => vm.invite(_controller.value.text),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(vm.flavor.get(yourPin, params: {"pin": vm.pin})),
+                  Text(
+                    vm.flavor.get(yourPin, params: {"pin": vm.pin}),
+                  ),
                   SizedBox(width: 8, height: 8),
-                  RaisedButton(
-                    child: Text(vm.flavor.get(refresh)),
-                    onPressed: vm.refresh,
-                  )
+                  getMainTextButton(
+                      label: vm.flavor.get(refresh), onPressed: vm.refresh),
                 ],
               )
             ],

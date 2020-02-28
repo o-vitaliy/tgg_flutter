@@ -8,6 +8,8 @@ import 'package:tgg/containers/waypoints/waypoint/waypoint_actions.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_item_state.dart';
 import 'package:tgg/models/waypoints/waypoint.dart';
 import 'package:tgg/redux_model/app_state.dart';
+import 'package:tgg/common/theme/theme_config.dart';
+import 'package:tgg/common/theme/themed_buttons.dart';
 
 import '../submissions/widget/submissions_builder.dart';
 
@@ -34,6 +36,7 @@ class WaypointContainer extends StatelessWidget {
             Text(
               vm.title,
               textAlign: TextAlign.center,
+              style: headerTextStyle,
             ),
             MarkdownBody(data: vm.text),
           ]
@@ -41,8 +44,8 @@ class WaypointContainer extends StatelessWidget {
             ..add(getHintView(vm))
             ..add(getHintButton(vm))
             ..add(vm.isSubmitVisible
-                ? RaisedButton(
-                    child: Text(vm.flavor.get("mission:submit")),
+                ? getMainTextButton(
+                    label: vm.flavor.get("mission:submit"),
                     onPressed: vm.isSubmitEnabled ? () => vm.onSubmit() : null,
                   )
                 : SizedBox.shrink());
@@ -70,8 +73,8 @@ class WaypointContainer extends StatelessWidget {
       "numRemaining": vm.hintRemained,
       "hintPointCost": vm.hintPrice
     });
-    return RaisedButton(
-      child: Text(text),
+    return getMainTextButton(
+      label: text,
       onPressed: vm.onHint,
     );
   }
