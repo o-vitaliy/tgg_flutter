@@ -127,7 +127,6 @@ Middleware<AppState> _updateAnswer() {
             action.answer, state.playthrough.playthrough, state.team, waypoint);
 
         store.dispatch(AddFileToUploadAction(action.answer, key));
-        answer = key;
       }
       store.dispatch(WaypointSaveAnswer(
           waypointId, action.itemId, answer, action.submission));

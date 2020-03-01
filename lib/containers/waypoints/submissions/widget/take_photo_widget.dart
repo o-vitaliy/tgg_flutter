@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/value_widget.dart';
 import 'package:tgg/models/waypoints/video_params.dart';
@@ -25,6 +27,11 @@ class TakePhotoWidget extends StatelessValueWidget {
           height: 160,
           child: Stack(
             children: <Widget>[
+              initialValue != null
+                  ? Center(
+                      child: Image.file(File(initialValue)),
+                    )
+                  : SizedBox.shrink(),
               Center(
                 child: Text(
                   "Tap to take photo",

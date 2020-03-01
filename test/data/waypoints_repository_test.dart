@@ -159,7 +159,7 @@ main() {
       final waypointId = waypoints.first.id;
 
       await daoMedia.insert("mediaId", "url", "key");
-      daoAnswer.insert(waypointId, "photo", "key");
+      daoAnswer.insert(waypointId, "photo", "url");
 
       await repo.submitAnswer(waypointId);
 

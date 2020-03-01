@@ -24,7 +24,7 @@ class MediaRepo {
     String key,
     String awsBucketId,
   ) async {
-    final values = await _getValues(mediaFile, key, awsBucketId, false);
+    final values = await _getValues(mediaFile, key, awsBucketId, false, true);
     final result = await apiProvider.createMedia(values: values);
     final resultMap = json.decode(result);
     return resultMap["id"];
@@ -36,7 +36,7 @@ class MediaRepo {
     String key,
     String awsBucketId,
   ) async {
-    final values = await _getValues(mediaFile, key, awsBucketId, true);
+    final values = await _getValues(mediaFile, key, awsBucketId, true, false);
     final result = await apiProvider.putMedia(id: mediaId, values: values);
     final resultMap = json.decode(result);
     return resultMap["options"]["is_uploaded"];
@@ -75,6 +75,7 @@ class MediaRepo {
     String key,
     String awsBucketId,
     bool isUploaded,
+    bool isUploading,
   ) async {
     File file = File(mediaFile);
     String mime = lookupMimeType(mediaFile);
@@ -89,7 +90,7 @@ class MediaRepo {
       "media_size": await file.length(),
       "options": {
         "is_uploaded": isUploaded,
-        "is_uploading": true,
+        "is_uploading": isUploading,
         "in_gallery": true,
         "is_ready": true,
       }

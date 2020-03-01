@@ -14,7 +14,7 @@ class AwsUploadState {
       (uploadingFilesCount.toDouble());
 
   int get currentUploading =>
-      _uploadingFiles.toList().indexWhere((f) => f.progress > 0);
+      _uploadingFiles.toList().indexWhere((f) => f.progress > 0.0);
 
   AwsUploadState(this.files);
 

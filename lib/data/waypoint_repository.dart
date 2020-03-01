@@ -81,7 +81,7 @@ class WaypointsRepo {
     final types = await daoAnswer.getAnswerSubmissionTypes(waypointId);
     final allAnswers = await daoAnswer.getAnswersByWaypointId(waypointId);
     final medias = await Future.wait(
-        allAnswers.map((i) async => (await daoMedia.findByKey(i))));
+        allAnswers.map((i) async => (await daoMedia.findByUrl(i))));
     final mediasNotNull = medias.where((m) => m != null).map((m) {
       return m.mediaId;
     }).toList(growable: false);
@@ -132,7 +132,7 @@ class WaypointsRepo {
   Future<dynamic> _getAnswerValue(String type, String answer) async {
     final submissionType = SubmissionTypeHelper.fromString(type);
     if (SubmissionTypeHelper.isMedia(submissionType)) {
-      final media = (await daoMedia.findByKey(answer));
+      final media = (await daoMedia.findByUrl(answer));
       return media != null ? media.mediaId : null;
     } else {
       return SubmissionTypeHelper.getTransformerFromString(type)

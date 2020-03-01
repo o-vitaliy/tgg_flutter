@@ -29,7 +29,8 @@ class _UploadProgress extends StatelessWidget {
                 children: <Widget>[
                   LinearProgressIndicator(
                     value: vm.progress,
-                    valueColor: AlwaysStoppedAnimation<Color>(Color(ORANGE)),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).primaryColor),
                     backgroundColor: Colors.transparent,
                   ),
                   Center(
@@ -61,7 +62,7 @@ class _ViewModel {
     final state = store.state.uploadFilesState;
     return _ViewModel(
         uploadingFilesCount: state.uploadingFilesCount,
-        currentUploading: state.currentUploading,
+        currentUploading: state.currentUploading + 1,
         progress: state.progress);
   }
 
