@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tgg/containers/camera/camera_capture_mode.dart';
-import 'package:tgg/containers/camera/camera_container.dart';
+import 'package:tgg/containers/camera/camera_page.dart';
 import 'package:tgg/models/waypoints/video_params.dart';
 import 'package:tgg/ui/pages/navigation_arguments.dart';
 
@@ -96,8 +96,7 @@ class MediaLauncher {
     VideoParams videoParams,
   ) async {
     if (mediaSource == MediaSource.camera) {
-      final Future result = Navigator.pushNamed(
-          context, CameraContainer.routeName,
+      final Future result = Navigator.pushNamed(context, CameraPage.routeName,
           arguments: CaptureArguments(
               mode: cameraCaptureMode, videoParams: videoParams));
       final r = await result;

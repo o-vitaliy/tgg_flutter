@@ -5,6 +5,7 @@ import 'package:tgg/ui/pages/navigation_arguments.dart';
 
 import 'camera_capture_mode.dart';
 
+@immutable
 class CameraState {
   final List<CameraDescription> cameras;
   final GlobalKey<CameraContainerState> key;
@@ -16,6 +17,7 @@ class CameraState {
   final bool processingResult;
   final bool isRecordingVideo;
   final bool isTakingPhoto;
+  final int screenOrientation;
 
   CameraLensDirection get currentCameraLensDirection =>
       controller?.description?.lensDirection;
@@ -31,11 +33,12 @@ class CameraState {
 
   bool get needTimer => captureArgs?.mode != CameraCaptureMode.PHOTO;
 
-  bool get showStartRecordingButton =>
-      (captureArgs?.mode != CameraCaptureMode.PHOTO) && !isRecordingVideo;
+  bool get isHoldToRecord => captureArgs?.videoParams?.pauseRecord == true;
 
-  bool get showPauseRecordingButton =>
-      isRecordingVideo && captureArgs?.videoParams?.pauseRecord == true;
+  bool get showStartRecordingButton =>
+      captureArgs?.mode == CameraCaptureMode.VIDEO &&
+      !isHoldToRecord &&
+      !isRecordingVideo;
 
   bool get showStopRecordingButton {
     if (captureArgs?.mode == CameraCaptureMode.PHOTO) return false;
@@ -48,8 +51,6 @@ class CameraState {
       files.length == 0 &&
       !isRecordingVideo &&
       !isTakingPhoto;
-
-  final int screenOrientation;
 
   CameraState({
     this.cameras,
@@ -69,8 +70,9 @@ class CameraState {
     List<CameraDescription> cameras,
     CameraDescription currentCamera,
     CameraController controller,
+    Duration timerDuration,
     int screenRotation,
-    int captureArgs,
+    CaptureArguments captureArgs,
     List<String> files,
     bool processingResult,
     bool isRecordingVideo,
@@ -90,5 +92,9 @@ class CameraState {
       isTakingPhoto: isTakingPhoto ?? this.isTakingPhoto,
       key: key ?? this.key,
     );
+  }
+
+  factory CameraState.initial() {
+    return CameraState();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tgg/common/flavor/flavor.dart';
+import 'package:tgg/containers/camera/widgets/hold_to_record_button.dart';
 import 'package:tgg/models/modes.dart';
 import 'package:tgg/ui/tabs/route_button.dart';
 
@@ -18,8 +19,9 @@ class HomeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final buttons = modes.map(buildButton).toList();
-    buttons.add(logoutButton(context));
+    final buttons = modes.map(buildButton).toList()
+      ..add(logoutButton(context))
+      ..add(HoldToRecordButton());
     return Column(
       children: buttons,
     );

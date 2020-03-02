@@ -5,15 +5,14 @@ import 'package:tgg/common/flavor/flavor.dart';
 import 'package:tgg/common/playthrought/playthrought_state.dart';
 import 'package:tgg/common/routing/routing_state.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_state.dart';
-import 'package:tgg/containers/camera/camera_state.dart';
 import 'package:tgg/containers/h2h/h2h_state.dart';
+import 'package:tgg/containers/login/login_state.dart';
 import 'package:tgg/containers/mission/anytime/anytime_state.dart';
 import 'package:tgg/containers/mission/bonus/bonus_state.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
 import 'package:tgg/containers/waypoints/waypoints_state.dart';
 import 'package:tgg/models/blueprint_model.dart';
 import 'package:tgg/models/models.dart';
-import 'package:tgg/containers/login/login_state.dart';
 
 @immutable
 class AppState {
@@ -24,7 +23,6 @@ class AppState {
   final LoginState loginState;
   final RoutingState homePageState;
   final AwsUploadState uploadFilesState;
-  final CameraState cameraState;
   final WaypointsState waypointsState;
   final WaypointState waypointsPassingState;
   final Flavor flavor;
@@ -41,7 +39,6 @@ class AppState {
     @required this.loginState,
     @required this.homePageState,
     @required this.uploadFilesState,
-    @required this.cameraState,
     @required this.waypointsState,
     @required this.waypointsPassingState,
     @required this.flavor,
@@ -60,7 +57,6 @@ class AppState {
       loginState: null,
       homePageState: RoutingState.initial([]),
       uploadFilesState: AwsUploadState.initial(),
-      cameraState: CameraState(),
       waypointsState: WaypointsState.initial(),
       waypointsPassingState: WaypointState.initial(),
       flavor: Flavor.initial(),
@@ -80,7 +76,6 @@ class AppState {
       loginState: loginState ?? this.loginState,
       homePageState: homePageState ?? this.homePageState,
       uploadFilesState: uploadFilesState ?? this.uploadFilesState,
-      cameraState: cameraState ?? this.cameraState,
       waypointsState: waypointsState ?? this.waypointsState,
       waypointsPassingState:
           waypointsPassingState ?? this.waypointsPassingState,

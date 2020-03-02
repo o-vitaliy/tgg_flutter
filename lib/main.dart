@@ -7,28 +7,27 @@ import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_logging/redux_logging.dart';
 import 'package:tgg/common/flavor/flavor_midlleware.dart';
+import 'package:tgg/containers/camera/camera_page.dart';
 
 import 'common/dialog/dialog_middleware.dart';
 import 'common/messaging/firebase_message.dart';
 import 'common/routing/routing_middleware.dart';
+import 'common/theme/themed_app.dart';
 import 'containers/aws_uploader/aws_upload_middleware.dart';
-import 'containers/camera/camera_container.dart';
-import 'containers/camera/camera_middleware.dart';
 import 'containers/h2h/h2h_middleware.dart';
+import 'containers/login/login_middleware.dart';
+import 'containers/login/login_page.dart';
 import 'containers/mission/anytime/anytime_middleware.dart';
 import 'containers/mission/bonus/bonus_middleware.dart';
 import 'containers/preview/preview_container.dart';
 import 'containers/team/team_middleware.dart';
-import 'common/theme/themed_app.dart';
 import 'containers/waypoints/waypoint/waypoint_middleware.dart';
 import 'containers/waypoints/waypoints_middleware.dart';
 import 'data/providers.dart';
 import 'middleware/auth_middleware.dart';
-import 'containers/login/login_middleware.dart';
 import 'middleware/post_location_middleware.dart';
 import 'reducers/app_reducer.dart';
 import 'redux_model/app_state.dart';
-import 'containers/login/login_page.dart';
 import 'ui/home.dart';
 import 'ui/splash.dart';
 
@@ -45,7 +44,6 @@ class ReduxApp extends StatelessWidget {
         ..addAll(createAuthMiddleware())
         ..addAll(createPostingLocationMiddleware())
         ..addAll(createLoginMiddleware())
-        ..addAll(createCameraMiddleware())
         ..addAll(createWaypointsMiddleware())
         ..addAll(createWaypointMiddleware())
         ..addAll(createUploadMiddleware())
@@ -78,8 +76,8 @@ Route _getRoute(RouteSettings settings) {
       return _buildRoute(settings, LoginPage());
     case HomePage.routeName:
       return _buildRoute(settings, HomePage());
-    case CameraContainer.routeName:
-      return _buildRoute(settings, CameraContainer());
+    case CameraPage.routeName:
+      return _buildRoute(settings, CameraPage());
     case PreviewPage.routeName:
       return _buildRoute(settings, PreviewPage());
     default:

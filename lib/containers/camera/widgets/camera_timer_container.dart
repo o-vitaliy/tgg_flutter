@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/containers/camera/camera_state.dart';
-import 'package:tgg/redux_model/app_state.dart';
 import 'package:tgg/ui/widgets/count_down_timer.dart';
 
 import '../camera_actions.dart';
@@ -24,13 +23,12 @@ class _CameraTimerContainerState extends State<CameraTimerContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, _ViewModel>(
+    return StoreConnector<CameraState, _ViewModel>(
         converter: _ViewModel.fromStore,
         distinct: true,
         onInit: (state) {
-          _subscription = StoreProvider.of<AppState>(context, listen: false)
+          _subscription = StoreProvider.of<CameraState>(context, listen: false)
               .onChange
-              .map((s) => s.cameraState)
               .map((s) => s.isRecordingVideo)
               .distinct()
               .listen((isRecordingVideo) {
@@ -62,8 +60,8 @@ class _ViewModel {
 
   _ViewModel({this.timerDuration, this.controller, this.stopRecording});
 
-  static _ViewModel fromStore(Store<AppState> store) {
-    final CameraState state = store.state.cameraState;
+  static _ViewModel fromStore(Store<CameraState> store) {
+    final CameraState state = store.state;
     return _ViewModel(
       timerDuration: state.timerDuration,
       controller: state.controller,

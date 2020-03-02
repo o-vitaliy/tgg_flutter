@@ -34,6 +34,7 @@ Validator getValidator(BehaviorType type) {
     case BehaviorType.profile_photo:
     case BehaviorType.info:
     case BehaviorType.linked_head_to_head:
+    case BehaviorType.code_custom:
       return NoValidator();
     default:
       throw ArgumentError("unsupported type $type");

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:meta/meta.dart';
+import 'package:tgg/containers/camera/widgets/hold_to_record_button.dart';
 import 'package:tgg/ui/widgets/base_square_icon_button.dart';
 
 class RecordStartStopButton extends StatelessWidget {
@@ -51,15 +52,7 @@ class RecordStartPauseButton extends StatelessWidget {
       child: GestureDetector(
         onTapDown: (_) => onRecordClick(),
         onTapUp: (_) => onPauseClick(),
-        child: SizedBox.fromSize(
-          size: Size.square(58),
-          child: Icon(
-            isRecording
-                ? FontAwesomeIcons.solidPauseCircle
-                : FontAwesomeIcons.solidPlayCircle,
-            color: Colors.white,
-          ),
-        ),
+        child: HoldToRecordButton(),
       ),
     );
   }

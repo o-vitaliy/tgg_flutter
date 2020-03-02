@@ -1,5 +1,6 @@
 package io.flutter.plugins.camera;
 
+import static android.content.Context.POWER_SERVICE;
 import static android.view.OrientationEventListener.ORIENTATION_UNKNOWN;
 
 import android.Manifest;
@@ -22,6 +23,7 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.media.MediaRecorder;
 import android.os.Build;
+import android.os.PowerManager;
 import android.util.Size;
 import android.view.Display;
 import android.view.OrientationEventListener;
@@ -483,7 +485,7 @@ public class CameraPlugin implements MethodCallHandler {
       mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
       mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
       if (enableAudio) mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-      mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.DEFAULT);
+      mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);
       mediaRecorder.setVideoEncodingBitRate(1024 * 1000);
       if (enableAudio) mediaRecorder.setAudioSamplingRate(16000);
       mediaRecorder.setVideoFrameRate(27);
@@ -668,6 +670,11 @@ public class CameraPlugin implements MethodCallHandler {
         prepareMediaRecorder(filePath);
 
         recordingVideo = true;
+
+        PowerManager powerManager = (PowerManager) view.getContext().getSystemService(POWER_SERVICE);
+        PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                "MyApp::MyWakelockTag");
+        wakeLock.acquire(100);
 
         SurfaceTexture surfaceTexture = textureEntry.surfaceTexture();
         surfaceTexture.setDefaultBufferSize(previewSize.getWidth(), previewSize.getHeight());

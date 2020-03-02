@@ -3475,5 +3475,141 @@
     "in_gallery": false,
     "media": [],
     "mission_points": 0
+  },
+  {
+    "id": "5e5bb527d71f10001ebcd95f",
+    "step": {
+      "id": "5e4c431fd71f10001ee928b3",
+      "title": "Code Custom",
+      "instructions": "Code Custom",
+      "position": 0,
+      "mission_id": "5e4c42f7d71f10001ee928b2",
+      "behavior": {
+        "id": "code_custom",
+        "title": "Code Custom",
+        "description": "Determine your own codes! Bottom-most code gets full points, top-most gets the least.",
+        "fields": [
+          {
+            "name": "codes",
+            "type": "list:text",
+            "label": "Valid codes, in increasing order of value",
+            "required": true
+          },
+          {
+            "name": "success_message",
+            "type": "text",
+            "label": "Success message",
+            "required": false
+          },
+          {
+            "name": "timelimit",
+            "type": "int",
+            "label": "Time limit",
+            "default": null,
+            "required": false,
+            "placeholder": "Time limit (in minutes)"
+          },
+          {
+            "name": "presentation_text",
+            "type": "text:long",
+            "label": "Presentation text",
+            "required": false,
+            "placeholder": "Presentation Text"
+          },
+          {
+            "name": "presentation_image",
+            "type": "upload",
+            "label": "Presentation image",
+            "required": false,
+            "placeholder": "Image key",
+            "object_key": "media_key",
+            "s3": {
+              "bucket": "gogame-breadcrumb-display-media",
+              "folder": "GameShow"
+            }
+          },
+          {
+            "name": "presentation_title",
+            "type": "text",
+            "label": "Presentation title",
+            "required": false,
+            "placeholder": "Presentation Title (overrides mission step title)"
+          },
+          {
+            "name": "display_answer",
+            "type": "text",
+            "label": "GGP Display answer",
+            "required": false,
+            "placeholder": "Correct display answer. Will display on screen view"
+          },
+          {
+            "name": "question_type",
+            "type": "text",
+            "label": "GGP Question type",
+            "required": false,
+            "placeholder": "Question type"
+          },
+          {
+            "name": "timer",
+            "type": "int",
+            "label": "GGP Timer",
+            "required": false
+          },
+          {
+            "name": "stop_auto_play",
+            "type": "bool",
+            "default": false,
+            "label": "GGP Stop autoplay",
+            "required": false
+          },
+          {
+            "name": "is_one_time_mission",
+            "type": "bool",
+            "default": false,
+            "label": "Is Mission available only once per playthrough",
+            "required": false
+          }
+        ],
+        "submission_type": "text"
+      },
+      "content": {
+        "codes": [
+          "test"
+        ]
+      },
+      "scoring": 0
+    },
+    "mode_name": "anytime",
+    "step_num": 0,
+    "is_last": true,
+    "is_from_start_or_end_track": false,
+    "queued_at": "2020-03-01T13:14:15+0000",
+    "queue_priority": 0,
+    "ungated_at": "2020-03-01T13:14:15+0000",
+    "gated_until": null,
+    "social_info": {},
+    "has_shared": false,
+    "gated_by_mission_delay": null,
+    "started_at": "2020-03-02T10:34:47+0000",
+    "started_location": [
+      50.4589409,
+      30.4088266
+    ],
+    "completed_at": null,
+    "completed_location": null,
+    "synced_at": null,
+    "submissions": [],
+    "num_hints_used": null,
+    "result": {},
+    "is_votable": false,
+    "is_voting_selected": false,
+    "is_judgeable": true,
+    "votes": [],
+    "points": 0,
+    "points_are_overridden": false,
+    "has_media": false,
+    "in_gallery": false,
+    "media": [],
+    "mission_points": 0
   }
 ]

@@ -5,11 +5,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/containers/camera/camera_actions.dart';
 import 'package:tgg/containers/camera/camera_state.dart';
+import 'package:tgg/data/providers/native_provider.dart';
 import 'package:tgg/data/video_data_repository.dart';
-import 'package:tgg/redux_model/app_state.dart';
 import 'package:tgg/ui/pages/navigation_arguments.dart';
 
-List<Middleware<AppState>> createCameraMiddleware() {
+List<Middleware<CameraState>> createCameraMiddleware() {
   final initCamera = _createInitCameraMiddleware();
   final restartCamera = _createRestartCameraMiddleware();
   final switchCamera = _createSwitchChangeMiddleware();
@@ -19,33 +19,35 @@ List<Middleware<AppState>> createCameraMiddleware() {
   final takePhoto = _createTakePhotoMiddleware();
 
   return [
-    new TypedMiddleware<AppState, StartInitCameraAction>(initCamera),
-    new TypedMiddleware<AppState, RestartCameraAction>(restartCamera),
-    new TypedMiddleware<AppState, SwitchCameraAction>(switchCamera),
-    new TypedMiddleware<AppState, TakePhotoAction>(takePhoto),
-    new TypedMiddleware<AppState, StartRecordingAction>(startRecording),
-    new TypedMiddleware<AppState, StopRecordingAction>(stopRecording),
-    new TypedMiddleware<AppState, PauseRecordingAction>(pauseRecording),
+    new TypedMiddleware<CameraState, StartInitCameraAction>(initCamera),
+    new TypedMiddleware<CameraState, RestartCameraAction>(restartCamera),
+    new TypedMiddleware<CameraState, SwitchCameraAction>(switchCamera),
+    new TypedMiddleware<CameraState, TakePhotoAction>(takePhoto),
+    new TypedMiddleware<CameraState, StartRecordingAction>(startRecording),
+    new TypedMiddleware<CameraState, StopRecordingAction>(stopRecording),
+    new TypedMiddleware<CameraState, PauseRecordingAction>(pauseRecording),
+    new TypedMiddleware<CameraState, ChangeTorchModeAction>(_switchTorch()),
   ];
 }
 
-Middleware<AppState> _createInitCameraMiddleware() {
-  return (Store store, action, NextDispatcher next) async {
+Middleware<CameraState> _createInitCameraMiddleware() {
+  return (Store<CameraState> store, action, NextDispatcher next) async {
     if (action is StartInitCameraAction) {
       store.dispatch(InitCameraAction(action.args, action.state));
-      final cameras = await availableCameras();
-      final current = cameras.first;
-      store.dispatch(InitializedCameraAction(cameras, current));
-      _initializeNewController(store, current);
+      availableCameras().then((cameras) {
+        final current = cameras.first;
+        store.dispatch(InitializedCameraAction(cameras, current));
+        _initializeNewController(store, current);
+      });
     }
     next(action);
   };
 }
 
-Middleware<AppState> _createRestartCameraMiddleware() {
-  return (Store store, action, NextDispatcher next) async {
+Middleware<CameraState> _createRestartCameraMiddleware() {
+  return (Store<CameraState> store, action, NextDispatcher next) async {
     if (action is RestartCameraAction) {
-      final CameraState cameraState = store.state.cameraState;
+      final CameraState cameraState = store.state;
 
       final cameras = cameraState.cameras;
       final currentCamera = cameraState.currentCamera;
@@ -58,12 +60,12 @@ Middleware<AppState> _createRestartCameraMiddleware() {
   };
 }
 
-Middleware<AppState> _createSwitchChangeMiddleware() {
-  return (Store store, action, NextDispatcher next) async {
+Middleware<CameraState> _createSwitchChangeMiddleware() {
+  return (Store<CameraState> store, action, NextDispatcher next) async {
     if (action is SwitchCameraAction) {
-      final state = store.state as AppState;
-      await state.cameraState.controller?.dispose();
-      final current = state.cameraState.cameras
+      final state = store.state;
+      await state.controller?.dispose();
+      final current = state.cameras
           .firstWhere((c) => c.lensDirection == action.lensDirection);
       _initializeNewController(store, current);
     }
@@ -71,10 +73,13 @@ Middleware<AppState> _createSwitchChangeMiddleware() {
   };
 }
 
-Middleware<AppState> _createStartRecordingMiddleware() {
-  return (Store store, action, NextDispatcher next) async {
+Middleware<CameraState> _createStartRecordingMiddleware() {
+  return (Store<CameraState> store, action, NextDispatcher next) async {
     if (action is StartRecordingAction) {
-      final CameraState state = store.state.cameraState;
+      final CameraState state = store.state;
+      if (state.files.isEmpty) {
+        nativeProvider.screenRotationEnable(false);
+      }
       final path = await getVideoTmpFile();
       store.dispatch(AddNewFileChangeAction(path));
       await state.controller.startVideoRecording(path);
@@ -83,24 +88,26 @@ Middleware<AppState> _createStartRecordingMiddleware() {
   };
 }
 
-Middleware<AppState> _createPauseRecordingMiddleware() {
-  return (Store store, action, NextDispatcher next) async {
+Middleware<CameraState> _createPauseRecordingMiddleware() {
+  return (Store<CameraState> store, action, NextDispatcher next) async {
     if (action is PauseRecordingAction) {
-      final CameraState state = store.state.cameraState;
+      final CameraState state = store.state;
       await state.controller.safeStopVideoRecording();
     }
     next(action);
   };
 }
 
-Middleware<AppState> _createStopRecordingMiddleware() {
-  return (Store store, action, NextDispatcher next) async {
+Middleware<CameraState> _createStopRecordingMiddleware() {
+  return (Store<CameraState> store, action, NextDispatcher next) async {
     if (action is StopRecordingAction) {
       store.dispatch(ProcessingAction(true));
-      final CameraState state = store.state.cameraState;
+      final CameraState state = store.state;
 
       if (state.controller.value.isRecordingVideo)
         await state.controller.safeStopVideoRecording();
+
+      nativeProvider.screenRotationEnable(true);
 
       final VideoDataRepository videoDataRepository = VideoDataRepository();
 
@@ -120,11 +127,11 @@ Middleware<AppState> _createStopRecordingMiddleware() {
   };
 }
 
-Middleware<AppState> _createTakePhotoMiddleware() {
-  return (Store store, action, NextDispatcher next) async {
+Middleware<CameraState> _createTakePhotoMiddleware() {
+  return (Store<CameraState> store, action, NextDispatcher next) async {
     if (action is TakePhotoAction) {
       store.dispatch(ProcessingAction(true));
-      final CameraState state = store.state.cameraState;
+      final CameraState state = store.state;
       final path = await getImageTmpFile();
       await state.controller.takePicture(path);
 
@@ -141,12 +148,22 @@ Middleware<AppState> _createTakePhotoMiddleware() {
   };
 }
 
-void _initializeNewController(Store store, CameraDescription current) async {
-  final CameraState state = store.state.cameraState;
+Middleware<CameraState> _switchTorch() {
+  return (Store<CameraState> store, action, NextDispatcher next) async {
+    if (action is ChangeTorchModeAction) {
+      await store.state.controller.changeTorchMode(action.toEnable);
+    }
+    next(action);
+  };
+}
+
+void _initializeNewController(
+    Store<CameraState> store, CameraDescription current) async {
+  final CameraState state = store.state;
   final quality = state.captureArgs?.videoParams?.quality;
 
-  CameraController controller =
-      CameraController(current, getPreset(quality), enableAudio: false);
+  final CameraController controller =
+      CameraController(current, getPreset(quality), enableAudio: true);
 
   await controller.initialize();
   store.dispatch(InitializedCameraControllerAction(controller));

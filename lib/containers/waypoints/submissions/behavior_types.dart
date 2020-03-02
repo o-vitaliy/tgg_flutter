@@ -21,7 +21,8 @@ enum BehaviorType {
   profile_multiple_choice,
   profile_photo,
   info,
-  linked_head_to_head
+  linked_head_to_head,
+  code_custom
 }
 
 class BehaviorTypeHelper {
@@ -60,6 +61,7 @@ class BehaviorTypeHelper {
       case BehaviorType.profile_multiple_choice:
       case BehaviorType.profile_photo:
       case BehaviorType.info:
+      case BehaviorType.code_custom:
         return false;
 
       default:

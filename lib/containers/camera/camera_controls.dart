@@ -5,17 +5,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/containers/camera/camera_actions.dart';
 import 'package:tgg/containers/camera/widgets/camera_torch_button.dart';
-import 'package:tgg/redux_model/app_state.dart';
 import 'package:tgg/ui/keys.dart';
 import 'package:tgg/ui/widgets/base_square_icon_button.dart';
 
+import 'camera_state.dart';
 import 'widgets/actionbutton.dart';
 import 'widgets/camera_direction_switch_button.dart';
 
 class CameraControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, _ViewModel>(
+    return StoreConnector<CameraState, _ViewModel>(
         converter: _ViewModel.fromStore,
         distinct: true,
         builder: (BuildContext context, _ViewModel vm) {
@@ -65,17 +65,19 @@ class CameraControls extends StatelessWidget {
             onTap: (c) => vm.startRecording(),
           )));
     }
-    if (vm.showPauseRecordingButton) {
+    if (vm.isHoldToRecord) {
       items.add(Container(
           alignment: Alignment.center,
-          child: BaseSquareIconButton(
-            icon: FontAwesomeIcons.solidPauseCircle,
-            onTap: (c) => vm.pauseRecording(),
+          child: RecordStartPauseButton(
+            onPauseClick: vm.pauseRecording,
+            onRecordClick: vm.startRecording,
+            isRecording: vm.isRecording,
           )));
     }
     if (vm.showStopRecordingButton) {
       items.add(Container(
-          alignment: Alignment.centerRight,
+          alignment:
+              vm.isHoldToRecord ? Alignment.centerRight : Alignment.center,
           child: BaseSquareIconButton(
             icon: FontAwesomeIcons.solidStopCircle,
             onTap: (c) => vm.stopRecording(),
@@ -102,12 +104,14 @@ class CameraControls extends StatelessWidget {
   }
 }
 
+@immutable
 class _ViewModel {
   final bool hasTorch;
   final bool torchEnabled;
+  final bool isRecording;
   final bool showTakePhotoButton;
   final bool showStartRecordingButton;
-  final bool showPauseRecordingButton;
+  final bool isHoldToRecord;
   final bool showStopRecordingButton;
   final bool showSwitchCameraButton;
   final CameraLensDirection currentCameraLensDirection;
@@ -120,30 +124,32 @@ class _ViewModel {
   final Function(CameraLensDirection) switchCamera;
 
   _ViewModel({
-    this.showTakePhotoButton,
-    this.showStartRecordingButton,
-    this.showPauseRecordingButton,
-    this.showStopRecordingButton,
-    this.showSwitchCameraButton,
-    this.hasTorch,
-    this.torchEnabled,
-    this.switchTorch,
-    this.stopRecording,
-    this.startRecording,
-    this.pauseRecording,
-    this.takePhoto,
-    this.switchCamera,
-    this.currentCameraLensDirection,
+    @required this.showTakePhotoButton,
+    @required this.showStartRecordingButton,
+    @required this.isHoldToRecord,
+    @required this.showStopRecordingButton,
+    @required this.showSwitchCameraButton,
+    @required this.hasTorch,
+    @required this.torchEnabled,
+    @required this.switchTorch,
+    @required this.stopRecording,
+    @required this.startRecording,
+    @required this.pauseRecording,
+    @required this.takePhoto,
+    @required this.switchCamera,
+    @required this.currentCameraLensDirection,
+    @required this.isRecording,
   });
 
-  static _ViewModel fromStore(Store<AppState> store) {
-    final state = store.state.cameraState;
+  static _ViewModel fromStore(Store<CameraState> store) {
+    final state = store.state;
     return _ViewModel(
       hasTorch: state.hasTorch,
       torchEnabled: state.torchEnabled,
+      isRecording: state.isRecordingVideo,
       showTakePhotoButton: state.showTakePhotoButton,
       showStartRecordingButton: state.showStartRecordingButton,
-      showPauseRecordingButton: state.showPauseRecordingButton,
+      isHoldToRecord: state.isHoldToRecord,
       showStopRecordingButton: state.showStopRecordingButton,
       showSwitchCameraButton: state.showSwitchCameraButton,
       currentCameraLensDirection: state.currentCameraLensDirection,
