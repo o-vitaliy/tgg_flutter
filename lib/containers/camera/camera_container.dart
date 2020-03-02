@@ -27,29 +27,32 @@ class CameraContainerState extends State<CameraContainer> {
   @override
   Widget build(BuildContext context) {
     final CaptureArguments args = ModalRoute.of(context).settings.arguments;
-    return StoreConnector<AppState, _ViewModel>(
-        converter: _ViewModel.fromStore,
-        onInit: (store) {
-          store.dispatch(StartInitCameraAction(args, cameraKey));
-        },
-        distinct: true,
-        builder: (BuildContext context, _ViewModel vm) {
-          if (!vm.initialized) {
-            return LoadingIndicator();
-          } else {
-            return Stack(children: <Widget>[
-              CameraPreviewView(),
-              !vm.processingResult ? CameraControls() : LoadingIndicator(),
-              vm.needTimer && !vm.processingResult
-                  ? SafeArea(
-                      child: Container(
-                      alignment: Alignment.topCenter,
-                      child: CameraTimerContainer(),
-                    ))
-                  : SizedBox.shrink()
-            ]);
-          }
-        });
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: StoreConnector<AppState, _ViewModel>(
+          converter: _ViewModel.fromStore,
+          onInit: (store) {
+            store.dispatch(StartInitCameraAction(args, cameraKey));
+          },
+          distinct: true,
+          builder: (BuildContext context, _ViewModel vm) {
+            if (!vm.initialized) {
+              return LoadingIndicator();
+            } else {
+              return Stack(children: <Widget>[
+                CameraPreviewView(),
+                !vm.processingResult ? CameraControls() : LoadingIndicator(),
+                vm.needTimer && !vm.processingResult
+                    ? SafeArea(
+                        child: Container(
+                        alignment: Alignment.topCenter,
+                        child: CameraTimerContainer(),
+                      ))
+                    : SizedBox.shrink()
+              ]);
+            }
+          }),
+    );
   }
 
   void showPreview(Object args, Store store) {

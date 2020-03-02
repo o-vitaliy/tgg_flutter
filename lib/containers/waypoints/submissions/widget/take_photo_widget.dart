@@ -45,7 +45,7 @@ class TakePhotoWidget extends StatelessValueWidget {
     );
   }
 
-  _takePhoto(BuildContext context) async {
+  void _takePhoto(BuildContext context) async {
     MediaLauncher.startPhoto(context, allowGallery, videoParams).then((value) {
       if (value != null) {
         onValueChange(value);

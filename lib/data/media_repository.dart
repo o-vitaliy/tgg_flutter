@@ -65,7 +65,7 @@ class MediaRepo {
     final String playthroughName = Slugify(playthrough.name);
     final String teamName = Slugify(team.name);
     final String missionName = Slugify(mission.step.title);
-    final String extension = mediaFile.substring(mediaFile.lastIndexOf("."));
+    final String extension = getFileExtension(mediaFile);
 
     return "uploads/$datePlaythrough/$playthroughName/$timePlaythrough/$teamName/$missionName-$dateTime$extension";
   }
@@ -95,5 +95,9 @@ class MediaRepo {
         "is_ready": true,
       }
     };
+  }
+
+  static String getFileExtension(String path) {
+    return path.substring(path.lastIndexOf("."));
   }
 }

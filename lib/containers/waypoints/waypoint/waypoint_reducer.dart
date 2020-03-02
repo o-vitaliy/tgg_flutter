@@ -1,4 +1,5 @@
 import 'package:redux/redux.dart';
+import 'package:tgg/actions/auth_actions.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_actions.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_item_state.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
@@ -10,6 +11,7 @@ final waypointReducer = combineReducers<WaypointState>([
   new TypedReducer<WaypointState, WaypointHintShown>(_showHint),
   new TypedReducer<WaypointState, WaypointIncrementAttemptAction>(
       _waypointIncrementAttemptAction),
+  new TypedReducer<WaypointState, LogOut>(_logout),
 ]);
 
 WaypointState _init(WaypointState state, action) {
@@ -54,11 +56,14 @@ WaypointState _showHint(WaypointState state, action) {
     ..put(a.waypointId, ws.copyWith(hint: a.hint, hintsUsed: a.usedCount));
 }
 
-WaypointState _waypointIncrementAttemptAction(
-    WaypointState state, action) {
+WaypointState _waypointIncrementAttemptAction(WaypointState state, action) {
   final a = action as WaypointIncrementAttemptAction;
   final ws = state[a.waypointId];
 
   return state
     ..put(a.waypointId, ws.copyWith(attemptsUsed: ws.attemptsUsed + 1));
+}
+
+WaypointState _logout(WaypointState state, action) {
+  return WaypointState.initial();
 }
