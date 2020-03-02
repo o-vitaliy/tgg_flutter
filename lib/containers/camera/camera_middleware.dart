@@ -77,12 +77,14 @@ Middleware<CameraState> _createStartRecordingMiddleware() {
   return (Store<CameraState> store, action, NextDispatcher next) async {
     if (action is StartRecordingAction) {
       final CameraState state = store.state;
-      if (state.files.isEmpty) {
-        nativeProvider.screenRotationEnable(false);
+      if (!state.isRecordingVideo) {
+        if (state.files.isEmpty) {
+          nativeProvider.screenRotationEnable(false);
+        }
+        final path = await getVideoTmpFile();
+        store.dispatch(AddNewFileChangeAction(path));
+        await state.controller.startVideoRecording(path);
       }
-      final path = await getVideoTmpFile();
-      store.dispatch(AddNewFileChangeAction(path));
-      await state.controller.startVideoRecording(path);
     }
     next(action);
   };

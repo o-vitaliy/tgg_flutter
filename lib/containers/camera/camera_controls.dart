@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:redux/redux.dart';
+import 'package:tgg/common/event_queue/event_queue.dart';
 import 'package:tgg/containers/camera/camera_actions.dart';
 import 'package:tgg/containers/camera/widgets/camera_torch_button.dart';
 import 'package:tgg/ui/keys.dart';
@@ -143,6 +144,7 @@ class _ViewModel {
 
   static _ViewModel fromStore(Store<CameraState> store) {
     final state = store.state;
+    const defaultDelay = 1000;
     return _ViewModel(
       hasTorch: state.hasTorch,
       torchEnabled: state.torchEnabled,
@@ -153,14 +155,30 @@ class _ViewModel {
       showStopRecordingButton: state.showStopRecordingButton,
       showSwitchCameraButton: state.showSwitchCameraButton,
       currentCameraLensDirection: state.currentCameraLensDirection,
-      switchTorch: (toEnable) =>
-          store.dispatch(ChangeTorchModeAction(toEnable)),
-      startRecording: () => store.dispatch(StartRecordingAction()),
-      pauseRecording: () => store.dispatch(PauseRecordingAction()),
-      stopRecording: () => store.dispatch(StopRecordingAction()),
-      takePhoto: () => store.dispatch(TakePhotoAction()),
-      switchCamera: (lensDirection) =>
-          store.dispatch(SwitchCameraAction(lensDirection)),
+      switchTorch: (toEnable) => eventQueue.postEvent(
+          () => store.dispatch(ChangeTorchModeAction(toEnable)),
+          delay: defaultDelay,
+          tag: "ChangeTorchModeAction"),
+      startRecording: () => eventQueue.postEvent(
+          () => store.dispatch(StartRecordingAction()),
+          delay: defaultDelay,
+          tag: "StartRecordingAction"),
+      pauseRecording: () => eventQueue.postEvent(
+          () => store.dispatch(PauseRecordingAction()),
+          delay: defaultDelay,
+          tag: "PauseRecordingAction"),
+      stopRecording: () => eventQueue.postEvent(
+          () => store.dispatch(StopRecordingAction()),
+          delay: defaultDelay,
+          tag: "StopRecordingAction"),
+      takePhoto: () => eventQueue.postEvent(
+          () => store.dispatch(TakePhotoAction()),
+          delay: defaultDelay,
+          tag: "TakePhotoAction"),
+      switchCamera: (lensDirection) => eventQueue.postEvent(
+          () => store.dispatch(SwitchCameraAction(lensDirection)),
+          delay: defaultDelay,
+          tag: "SwitchCameraAction"),
     );
   }
 }
