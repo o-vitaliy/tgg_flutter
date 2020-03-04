@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:tgg/containers/waypoints/submissions/behavior_types.dart';
 import 'package:tgg/containers/waypoints/submissions/submission_types.dart';
 import 'package:tgg/data/dao/dao_answer.dart';
 import 'package:tgg/data/dao/dao_hints.dart';
@@ -10,10 +9,12 @@ import 'package:tgg/data/dao/dao_media.dart';
 import 'package:tgg/data/dao/dao_waypoints.dart';
 import 'package:tgg/data/providers/api_provider.dart';
 import 'package:tgg/data/providers/location_provider.dart';
+import 'package:tgg/helpers/expandable_list.dart';
 import 'package:tgg/models/waypoints/waypoint.dart';
 import 'package:tgg/models/waypoints/waypoint_mode.dart';
 
 import 'dao/dao_submission.dart';
+import 'dao/db.dart';
 
 class WaypointsRepo {
   final ApiProvider apiProvider;
@@ -70,7 +71,7 @@ class WaypointsRepo {
   }
 
   Future submitAnswer(String waypointId) async {
-    daoWaypoint.savePassed(waypointId);
+    await daoWaypoint.savePassed(waypointId);
 
     final location = await locationProvider.getLocation();
     final hintsUsed = await daoHint.getUsedHints(waypointId);
@@ -78,47 +79,26 @@ class WaypointsRepo {
     final Waypoint waypoint = Waypoint.fromJsonMap(
         json.decode((await daoWaypoint.getWaypoint(waypointId)).waypointJson));
 
-    final types = await daoAnswer.getAnswerSubmissionTypes(waypointId);
-    final allAnswers = await daoAnswer.getAnswersByWaypointId(waypointId);
-    final medias = await Future.wait(
-        allAnswers.map((i) async => (await daoMedia.findByUrl(i))));
-    final mediasNotNull = medias.where((m) => m != null).map((m) {
-      return m.mediaId;
-    }).toList(growable: false);
+    final medias = await _getMedias(waypointId);
+    final submissions = await _getSubmissions(waypointId);
+
     final Map values = await Future.value({
-      "submissions": await Future.wait(types.map((type) async {
-        final List list = await _getSubmission(waypointId, type);
-        return {"time": DateTime.now().toIso8601String(), "submission": list};
-      })),
+      "submissions": submissions,
       "num_hints_used": hintsUsed,
       "started_at": DateTime.now().toIso8601String(),
-      "completed_at": _getCompletedAt(waypoint.step.behavior.id),
+      "completed_at":
+          waypoint.step.behavior.type.generateCompletedAt()?.toIso8601String(),
       "completed_location": [
         location.latitude,
         location.longitude,
       ],
-      "media": mediasNotNull.toList() // []
+      "media": medias // []
     });
     await apiProvider.waypointTriggerAction(
       waypointId: waypointId,
       values: {"name": "sync", "params": values},
     );
     await daoWaypoint.saveSynced(waypointId);
-  }
-
-  Future<List> _getSubmission(String waypointId, String type) async {
-    List<String> answers = await daoAnswer.getAnswerByType(waypointId, type);
-    return await Future.wait(answers.map(
-        (a) async => {_getSubmitType(type): await _getAnswerValue(type, a)}));
-  }
-
-  String _getCompletedAt(String type) {
-    if (BehaviorTypeHelper.fromString(type) ==
-        BehaviorType.linked_head_to_head) {
-      return null;
-    } else {
-      return DateTime.now().toIso8601String();
-    }
   }
 
   String _getSubmitType(String type) {
@@ -129,19 +109,50 @@ class WaypointsRepo {
     }
   }
 
-  Future<dynamic> _getAnswerValue(String type, String answer) async {
-    final submissionType = SubmissionTypeHelper.fromString(type);
-    if (SubmissionTypeHelper.isMedia(submissionType)) {
-      final media = (await daoMedia.findByUrl(answer));
-      return media != null ? media.mediaId : null;
-    } else {
-      return SubmissionTypeHelper.getTransformerFromString(type)
-          .transform(answer);
-    }
+  dynamic _getAnswerValue(String type, String answer) {
+    return SubmissionTypeHelper.getTransformerFromString(type)
+        .transform(answer);
   }
 
   Future _saveWaypoint(Waypoint waypoint, Map map) async {
     await daoWaypoint.insert(
         waypoint.id, ModeHelper.to(waypoint.mode), json.encode(map));
+  }
+
+  Future<List<String>> _getMedias(String waypointId) async {
+    final allAnswers = await daoAnswer.getAnswersByWaypointId(waypointId);
+    final medias = await Future.wait(
+        allAnswers.map((i) async => (await daoMedia.findByUrl(i))));
+    final mediasNotNull = medias.where((m) => m != null).map((m) {
+      return m.mediaId;
+    }).toList(growable: false);
+
+    return mediasNotNull;
+  }
+
+  Future<List<Map>> _getSubmissions(String waypointId) async {
+    final allAnswers = await daoAnswer.getAnswerList(waypointId);
+    final Map<DateTime, List<AnswerTableData>> grouped =
+        groupBy(allAnswers, (AnswerTableData e) => e.addedAt);
+    final Map<String, String> answersToMedia = Map();
+
+    for (int i = 0; i < allAnswers.length; i++) {
+      MediaTableData media = await daoMedia.findByUrl(allAnswers[i].answer);
+      if (media != null) {
+        answersToMedia[allAnswers[i].answer] = media.mediaId;
+      }
+    }
+
+    final result = grouped.keys.map((key) {
+      final value = grouped[key];
+      final List submission = value
+          .map((e) => {
+                _getSubmitType(e.submissionType): answersToMedia[e.answer] ??
+                    _getAnswerValue(e.submissionType, e.answer)
+              })
+          .toList();
+      return {"time": key.toIso8601String(), "submission": submission};
+    }).toList();
+    return result;
   }
 }

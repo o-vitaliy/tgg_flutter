@@ -7,14 +7,15 @@ class DaoAnswer {
 
   DaoAnswer(this._appDatabase);
 
-  Future<int> insert(String waypointId, String submissionType, String answer) {
+  Future<int> insert(String waypointId, String submissionType, String answer,
+      DateTime addedAt) {
     return _appDatabase.intoAnswerTable.insert(
         AnswerTableCompanion.insert(
-          waypointId: waypointId,
-          submissionType:
-              submissionType != null ? Value(submissionType) : Value.absent(),
-          answer: answer != null ? Value(answer) : Value.absent(),
-        ),
+            waypointId: waypointId,
+            submissionType:
+                submissionType != null ? Value(submissionType) : Value.absent(),
+            answer: answer != null ? Value(answer) : Value.absent(),
+            addedAt: addedAt),
         mode: InsertMode.insertOrAbort);
   }
 
@@ -44,21 +45,11 @@ class DaoAnswer {
     return query.map((a) => a.answer).toList(growable: false);
   }
 
-/*Future<List<Answer>> getAnswers(String waypointId) async {
+  Future<List<AnswerTableData>> getAnswerList(String waypointId) async {
     final rows = await (_appDatabase.selectAnswerTable
           ..where((a) => a.waypointId.equals(waypointId)))
         .get();
 
-    Set<String> types = Set<String>.from(rows.map((a) => a.submissionType));
-    return List.from(
-        types.map((t) => Answer(
-              t,
-              List<String>.from(
-                  rows
-                      .where((a) => a.submissionType.endsWith(t))
-                      .map((a) => a.answer),
-                  growable: false),
-            )),
-        growable: false);
-  }*/
+    return rows;
+  }
 }

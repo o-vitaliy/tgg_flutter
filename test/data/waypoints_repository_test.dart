@@ -103,7 +103,7 @@ main() {
       expect(submissions.startedLocationLng, lng);
     });
 
-    test("sumbit answer ganerates valid json", () async {
+    test("submit answer ganerates valid json", () async {
       when(mockedLocationProvider.getLocation())
           .thenAnswer((_) => Future.value(position));
 
@@ -111,16 +111,52 @@ main() {
       final waypointId = waypoints.first.id;
 
       daoHint.getUsedHints(waypointId);
-      daoAnswer.insert(waypointId, "text", "a1");
-      daoAnswer.insert(waypointId, "text", "a2");
-      daoAnswer.insert(waypointId, "number", "a1");
-      daoAnswer.insert(waypointId, "number", "a2");
+      daoAnswer.insert(waypointId, "text", "a1", DateTime.now());
+      daoAnswer.insert(waypointId, "text", "a2", DateTime.now());
+      daoAnswer.insert(waypointId, "number", "a1", DateTime.now());
+      daoAnswer.insert(waypointId, "number", "a2", DateTime.now());
 
       await repo.submitAnswer(waypointId);
 
       verify(mockedApiProvider.waypointTriggerAction(
         values: argThat(predicate((params) {
           return json.encode(params) != null;
+        }), named: "values"),
+        waypointId: anyNamed("waypointId"),
+      ));
+    });
+
+    test("check params order valid", () async {
+      when(mockedLocationProvider.getLocation())
+          .thenAnswer((_) => Future.value(position));
+
+      final waypoints = await repo.getActiveWaypoints();
+      final waypointId = waypoints.first.id;
+
+      final date1 = DateTime.now();
+      daoAnswer.insert(waypointId, "number", "n0", date1);
+      daoAnswer.insert(waypointId, "text", "a0", date1);
+
+      final date2 = date1.add(Duration(seconds: 1));
+      daoAnswer.insert(waypointId, "number", "n2", date2);
+      daoAnswer.insert(waypointId, "text", "a2", date2);
+
+      await repo.submitAnswer(waypointId);
+
+      verify(mockedApiProvider.waypointTriggerAction(
+        values: argThat(predicate((params) {
+          final submissions = params["params"]["submissions"];
+          expect(submissions, isNotNull);
+          expect(submissions.length, 2);
+
+          final submission0 = submissions[0]["submission"];
+          expect(submission0[0]["number"], "n0");
+          expect(submission0[1]["text"], "a0");
+
+          final submission1 = submissions[1]["submission"];
+          expect(submission1[0]["number"], "n2");
+          expect(submission1[1]["text"], "a2");
+          return true;
         }), named: "values"),
         waypointId: anyNamed("waypointId"),
       ));
@@ -133,11 +169,13 @@ main() {
       final waypoints = await repo.getActiveWaypoints();
       final waypointId = waypoints.first.id;
 
+      final date = DateTime.now();
+      final date2 = date.add(Duration(seconds: 1));
       daoHint.getUsedHints(waypointId);
-      daoAnswer.insert(waypointId, "text", "a1");
-      daoAnswer.insert(waypointId, "text", "a2");
-      daoAnswer.insert(waypointId, "number", "a1");
-      daoAnswer.insert(waypointId, "number", "a2");
+      daoAnswer.insert(waypointId, "text", "a1", date);
+      daoAnswer.insert(waypointId, "text", "a2", date);
+      daoAnswer.insert(waypointId, "number", "a1", date2);
+      daoAnswer.insert(waypointId, "number", "a2", date2);
 
       await repo.submitAnswer(waypointId);
 
@@ -159,7 +197,7 @@ main() {
       final waypointId = waypoints.first.id;
 
       await daoMedia.insert("mediaId", "url", "key");
-      daoAnswer.insert(waypointId, "photo", "url");
+      daoAnswer.insert(waypointId, "photo", "url", DateTime.now());
 
       await repo.submitAnswer(waypointId);
 
@@ -176,7 +214,7 @@ main() {
       final waypoints = await repo.getActiveWaypoints();
       final waypointId = waypoints.first.id;
 
-      daoAnswer.insert(waypointId, "checkboxes", "a1,a2");
+      daoAnswer.insert(waypointId, "checkboxes", "a1,a2", DateTime.now());
 
       await repo.submitAnswer(waypointId);
 
@@ -193,7 +231,7 @@ main() {
     test("sumbit passed and sync flags", () async {
       final waypointId = (await repo.getActiveWaypoints()).first.id;
 
-      daoAnswer.insert(waypointId, "checkboxes", "a1,a2");
+      daoAnswer.insert(waypointId, "checkboxes", "a1,a2", DateTime.now());
 
       await repo.submitAnswer(waypointId);
 

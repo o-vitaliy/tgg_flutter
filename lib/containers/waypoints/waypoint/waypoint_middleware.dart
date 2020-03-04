@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/common/dialog/dialog_action.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_action.dart';
-import 'package:tgg/containers/waypoints/submissions/behavior_types.dart';
 import 'package:tgg/containers/waypoints/submissions/submission_types.dart';
-import 'package:tgg/containers/waypoints/submissions/validate/submissions_validator.dart';
+import 'package:tgg/containers/waypoints/waypoint/behavior/behavior.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_actions.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_item_state.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart';
@@ -45,30 +44,28 @@ Middleware<AppState> _initWaypoint() {
 Middleware<AppState> _submit() {
   return (Store<AppState> store, action, NextDispatcher next) async {
     if (action is WaypointSubmit) {
-      final List<String> incorrectAnswers = new List<String>();
-
       final String waypointId = action.waypointId;
       final WaypointItemState waypoint =
           store.state.waypointsPassingState[waypointId];
-      final BehaviorType behaviorType =
-          BehaviorTypeHelper.fromString(waypoint.waypoint.step.behavior.id);
+      final BaseBehaviorType behaviorType =
+          waypoint.waypoint.step.behavior.type;
 
-      if (BehaviorTypeHelper.noSubmissions(behaviorType)) {
-        daoAnswer.insert(waypointId, null, null);
+      final addedAt = DateTime.now();
+      if (behaviorType.hasNoSubmissions) {
+        await daoAnswer.insert(waypointId, null, null, addedAt);
       } else {
-        waypoint.items.forEach((item) {
+        waypoint.items.forEach((item) async {
           final subType = item.submission.type;
-          daoAnswer.insert(waypointId, subType, _answerToString(item.answer));
-          final behaviourType =
-              BehaviorTypeHelper.fromString(waypoint.waypoint.step.behavior.id);
-          String error =
-              validate(behaviourType, item.answer, item.submission.choices);
-          if (error != null) incorrectAnswers.add(item.answer);
+          await daoAnswer.insert(
+              waypointId, subType, _answerToString(item.answer), addedAt);
         });
       }
+      final validationResult = !behaviorType.hasNoSubmissions
+          ? behaviorType.isValid(waypoint.items)
+          : null;
 
-      if (!BehaviorTypeHelper.postponedResult(behaviorType)) {
-        if (incorrectAnswers.isEmpty) {
+      if (!behaviorType.postponedResult) {
+        if (validationResult?.isValid ?? true) {
           final dialogBuilder = (context) {
             return createSuccessDialog(
               waypoint.attemptsUsed,
@@ -85,7 +82,7 @@ Middleware<AppState> _submit() {
         } else {
           final dialogBuilder = (context) {
             return createErrorDialog(
-              incorrectAnswers.join(","),
+              validationResult?.incorrectAnswer,
               waypoint.attemptsUsed,
               store.state.flavor,
               () {
@@ -131,7 +128,8 @@ Middleware<AppState> _updateAnswer() {
       store.dispatch(WaypointSaveAnswer(
           waypointId, action.itemId, answer, action.submission));
 
-      if (BehaviorTypeHelper.autoSubmit(waypoint.step.behavior.id)) {
+      final type = waypoint.step.behavior.type;
+      if (type.autoSubmit) {
         store.dispatch(WaypointSubmit(waypointId));
       }
     }

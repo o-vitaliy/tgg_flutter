@@ -3477,13 +3477,136 @@
     "mission_points": 0
   },
   {
-    "id": "5e5bb527d71f10001ebcd95f",
+    "id": "5e5e212ed71f100021a0c4b6",
     "step": {
-      "id": "5e4c431fd71f10001ee928b3",
-      "title": "Code Custom",
-      "instructions": "Code Custom",
+      "id": "5e5e1e28d71f100021a0c4b2",
+      "title": "Code standard",
+      "instructions": "Type 6111 to get maximum point\nType 1111 if you are asshole",
+      "position": 1,
+      "mission_id": "5e5e1c4fd71f100021a0c4b0",
+      "behavior": {
+        "id": "code_standard",
+        "title": "Code Standard",
+        "description": "Standard code. 6111 = Maximum points, 1111 = Minimum points. 5111,4111,3111,2111 in the middle.",
+        "fields": [
+          {
+            "name": "success_message",
+            "type": "text",
+            "label": "Success message",
+            "required": false
+          },
+          {
+            "name": "timelimit",
+            "type": "int",
+            "label": "Time limit",
+            "default": null,
+            "required": false,
+            "placeholder": "Time limit (in minutes)"
+          },
+          {
+            "name": "presentation_text",
+            "type": "text:long",
+            "label": "Presentation text",
+            "required": false,
+            "placeholder": "Presentation Text"
+          },
+          {
+            "name": "presentation_image",
+            "type": "upload",
+            "label": "Presentation image",
+            "required": false,
+            "placeholder": "Image key",
+            "object_key": "media_key",
+            "s3": {
+              "bucket": "gogame-breadcrumb-display-media",
+              "folder": "GameShow"
+            }
+          },
+          {
+            "name": "presentation_title",
+            "type": "text",
+            "label": "Presentation title",
+            "required": false,
+            "placeholder": "Presentation Title (overrides mission step title)"
+          },
+          {
+            "name": "display_answer",
+            "type": "text",
+            "label": "GGP Display answer",
+            "required": false,
+            "placeholder": "Correct display answer. Will display on screen view"
+          },
+          {
+            "name": "question_type",
+            "type": "text",
+            "label": "GGP Question type",
+            "required": false,
+            "placeholder": "Question type"
+          },
+          {
+            "name": "timer",
+            "type": "int",
+            "label": "GGP Timer",
+            "required": false
+          },
+          {
+            "name": "stop_auto_play",
+            "type": "bool",
+            "default": false,
+            "label": "GGP Stop autoplay",
+            "required": false
+          },
+          {
+            "name": "is_one_time_mission",
+            "type": "bool",
+            "default": false,
+            "label": "Is Mission available only once per playthrough",
+            "required": false
+          }
+        ],
+        "submission_type": "number"
+      },
+      "content": {},
+      "scoring": 0
+    },
+    "mode_name": "main",
+    "step_num": 1,
+    "is_last": true,
+    "is_from_start_or_end_track": true,
+    "queued_at": "2020-03-03T09:19:42+0000",
+    "queue_priority": 0,
+    "ungated_at": "2020-03-03T09:19:42+0000",
+    "gated_until": null,
+    "social_info": {},
+    "has_shared": false,
+    "gated_by_mission_delay": null,
+    "started_at": null,
+    "started_location": null,
+    "completed_at": null,
+    "completed_location": null,
+    "synced_at": null,
+    "submissions": [],
+    "num_hints_used": null,
+    "result": {},
+    "is_votable": false,
+    "is_voting_selected": false,
+    "is_judgeable": true,
+    "votes": [],
+    "points": 0,
+    "points_are_overridden": false,
+    "has_media": false,
+    "in_gallery": false,
+    "media": [],
+    "mission_points": 0
+  },
+  {
+    "id": "5e5e212ed71f100021a0c4b5",
+    "step": {
+      "id": "5e5e1cb4d71f100021a0c4b1",
+      "title": "Code custom",
+      "instructions": "Guess a code, asshole",
       "position": 0,
-      "mission_id": "5e4c42f7d71f10001ee928b2",
+      "mission_id": "5e5e1c4fd71f100021a0c4b0",
       "behavior": {
         "id": "code_custom",
         "title": "Code Custom",
@@ -3574,27 +3697,379 @@
       },
       "content": {
         "codes": [
-          "test"
+          "1",
+          "2",
+          "3",
+          "4"
         ]
       },
       "scoring": 0
     },
-    "mode_name": "anytime",
+    "mode_name": "main",
     "step_num": 0,
-    "is_last": true,
-    "is_from_start_or_end_track": false,
-    "queued_at": "2020-03-01T13:14:15+0000",
+    "is_last": false,
+    "is_from_start_or_end_track": true,
+    "queued_at": "2020-03-03T09:19:42+0000",
     "queue_priority": 0,
-    "ungated_at": "2020-03-01T13:14:15+0000",
+    "ungated_at": "2020-03-03T09:19:42+0000",
     "gated_until": null,
     "social_info": {},
     "has_shared": false,
     "gated_by_mission_delay": null,
-    "started_at": "2020-03-02T10:34:47+0000",
-    "started_location": [
-      50.4589409,
-      30.4088266
-    ],
+    "started_at": null,
+    "started_location": null,
+    "completed_at": null,
+    "completed_location": null,
+    "synced_at": null,
+    "submissions": [],
+    "num_hints_used": null,
+    "result": {},
+    "is_votable": false,
+    "is_voting_selected": false,
+    "is_judgeable": true,
+    "votes": [],
+    "points": 0,
+    "points_are_overridden": false,
+    "has_media": false,
+    "in_gallery": false,
+    "media": [],
+    "mission_points": 0
+  },
+  {
+    "id": "5e5e212ed71f100021a0c4b5",
+    "step": {
+      "id": "5e5e471ad71f100021a0c4d5",
+      "title": "Highest wins",
+      "instructions": "Actors enter a number into the phone along with a password to verify. The team with the highest number gets the most points.",
+      "position": 0,
+      "mission_id": "5e5e46dad71f100021a0c4d4",
+      "behavior": {
+        "id": "plant_score_highest",
+        "title": "Plant Score: Highest wins",
+        "description": "Actors enter a number into the phone along with a password to verify. The team with the highest number gets the most points.",
+        "fields": [
+          {
+            "name": "plant_password",
+            "type": "text",
+            "label": "Plant password",
+            "placeholder": "Plant password to verify no cheating",
+            "required": true
+          },
+          {
+            "name": "success_message",
+            "type": "text",
+            "label": "Success message",
+            "required": false
+          },
+          {
+            "name": "timelimit",
+            "type": "int",
+            "label": "Time limit",
+            "default": null,
+            "required": false,
+            "placeholder": "Time limit (in minutes)"
+          },
+          {
+            "name": "presentation_text",
+            "type": "text:long",
+            "label": "Presentation text",
+            "required": false,
+            "placeholder": "Presentation Text"
+          },
+          {
+            "name": "presentation_image",
+            "type": "upload",
+            "label": "Presentation image",
+            "required": false,
+            "placeholder": "Image key",
+            "object_key": "media_key",
+            "s3": {
+              "bucket": "gogame-breadcrumb-display-media",
+              "folder": "GameShow"
+            }
+          },
+          {
+            "name": "presentation_title",
+            "type": "text",
+            "label": "Presentation title",
+            "required": false,
+            "placeholder": "Presentation Title (overrides mission step title)"
+          },
+          {
+            "name": "display_answer",
+            "type": "text",
+            "label": "GGP Display answer",
+            "required": false,
+            "placeholder": "Correct display answer. Will display on screen view"
+          },
+          {
+            "name": "question_type",
+            "type": "text",
+            "label": "GGP Question type",
+            "required": false,
+            "placeholder": "Question type"
+          },
+          {
+            "name": "timer",
+            "type": "int",
+            "label": "GGP Timer",
+            "required": false
+          },
+          {
+            "name": "stop_auto_play",
+            "type": "bool",
+            "default": false,
+            "label": "GGP Stop autoplay",
+            "required": false
+          },
+          {
+            "name": "is_one_time_mission",
+            "type": "bool",
+            "default": false,
+            "label": "Is Mission available only once per playthrough",
+            "required": false
+          }
+        ],
+        "submission_type": [
+          {
+            "type": "number",
+            "placeholder": "Score"
+          },
+          {
+            "type": "text",
+            "placeholder": "Password"
+          }
+        ]
+      },
+      "content": {
+        "plant_password": "1111"
+      },
+      "scoring": 0
+    },
+    "mode_name": "main",
+    "step_num": 0,
+    "is_last": false,
+    "is_from_start_or_end_track": true,
+    "queued_at": "2020-03-03T09:19:42+0000",
+    "queue_priority": 0,
+    "ungated_at": "2020-03-03T09:19:42+0000",
+    "gated_until": null,
+    "social_info": {},
+    "has_shared": false,
+    "gated_by_mission_delay": null,
+    "started_at": null,
+    "started_location": null,
+    "completed_at": null,
+    "completed_location": null,
+    "synced_at": null,
+    "submissions": [],
+    "num_hints_used": null,
+    "result": {},
+    "is_votable": false,
+    "is_voting_selected": false,
+    "is_judgeable": true,
+    "votes": [],
+    "points": 0,
+    "points_are_overridden": false,
+    "has_media": false,
+    "in_gallery": false,
+    "media": [],
+    "mission_points": 0
+  },
+  {
+    "id": "5e5ec817d71f100021a0c50a",
+    "step": {
+      "id": "5e5ec6eed71f100021a0c4f9",
+      "title": "Closest number",
+      "instructions": "Closest number",
+      "position": 2,
+      "mission_id": "5e5e46dad71f100021a0c4d4",
+      "behavior": {
+        "id": "closest_number",
+        "title": "Closest Number",
+        "description": "The team who guesses closest to the correct number specified gets the maximum points.",
+        "fields": [
+          {
+            "name": "correct_number",
+            "type": "int",
+            "label": "Correct number",
+            "required": true
+          },
+          {
+            "name": "success_message",
+            "type": "text",
+            "label": "Success message",
+            "required": false
+          },
+          {
+            "name": "timelimit",
+            "type": "int",
+            "label": "Time limit",
+            "default": null,
+            "required": false,
+            "placeholder": "Time limit (in minutes)"
+          },
+          {
+            "name": "presentation_text",
+            "type": "text:long",
+            "label": "Presentation text",
+            "required": false,
+            "placeholder": "Presentation Text"
+          },
+          {
+            "name": "presentation_image",
+            "type": "upload",
+            "label": "Presentation image",
+            "required": false,
+            "placeholder": "Image key",
+            "object_key": "media_key",
+            "s3": {
+              "bucket": "gogame-breadcrumb-display-media",
+              "folder": "GameShow"
+            }
+          },
+          {
+            "name": "presentation_title",
+            "type": "text",
+            "label": "Presentation title",
+            "required": false,
+            "placeholder": "Presentation Title (overrides mission step title)"
+          },
+          {
+            "name": "display_answer",
+            "type": "text",
+            "label": "GGP Display answer",
+            "required": false,
+            "placeholder": "Correct display answer. Will display on screen view"
+          },
+          {
+            "name": "question_type",
+            "type": "text",
+            "label": "GGP Question type",
+            "required": false,
+            "placeholder": "Question type"
+          },
+          {
+            "name": "timer",
+            "type": "int",
+            "label": "GGP Timer",
+            "required": false
+          },
+          {
+            "name": "stop_auto_play",
+            "type": "bool",
+            "default": false,
+            "label": "GGP Stop autoplay",
+            "required": false
+          },
+          {
+            "name": "is_one_time_mission",
+            "type": "bool",
+            "default": false,
+            "label": "Is Mission available only once per playthrough",
+            "required": false
+          }
+        ],
+        "submission_type": {
+          "type": "number",
+          "placeholder": "Number"
+        }
+      },
+      "content": {
+        "correct_number": "100"
+      },
+      "scoring": 0
+    },
+    "mode_name": "main",
+    "step_num": 2,
+    "is_last": true,
+    "is_from_start_or_end_track": true,
+    "queued_at": "2020-03-03T21:11:51+0000",
+    "queue_priority": 0,
+    "ungated_at": "2020-03-03T21:11:51+0000",
+    "gated_until": null,
+    "social_info": {},
+    "has_shared": false,
+    "gated_by_mission_delay": null,
+    "started_at": null,
+    "started_location": null,
+    "completed_at": null,
+    "completed_location": null,
+    "synced_at": null,
+    "submissions": [],
+    "num_hints_used": null,
+    "result": {},
+    "is_votable": false,
+    "is_voting_selected": false,
+    "is_judgeable": true,
+    "votes": [],
+    "points": 0,
+    "points_are_overridden": false,
+    "has_media": false,
+    "in_gallery": false,
+    "media": [],
+    "mission_points": 0
+  },
+  {
+    "id": "5e5f747bd71f10001dc8b0c2",
+    "step": {
+      "id": "5e5f6aa6d71f100021372c5b",
+      "title": "Redirect",
+      "instructions": "get the fuck out of here\n* now*\n~BLYAT`~",
+      "position": 0,
+      "mission_id": "5e5f68dcd71f10001bcf8731",
+      "behavior": {
+        "id": "redirect",
+        "title": "Redirect by Multiple Choice",
+        "description": "Redirects to a playthrough by choice",
+        "fields": [
+          {
+            "name": "login_codes",
+            "type": "list:text+value",
+            "label": "Playthrough IDs",
+            "placeholder": "Playthrough ID",
+            "required": true
+          },
+          {
+            "name": "is_one_time_mission",
+            "type": "bool",
+            "default": false,
+            "label": "Is Mission available only once per playthrough",
+            "required": false
+          }
+        ],
+        "submission_type": {
+          "type": "redirect",
+          "choices": "content.login_codes"
+        }
+      },
+      "content": {
+        "login_codes": [
+          {
+            "text": "assholes",
+            "value": "fic"
+          },
+          {
+            "text": "uncle fuckers",
+            "value": "kzk"
+          }
+        ]
+      },
+      "scoring": 0
+    },
+    "mode_name": "main",
+    "step_num": 0,
+    "is_last": true,
+    "is_from_start_or_end_track": true,
+    "queued_at": "2020-03-04T09:27:23+0000",
+    "queue_priority": 0,
+    "ungated_at": "2020-03-04T09:27:23+0000",
+    "gated_until": null,
+    "social_info": {},
+    "has_shared": false,
+    "gated_by_mission_delay": null,
+    "started_at": null,
+    "started_location": null,
     "completed_at": null,
     "completed_location": null,
     "synced_at": null,

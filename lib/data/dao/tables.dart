@@ -58,6 +58,9 @@ class AnswerTable extends Table {
   TextColumn get submissionType => text().nullable()();
 
   TextColumn get answer => text().nullable()();
+
+  DateTimeColumn get addedAt =>
+      dateTime().clientDefault(() => DateTime.now())();
 }
 
 class WaypointTable extends Table {

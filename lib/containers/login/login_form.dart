@@ -8,7 +8,20 @@ import 'package:tgg/containers/login/login_actions.dart';
 import 'package:tgg/redux_model/app_state.dart';
 import 'package:tgg/ui/widgets/loading_indicator.dart';
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
+  @override
+  State createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  TextEditingController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new StoreConnector<AppState, _ViewModel>(
@@ -16,6 +29,7 @@ class LoginForm extends StatelessWidget {
         onInit: (store) => store.dispatch(InitLoginAction()),
         distinct: true,
         builder: (BuildContext context, _ViewModel vm) {
+          if (controller.text != vm.code) controller.text = vm.code;
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Stack(
@@ -31,6 +45,7 @@ class LoginForm extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: TextField(
+                          controller: controller,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'code',
@@ -58,6 +73,12 @@ class LoginForm extends StatelessWidget {
             ),
           );
         });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller?.dispose();
   }
 }
 

@@ -37,7 +37,11 @@ class WaypointSubmission {
     return WaypointSubmission._(
       type: map["type"],
       placeholder: _getPlaceholder(map, step),
-      choices: _getChoices(map, step) ?? _getTextVariants(step),
+      choices: _getChoices(map, step) ??
+          _getTextVariants(step) ??
+          _getCorrect(step) ??
+          _getCodeVariants(step) ??
+          _getPassword(step),
       galleryEnabled: _getGalleryEnabled(step),
       optional: map["optional"] ?? false,
       videoParams: VideoParams(
@@ -51,7 +55,10 @@ class WaypointSubmission {
   static WaypointSubmission _fromString(String type, {step}) {
     return WaypointSubmission._(
       type: type,
-      choices: _getTextVariants(step),
+      choices: _getTextVariants(step) ??
+          _getCorrect(step) ??
+          _getCodeVariants(step) ??
+          _getPassword(step),
       galleryEnabled: _getGalleryEnabled(step),
       optional: false,
       videoParams: VideoParams(
@@ -95,6 +102,21 @@ class WaypointSubmission {
     final variants =
         getAt(step, "content.correct")?.split(",")?.map((v) => v.trim());
     return variants != null ? List<String>.from(variants) : null;
+  }
+
+  static List<String> _getCodeVariants(step) {
+    final variants = getAt(step, "content.codes")?.map((v) => v.trim());
+    return variants != null ? List<String>.from(variants) : null;
+  }
+
+  static List<String> _getCorrect(step) {
+    final variants = getAt(step, "content.correct_number")?.trim();
+    return variants != null ? List<String>.from([variants]) : null;
+  }
+
+  static List<String> _getPassword(step) {
+    final variants = getAt(step, "content.plant_password")?.trim();
+    return variants != null ? List<String>.from([variants]) : null;
   }
 
   static String _getPlaceholder(map, step) {

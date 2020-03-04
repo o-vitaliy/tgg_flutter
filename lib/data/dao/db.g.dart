@@ -1252,17 +1252,20 @@ class AnswerTableData extends DataClass implements Insertable<AnswerTableData> {
   final String waypointId;
   final String submissionType;
   final String answer;
+  final DateTime addedAt;
   AnswerTableData(
       {@required this.id,
       @required this.waypointId,
       this.submissionType,
-      this.answer});
+      this.answer,
+      @required this.addedAt});
   factory AnswerTableData.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return AnswerTableData(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       waypointId: stringType
@@ -1271,6 +1274,8 @@ class AnswerTableData extends DataClass implements Insertable<AnswerTableData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}submission_type']),
       answer:
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}answer']),
+      addedAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}added_at']),
     );
   }
   factory AnswerTableData.fromJson(Map<String, dynamic> json,
@@ -1280,6 +1285,7 @@ class AnswerTableData extends DataClass implements Insertable<AnswerTableData> {
       waypointId: serializer.fromJson<String>(json['waypointId']),
       submissionType: serializer.fromJson<String>(json['submissionType']),
       answer: serializer.fromJson<String>(json['answer']),
+      addedAt: serializer.fromJson<DateTime>(json['addedAt']),
     );
   }
   @override
@@ -1290,6 +1296,7 @@ class AnswerTableData extends DataClass implements Insertable<AnswerTableData> {
       'waypointId': serializer.toJson<String>(waypointId),
       'submissionType': serializer.toJson<String>(submissionType),
       'answer': serializer.toJson<String>(answer),
+      'addedAt': serializer.toJson<DateTime>(addedAt),
     };
   }
 
@@ -1305,16 +1312,24 @@ class AnswerTableData extends DataClass implements Insertable<AnswerTableData> {
           : Value(submissionType),
       answer:
           answer == null && nullToAbsent ? const Value.absent() : Value(answer),
+      addedAt: addedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(addedAt),
     );
   }
 
   AnswerTableData copyWith(
-          {int id, String waypointId, String submissionType, String answer}) =>
+          {int id,
+          String waypointId,
+          String submissionType,
+          String answer,
+          DateTime addedAt}) =>
       AnswerTableData(
         id: id ?? this.id,
         waypointId: waypointId ?? this.waypointId,
         submissionType: submissionType ?? this.submissionType,
         answer: answer ?? this.answer,
+        addedAt: addedAt ?? this.addedAt,
       );
   @override
   String toString() {
@@ -1322,7 +1337,8 @@ class AnswerTableData extends DataClass implements Insertable<AnswerTableData> {
           ..write('id: $id, ')
           ..write('waypointId: $waypointId, ')
           ..write('submissionType: $submissionType, ')
-          ..write('answer: $answer')
+          ..write('answer: $answer, ')
+          ..write('addedAt: $addedAt')
           ..write(')'))
         .toString();
   }
@@ -1330,8 +1346,10 @@ class AnswerTableData extends DataClass implements Insertable<AnswerTableData> {
   @override
   int get hashCode => $mrjf($mrjc(
       id.hashCode,
-      $mrjc(waypointId.hashCode,
-          $mrjc(submissionType.hashCode, answer.hashCode))));
+      $mrjc(
+          waypointId.hashCode,
+          $mrjc(submissionType.hashCode,
+              $mrjc(answer.hashCode, addedAt.hashCode)))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -1339,7 +1357,8 @@ class AnswerTableData extends DataClass implements Insertable<AnswerTableData> {
           other.id == this.id &&
           other.waypointId == this.waypointId &&
           other.submissionType == this.submissionType &&
-          other.answer == this.answer);
+          other.answer == this.answer &&
+          other.addedAt == this.addedAt);
 }
 
 class AnswerTableCompanion extends UpdateCompanion<AnswerTableData> {
@@ -1347,28 +1366,34 @@ class AnswerTableCompanion extends UpdateCompanion<AnswerTableData> {
   final Value<String> waypointId;
   final Value<String> submissionType;
   final Value<String> answer;
+  final Value<DateTime> addedAt;
   const AnswerTableCompanion({
     this.id = const Value.absent(),
     this.waypointId = const Value.absent(),
     this.submissionType = const Value.absent(),
     this.answer = const Value.absent(),
+    this.addedAt = const Value.absent(),
   });
   AnswerTableCompanion.insert({
     this.id = const Value.absent(),
     @required String waypointId,
     this.submissionType = const Value.absent(),
     this.answer = const Value.absent(),
-  }) : waypointId = Value(waypointId);
+    @required DateTime addedAt,
+  })  : waypointId = Value(waypointId),
+        addedAt = Value(addedAt);
   AnswerTableCompanion copyWith(
       {Value<int> id,
       Value<String> waypointId,
       Value<String> submissionType,
-      Value<String> answer}) {
+      Value<String> answer,
+      Value<DateTime> addedAt}) {
     return AnswerTableCompanion(
       id: id ?? this.id,
       waypointId: waypointId ?? this.waypointId,
       submissionType: submissionType ?? this.submissionType,
       answer: answer ?? this.answer,
+      addedAt: addedAt ?? this.addedAt,
     );
   }
 }
@@ -1425,9 +1450,21 @@ class $AnswerTableTable extends AnswerTable
     );
   }
 
+  final VerificationMeta _addedAtMeta = const VerificationMeta('addedAt');
+  GeneratedDateTimeColumn _addedAt;
+  @override
+  GeneratedDateTimeColumn get addedAt => _addedAt ??= _constructAddedAt();
+  GeneratedDateTimeColumn _constructAddedAt() {
+    return GeneratedDateTimeColumn(
+      'added_at',
+      $tableName,
+      false,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns =>
-      [id, waypointId, submissionType, answer];
+      [id, waypointId, submissionType, answer, addedAt];
   @override
   $AnswerTableTable get asDslTable => this;
   @override
@@ -1463,6 +1500,12 @@ class $AnswerTableTable extends AnswerTable
     } else if (answer.isRequired && isInserting) {
       context.missing(_answerMeta);
     }
+    if (d.addedAt.present) {
+      context.handle(_addedAtMeta,
+          addedAt.isAcceptableValue(d.addedAt.value, _addedAtMeta));
+    } else if (addedAt.isRequired && isInserting) {
+      context.missing(_addedAtMeta);
+    }
     return context;
   }
 
@@ -1489,6 +1532,9 @@ class $AnswerTableTable extends AnswerTable
     }
     if (d.answer.present) {
       map['answer'] = Variable<String, StringType>(d.answer.value);
+    }
+    if (d.addedAt.present) {
+      map['added_at'] = Variable<DateTime, DateTimeType>(d.addedAt.value);
     }
     return map;
   }

@@ -4,6 +4,7 @@ import 'package:tgg/containers/waypoints/submissions/submission_types.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/camera_widget.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/checkbox_widget.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/radio_widget.dart';
+import 'package:tgg/containers/waypoints/submissions/widget/redirect_widget.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/submissions_builder.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/take_photo_widget.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/take_video_widget.dart';
@@ -15,8 +16,7 @@ main() {
   Widget buildComponent(SubmissionType type) {
     final t = type.toString().split(".")[1];
     return build(
-        WaypointSubmissionItem.initial(
-            0, WaypointSubmission.from(t).first),
+        WaypointSubmissionItem.initial(0, WaypointSubmission.from(t).first),
         (_) {},
         () {});
   }
@@ -53,6 +53,10 @@ main() {
     test("camera", () async {
       final component = buildComponent(SubmissionType.camera);
       expect(component, isInstanceOf<CameraWidget>());
+    });
+    test("redirect", () async {
+      final component = buildComponent(SubmissionType.redirect);
+      expect(component, isInstanceOf<RedirectWidget>());
     });
   });
 }

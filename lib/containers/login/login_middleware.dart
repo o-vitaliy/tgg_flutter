@@ -14,13 +14,13 @@ import 'package:tgg/ui/home.dart';
 const codeErrorMessage = "code should have atleast 3 characters";
 
 List<Middleware<AppState>> createLoginMiddleware() {
-  /* final logIn = _createLogInMiddleware();*/
   final validateCode = _createValidateCodeMiddleware();
   final logIn = _createLogInMiddleware();
 
   return [
     new TypedMiddleware<AppState, LoginValidateCodeAction>(validateCode),
-    new TypedMiddleware<AppState, LoginExecuteAction>(logIn)
+    new TypedMiddleware<AppState, LoginExecuteAction>(logIn),
+    new TypedMiddleware<AppState, LoginReloginWithCodeAction>(_relogin()),
   ];
 }
 
@@ -49,6 +49,21 @@ Middleware<AppState> _createLogInMiddleware() {
         store.dispatch(LoginErrorAction(message ?? "error"));
       }
       store.dispatch(LoginChangeLoadingStateAction(false));
+    }
+    next(action);
+  };
+}
+
+Middleware<AppState> _relogin() {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    if (action is LoginReloginWithCodeAction) {
+      store.dispatch(LogOut());
+      const delay = 500;
+      Future.delayed(Duration(milliseconds: delay),
+          () => store.dispatch(LoginValidateCodeAction(action.code)));
+
+      Future.delayed(Duration(milliseconds: delay * 2),
+          () => store.dispatch(LoginExecuteAction(action.code)));
     }
     next(action);
   };

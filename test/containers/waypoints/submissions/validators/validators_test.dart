@@ -33,8 +33,8 @@ main() {
     });
 
     test("both text and email", () async {
-      final separator = ",";
-      final validator = CompositeValidator(separator, [
+      final separator = ", ";
+      final validator = CompositeValidator([
         EmptyValidator(error: emptyTextError),
         EmailValidator(error: invalidEmailError)
       ]);
@@ -113,6 +113,7 @@ main() {
       final variants = ["Hello", "hello world"];
 
       expect(validator.validate(null, variants: null), emptyTextError);
+      expect(validator.validate("", variants: variants), emptyTextError);
       expect(validator.validate("value", variants: null), null);
 
       //short word one typo -> error

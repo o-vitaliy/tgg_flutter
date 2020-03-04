@@ -13,19 +13,18 @@ class NoValidator extends Validator {
 }
 
 class CompositeValidator extends Validator {
-  final String separator;
-  final List<Validator> subValidators;
+  final List<Validator> _subValidators;
 
-  CompositeValidator(this.separator, this.subValidators);
+  CompositeValidator(this._subValidators);
 
   @override
   String validate(input, {variants}) {
-    List<String> errors = subValidators
+    List<String> errors = _subValidators
         .map((v) => v.validate(input, variants: variants))
         .where((v) => v != null)
         .toList();
 
-    return errors != null && errors.length > 0 ? errors.join(separator) : null;
+    return errors != null && errors.length > 0 ? errors.join(", ") : null;
   }
 }
 

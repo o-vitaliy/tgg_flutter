@@ -59,25 +59,6 @@ main() {
     });
   });
 
-  group("is mutli choice", () {
-    test("checks all types are covered ", () async {
-      SubmissionType.values
-          .forEach((type) => SubmissionTypeHelper.isMultiChoice(type));
-    });
-
-    test("checks", () async {
-      expect(SubmissionTypeHelper.isMultiChoice(SubmissionType.choice), true);
-      expect(
-          SubmissionTypeHelper.isMultiChoice(SubmissionType.checkboxes), true);
-
-      expect(SubmissionTypeHelper.isMultiChoice(SubmissionType.text), false);
-      expect(SubmissionTypeHelper.isMultiChoice(SubmissionType.number), false);
-      expect(SubmissionTypeHelper.isMultiChoice(SubmissionType.photo), false);
-      expect(SubmissionTypeHelper.isMultiChoice(SubmissionType.movie), false);
-      expect(SubmissionTypeHelper.isMultiChoice(SubmissionType.camera), false);
-    });
-  });
-
   group("get transform", () {
     test("checks all types are covered ", () {
       SubmissionType.values.forEach((type) {

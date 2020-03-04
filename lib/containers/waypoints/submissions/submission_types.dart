@@ -8,7 +8,8 @@ enum SubmissionType {
   movie,
   checkboxes,
   camera,
-  yesno
+  yesno,
+  redirect
 }
 
 class SubmissionTypeHelper {
@@ -31,24 +32,7 @@ class SubmissionTypeHelper {
       case SubmissionType.choice:
       case SubmissionType.checkboxes:
       case SubmissionType.yesno:
-        return false;
-
-      default:
-        throw ArgumentError("unsupported type $type");
-    }
-  }
-
-  static bool isMultiChoice(SubmissionType type) {
-    switch (type) {
-      case SubmissionType.choice:
-      case SubmissionType.checkboxes:
-        return true;
-      case SubmissionType.photo:
-      case SubmissionType.movie:
-      case SubmissionType.camera:
-      case SubmissionType.text:
-      case SubmissionType.number:
-      case SubmissionType.yesno:
+      case SubmissionType.redirect:
         return false;
 
       default:
@@ -74,6 +58,7 @@ class SubmissionTypeHelper {
       case SubmissionType.camera:
       case SubmissionType.text:
       case SubmissionType.number:
+      case SubmissionType.redirect:
         return StringTransformer();
       case SubmissionType.yesno:
         return BooleanTransformer();

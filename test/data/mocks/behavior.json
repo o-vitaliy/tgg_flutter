@@ -1,0 +1,3294 @@
+{
+  "count": 38,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": "info",
+      "title": "Info",
+      "description": "Information text, no answer required.",
+      "fields": [
+        {
+          "name": "hints",
+          "type": "list:text",
+          "label": "Hints",
+          "required": false
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": null
+    },
+    {
+      "id": "text_answer",
+      "title": "Text Answer",
+      "description": "A text submission checked for correctness by the game.",
+      "fields": [
+        {
+          "name": "correct",
+          "type": "text",
+          "label": "Correct answer",
+          "required": true,
+          "placeholder": "Correct answer. Use commas to separate multiple options."
+        },
+        {
+          "name": "hints",
+          "type": "list:text",
+          "label": "Hints",
+          "required": false
+        },
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "failure_message",
+          "type": "text",
+          "label": "Fail message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "num_attempts",
+          "type": "int",
+          "default": 3,
+          "label": "Number of attempts",
+          "required": false,
+          "placeholder": "Number of attempts allowed"
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": "text"
+    },
+    {
+      "id": "text_unverified",
+      "title": "Text Unverified",
+      "description": "A text submission, anything will be correct.",
+      "fields": [
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": "text"
+    },
+    {
+      "id": "number_answer",
+      "title": "Number Answer",
+      "description": "A number submission, checked for correctness by the game.",
+      "fields": [
+        {
+          "name": "correct_number",
+          "type": "int",
+          "label": "Correct number",
+          "required": true
+        },
+        {
+          "name": "hints",
+          "type": "list:text",
+          "label": "Hints",
+          "required": false
+        },
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "failure_message",
+          "type": "text",
+          "label": "Fail message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "num_attempts",
+          "type": "int",
+          "default": 3,
+          "label": "Number of attempts",
+          "required": false,
+          "placeholder": "Number of attempts allowed"
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": "number"
+    },
+    {
+      "id": "number_unverified",
+      "title": "Number Unverified",
+      "description": "A number submission, anything will be correct.",
+      "fields": [
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": "number"
+    },
+    {
+      "id": "multiple_choice",
+      "title": "Multiple Choice",
+      "description": "Choose one from a multiple of choices, only some of which are correct.",
+      "fields": [
+        {
+          "name": "choices",
+          "type": "list:text+check",
+          "label": "Options",
+          "required": true
+        },
+        {
+          "name": "hints",
+          "type": "list:text",
+          "label": "Hints",
+          "required": false
+        },
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "failure_message",
+          "type": "text",
+          "label": "Fail message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "num_attempts",
+          "type": "int",
+          "default": 3,
+          "label": "Number of attempts",
+          "required": false,
+          "placeholder": "Number of attempts allowed"
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": {
+        "type": "choice",
+        "choices": "content.choices"
+      }
+    },
+    {
+      "id": "multiple_choice_points",
+      "title": "Multiple Choice w/Points",
+      "description": "Choose one from a multiple of choices, each are worth a different a different amount of points.",
+      "fields": [
+        {
+          "name": "choices_with_points",
+          "type": "list:text+number",
+          "label": "Options",
+          "required": true
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": {
+        "type": "choice",
+        "choices": "content.choices_with_points"
+      }
+    },
+    {
+      "id": "many_choices",
+      "title": "Many Choices",
+      "description": "Choose all correct options from a multiple of choices.",
+      "fields": [
+        {
+          "name": "choices",
+          "type": "list:text+check",
+          "label": "Options",
+          "required": true
+        },
+        {
+          "name": "hints",
+          "type": "list:text",
+          "label": "Hints",
+          "required": false
+        },
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "failure_message",
+          "type": "text",
+          "label": "Fail message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "num_attempts",
+          "type": "int",
+          "default": 3,
+          "label": "Number of attempts",
+          "required": false,
+          "placeholder": "Number of attempts allowed"
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": {
+        "type": "checkboxes",
+        "choices": "content.choices"
+      }
+    },
+    {
+      "id": "photo",
+      "title": "Photo",
+      "description": "Submit a photo, no caption.",
+      "fields": [
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "select_gallery_media_enabled",
+          "type": "bool",
+          "default": false,
+          "label": "Allow submission from existing media",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": "photo"
+    },
+    {
+      "id": "photo_and_text",
+      "title": "Photo and Text",
+      "description": "Submit a photo with a caption.",
+      "fields": [
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "select_gallery_media_enabled",
+          "type": "bool",
+          "default": false,
+          "label": "Allow submission from existing media",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": [
+        "photo",
+        {
+          "type": "text",
+          "placeholder": "Caption"
+        }
+      ]
+    },
+    {
+      "id": "photo_pair",
+      "title": "Photo Pair",
+      "description": "Two photos, no captions.",
+      "fields": [
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "select_gallery_media_enabled",
+          "type": "bool",
+          "default": false,
+          "label": "Allow submission from existing media",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": [
+        "photo",
+        "photo"
+      ]
+    },
+    {
+      "id": "photo_and_text_pair",
+      "title": "Photo and Text Pair",
+      "description": "Two photos, two captions.",
+      "fields": [
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "select_gallery_media_enabled",
+          "type": "bool",
+          "default": false,
+          "label": "Allow submission from existing media",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": [
+        "photo",
+        {
+          "type": "text",
+          "placeholder": "Caption"
+        },
+        "photo",
+        {
+          "type": "text",
+          "placeholder": "Caption"
+        }
+      ]
+    },
+    {
+      "id": "photo_sequence",
+      "title": "Photo Sequence",
+      "description": "Between one and five photos, number selectable by player.",
+      "fields": [
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "select_gallery_media_enabled",
+          "type": "bool",
+          "default": false,
+          "label": "Allow submission from existing media",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": [
+        "photo",
+        {
+          "type": "photo",
+          "optional": true
+        },
+        {
+          "type": "photo",
+          "optional": true
+        },
+        {
+          "type": "photo",
+          "optional": true
+        },
+        {
+          "type": "photo",
+          "optional": true
+        }
+      ]
+    },
+    {
+      "id": "photo_and_text_sequence",
+      "title": "Photo and Text Sequence",
+      "description": "Between one and five photos with captions, number selectable by player.",
+      "fields": [
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "select_gallery_media_enabled",
+          "type": "bool",
+          "default": false,
+          "label": "Allow submission from existing media",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": [
+        "photo",
+        {
+          "type": "text",
+          "placeholder": "Caption"
+        },
+        {
+          "type": "photo",
+          "optional": true
+        },
+        {
+          "type": "text",
+          "optional": true,
+          "placeholder": "Caption (optional)"
+        },
+        {
+          "type": "photo",
+          "optional": true
+        },
+        {
+          "type": "text",
+          "optional": true,
+          "placeholder": "Caption (optional)"
+        },
+        {
+          "type": "photo",
+          "optional": true
+        },
+        {
+          "type": "text",
+          "optional": true,
+          "placeholder": "Caption (optional)"
+        },
+        {
+          "type": "photo",
+          "optional": true
+        },
+        {
+          "type": "text",
+          "optional": true,
+          "placeholder": "Caption (optional)"
+        }
+      ]
+    },
+    {
+      "id": "movie",
+      "title": "Movie",
+      "description": "Submit a movie, no caption.",
+      "fields": [
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "video_max_length",
+          "type": "int",
+          "default": 30,
+          "label": "Max video length",
+          "placeholder": "(seconds)",
+          "required": false
+        },
+        {
+          "name": "video_quality",
+          "type": "select",
+          "options": [
+            {
+              "value": "med",
+              "label": "Medium (480p)"
+            },
+            {
+              "value": "high",
+              "label": "High (720p)"
+            },
+            {
+              "value": "very high",
+              "label": "Very High (1080p)"
+            }
+          ],
+          "label": "Video quality",
+          "default": "med",
+          "required": false
+        },
+        {
+          "name": "video_pause_record",
+          "type": "bool",
+          "default": false,
+          "label": "Pause record",
+          "required": false
+        },
+        {
+          "name": "video_disable_rotation",
+          "type": "bool",
+          "default": false,
+          "label": "Video Disable Rotation",
+          "required": false
+        },
+        {
+          "name": "select_gallery_media_enabled",
+          "type": "bool",
+          "default": false,
+          "label": "Allow submission from existing media",
+          "required": false
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": "movie"
+    },
+    {
+      "id": "movie_and_text",
+      "title": "Movie and Text",
+      "description": "Submit a movie and a caption.",
+      "fields": [
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "video_max_length",
+          "type": "int",
+          "default": 30,
+          "label": "Max video length",
+          "placeholder": "(seconds)",
+          "required": false
+        },
+        {
+          "name": "video_quality",
+          "type": "select",
+          "options": [
+            {
+              "value": "med",
+              "label": "Medium (480p)"
+            },
+            {
+              "value": "high",
+              "label": "High (720p)"
+            },
+            {
+              "value": "very high",
+              "label": "Very High (1080p)"
+            }
+          ],
+          "label": "Video quality",
+          "default": "med",
+          "required": false
+        },
+        {
+          "name": "video_pause_record",
+          "type": "bool",
+          "default": false,
+          "label": "Pause record",
+          "required": false
+        },
+        {
+          "name": "video_disable_rotation",
+          "type": "bool",
+          "default": false,
+          "label": "Video Disable Rotation",
+          "required": false
+        },
+        {
+          "name": "select_gallery_media_enabled",
+          "type": "bool",
+          "default": false,
+          "label": "Allow submission from existing media",
+          "required": false
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": [
+        "movie",
+        {
+          "type": "text",
+          "placeholder": "Caption"
+        }
+      ]
+    },
+    {
+      "id": "movie_pair",
+      "title": "Movie Pair",
+      "description": "Submit two videos, with no captions.",
+      "fields": [
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "video_max_length",
+          "type": "int",
+          "default": 30,
+          "label": "Max video length",
+          "placeholder": "(seconds)",
+          "required": false
+        },
+        {
+          "name": "video_quality",
+          "type": "select",
+          "options": [
+            {
+              "value": "med",
+              "label": "Medium (480p)"
+            },
+            {
+              "value": "high",
+              "label": "High (720p)"
+            },
+            {
+              "value": "very high",
+              "label": "Very High (1080p)"
+            }
+          ],
+          "label": "Video quality",
+          "default": "med",
+          "required": false
+        },
+        {
+          "name": "video_pause_record",
+          "type": "bool",
+          "default": false,
+          "label": "Pause record",
+          "required": false
+        },
+        {
+          "name": "video_disable_rotation",
+          "type": "bool",
+          "default": false,
+          "label": "Video Disable Rotation",
+          "required": false
+        },
+        {
+          "name": "select_gallery_media_enabled",
+          "type": "bool",
+          "default": false,
+          "label": "Allow submission from existing media",
+          "required": false
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": [
+        "movie",
+        "movie"
+      ]
+    },
+    {
+      "id": "camera",
+      "title": "Camera",
+      "description": "Submit a movie or photo, no caption.",
+      "fields": [
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "select_gallery_media_enabled",
+          "type": "bool",
+          "default": false,
+          "label": "Allow submission from existing media",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": "camera"
+    },
+    {
+      "id": "endless_photo",
+      "title": "Endless Photo",
+      "description": "Keep uploading photos til the cows come home.",
+      "fields": [
+        {
+          "name": "select_gallery_media_enabled",
+          "type": "bool",
+          "default": false,
+          "label": "Allow submission from existing media",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": [
+        "photo"
+      ]
+    },
+    {
+      "id": "endless_movie",
+      "title": "Endless Movie",
+      "description": "Keep uploading movies til the cows come home.",
+      "fields": [
+        {
+          "name": "video_max_length",
+          "type": "int",
+          "default": 30,
+          "label": "Max video length",
+          "placeholder": "(seconds)",
+          "required": false
+        },
+        {
+          "name": "video_quality",
+          "type": "select",
+          "options": [
+            {
+              "value": "med",
+              "label": "Medium (480p)"
+            },
+            {
+              "value": "high",
+              "label": "High (720p)"
+            },
+            {
+              "value": "very high",
+              "label": "Very High (1080p)"
+            }
+          ],
+          "label": "Video quality",
+          "default": "med",
+          "required": false
+        },
+        {
+          "name": "video_pause_record",
+          "type": "bool",
+          "default": false,
+          "label": "Pause record",
+          "required": false
+        },
+        {
+          "name": "video_disable_rotation",
+          "type": "bool",
+          "default": false,
+          "label": "Video Disable Rotation",
+          "required": false
+        },
+        {
+          "name": "select_gallery_media_enabled",
+          "type": "bool",
+          "default": false,
+          "label": "Allow submission from existing media",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": [
+        "movie"
+      ]
+    },
+    {
+      "id": "endless_camera",
+      "title": "Endless Camera",
+      "description": "Keep uploading photos and videos til the cows come home.",
+      "fields": [
+        {
+          "name": "video_max_length",
+          "type": "int",
+          "default": 30,
+          "label": "Max video length",
+          "placeholder": "(seconds)",
+          "required": false
+        },
+        {
+          "name": "video_quality",
+          "type": "select",
+          "options": [
+            {
+              "value": "med",
+              "label": "Medium (480p)"
+            },
+            {
+              "value": "high",
+              "label": "High (720p)"
+            },
+            {
+              "value": "very high",
+              "label": "Very High (1080p)"
+            }
+          ],
+          "label": "Video quality",
+          "default": "med",
+          "required": false
+        },
+        {
+          "name": "video_pause_record",
+          "type": "bool",
+          "default": false,
+          "label": "Pause record",
+          "required": false
+        },
+        {
+          "name": "video_disable_rotation",
+          "type": "bool",
+          "default": false,
+          "label": "Video Disable Rotation",
+          "required": false
+        },
+        {
+          "name": "select_gallery_media_enabled",
+          "type": "bool",
+          "default": false,
+          "label": "Allow submission from existing media",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": [
+        "camera"
+      ]
+    },
+    {
+      "id": "code_standard",
+      "title": "Code Standard",
+      "description": "Standard code. 6111 = Maximum points, 1111 = Minimum points. 5111,4111,3111,2111 in the middle.",
+      "fields": [
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": "number"
+    },
+    {
+      "id": "code_custom",
+      "title": "Code Custom",
+      "description": "Determine your own codes! Bottom-most code gets full points, top-most gets the least.",
+      "fields": [
+        {
+          "name": "codes",
+          "type": "list:text",
+          "label": "Valid codes, in increasing order of value",
+          "required": true
+        },
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": "text"
+    },
+    {
+      "id": "plant_score_highest",
+      "title": "Plant Score: Highest wins",
+      "description": "Actors enter a number into the phone along with a password to verify. The team with the highest number gets the most points.",
+      "fields": [
+        {
+          "name": "plant_password",
+          "type": "text",
+          "label": "Plant password",
+          "placeholder": "Plant password to verify no cheating",
+          "required": true
+        },
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": [
+        {
+          "type": "number",
+          "placeholder": "Score"
+        },
+        {
+          "type": "text",
+          "placeholder": "Password"
+        }
+      ]
+    },
+    {
+      "id": "plant_score_lowest",
+      "title": "Plant Score: Lowest wins",
+      "description": "Actors enter a number into the phone along with a password to verify. The team with the lowest number gets the most points.",
+      "fields": [
+        {
+          "name": "plant_password",
+          "type": "text",
+          "label": "Plant password",
+          "placeholder": "Plant password to verify no cheating",
+          "required": true
+        },
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": [
+        {
+          "type": "number",
+          "placeholder": "Score"
+        },
+        {
+          "type": "text",
+          "placeholder": "Password"
+        }
+      ]
+    },
+    {
+      "id": "profile_team_name",
+      "title": "Profile: Team Name",
+      "description": "Team's submission for this mission is assigned as their team name.",
+      "fields": [
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "teamname_placeholder",
+          "type": "text",
+          "label": "Placeholder for TeamName field",
+          "default": "Team name",
+          "required": false,
+          "placeholder": "Team Name"
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": {
+        "type": "text",
+        "default_placeholder": "Team name",
+        "placeholder": "content.teamname_placeholder"
+      }
+    },
+    {
+      "id": "profile_phone",
+      "title": "Profile: Phone Number",
+      "description": "Team's submission is logged as their phone number.",
+      "fields": [
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": [
+        {
+          "type": "number",
+          "placeholder": "Phone number"
+        }
+      ]
+    },
+    {
+      "id": "profile_other",
+      "title": "Profile: Text",
+      "description": "Team's submission is logged into their profile under the field name specified.",
+      "fields": [
+        {
+          "name": "field_name",
+          "type": "text",
+          "label": "Field name",
+          "required": true,
+          "placeholder": "Field name"
+        },
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": "text"
+    },
+    {
+      "id": "profile_other_number",
+      "title": "Profile: Number",
+      "description": "Team's submission is logged into their profile under the field name specified.",
+      "fields": [
+        {
+          "name": "field_name",
+          "type": "text",
+          "label": "Field name",
+          "required": true,
+          "placeholder": "Field name"
+        },
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": "number"
+    },
+    {
+      "id": "profile_multiple_choice",
+      "title": "Profile: Multiple Choice",
+      "description": "Choose one from a multiple of choices, some of which may be correct. The answer is saved to the team profile.",
+      "fields": [
+        {
+          "name": "choices_with_values",
+          "type": "list:text+value",
+          "label": "Options",
+          "required": true,
+          "placeholder": "Profile Value"
+        },
+        {
+          "name": "field_name",
+          "type": "text",
+          "label": "Field name",
+          "required": true,
+          "placeholder": "Field name"
+        },
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "failure_message",
+          "type": "text",
+          "label": "Fail message",
+          "required": false
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": {
+        "type": "choice",
+        "choices": "content.choices_with_values"
+      }
+    },
+    {
+      "id": "profile_photo",
+      "title": "Profile: Team Photo",
+      "description": "Teams's photo submission is set to their team photo.",
+      "fields": [
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "select_gallery_media_enabled",
+          "type": "bool",
+          "default": false,
+          "label": "Allow submission from existing media",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": "photo"
+    },
+    {
+      "id": "closest_number",
+      "title": "Closest Number",
+      "description": "The team who guesses closest to the correct number specified gets the maximum points.",
+      "fields": [
+        {
+          "name": "correct_number",
+          "type": "int",
+          "label": "Correct number",
+          "required": true
+        },
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": {
+        "type": "number",
+        "placeholder": "Number"
+      }
+    },
+    {
+      "id": "stall",
+      "title": "Stall",
+      "description": "Information text with NO OPTION TO PROCEED.",
+      "fields": [
+        {
+          "name": "hints",
+          "type": "list:text",
+          "label": "Hints",
+          "required": false
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": null
+    },
+    {
+      "id": "survey",
+      "title": "Survey",
+      "description": "Choose one from a multiple of choices, without a correct answer.",
+      "fields": [
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "survey",
+          "type": "list:text+radio",
+          "label": "Survey options",
+          "required": true
+        },
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": {
+        "type": "choice",
+        "choices": "content.survey"
+      }
+    },
+    {
+      "id": "linked_head_to_head",
+      "title": "Head to Head",
+      "description": "Competitive linked missions. Pit teams against each other, they collaboratively choose the winner, who gets the most points.",
+      "fields": [
+        {
+          "name": "timelimit",
+          "type": "int",
+          "label": "Time limit",
+          "default": null,
+          "required": false,
+          "placeholder": "Time limit (in minutes)"
+        },
+        {
+          "name": "success_message",
+          "type": "text",
+          "label": "Success message",
+          "required": false
+        },
+        {
+          "name": "failure_message",
+          "type": "text",
+          "label": "Fail message",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": {
+        "type": "yesno",
+        "choices": [
+          {
+            "text": "We won!",
+            "value": true
+          },
+          {
+            "text": "We lost",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "worksheet",
+      "title": "Worksheet",
+      "description": "Team's submission for this mission is assigned as their worksheet.",
+      "fields": [
+        {
+          "name": "presentation_text",
+          "type": "text:long",
+          "label": "Presentation text",
+          "required": false,
+          "placeholder": "Presentation Text"
+        },
+        {
+          "name": "presentation_image",
+          "type": "upload",
+          "label": "Presentation image",
+          "required": false,
+          "placeholder": "Image key",
+          "object_key": "media_key",
+          "s3": {
+            "bucket": "gogame-breadcrumb-display-media",
+            "folder": "GameShow"
+          }
+        },
+        {
+          "name": "presentation_title",
+          "type": "text",
+          "label": "Presentation title",
+          "required": false,
+          "placeholder": "Presentation Title (overrides mission step title)"
+        },
+        {
+          "name": "display_answer",
+          "type": "text",
+          "label": "GGP Display answer",
+          "required": false,
+          "placeholder": "Correct display answer. Will display on screen view"
+        },
+        {
+          "name": "question_type",
+          "type": "text",
+          "label": "GGP Question type",
+          "required": false,
+          "placeholder": "Question type"
+        },
+        {
+          "name": "timer",
+          "type": "int",
+          "label": "GGP Timer",
+          "required": false
+        },
+        {
+          "name": "stop_auto_play",
+          "type": "bool",
+          "default": false,
+          "label": "GGP Stop autoplay",
+          "required": false
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": "text"
+    },
+    {
+      "id": "redirect",
+      "title": "Redirect by Multiple Choice",
+      "description": "Redirects to a playthrough by choice",
+      "fields": [
+        {
+          "name": "login_codes",
+          "type": "list:text+value",
+          "label": "Playthrough IDs",
+          "placeholder": "Playthrough ID",
+          "required": true
+        },
+        {
+          "name": "is_one_time_mission",
+          "type": "bool",
+          "default": false,
+          "label": "Is Mission available only once per playthrough",
+          "required": false
+        }
+      ],
+      "submission_type": {
+        "type": "redirect",
+        "choices": "content.login_codes"
+      }
+    }
+  ]
+}

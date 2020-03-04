@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tgg/containers/waypoints/submissions/widget/redirect_widget.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/yesno_widget.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart';
 
@@ -50,6 +51,9 @@ Widget build(
           key: ValueKey(type));
     case SubmissionType.yesno:
       return YesnoWidget(onValueChange, onSubmit, value, variants,
+          key: ValueKey(type));
+    case SubmissionType.redirect:
+      return RedirectWidget(onValueChange, onSubmit, value, variants,
           key: ValueKey(type));
     default:
       throw ArgumentError("unsupported type $type");

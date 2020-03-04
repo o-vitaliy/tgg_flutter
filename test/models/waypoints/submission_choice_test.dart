@@ -30,7 +30,7 @@ main() {
       expect(mockedYesNo[0].value, true);
     });
 
-    test("check lenght", () {
+    test("check length", () {
       expect(mockedChoices.length, 4);
     });
     test("has correct answer", () {

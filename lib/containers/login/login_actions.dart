@@ -31,3 +31,9 @@ class LoginErrorAction {
 }
 
 class InitLoginAction{}
+
+class LoginReloginWithCodeAction{
+  final String code;
+
+  LoginReloginWithCodeAction(this.code);
+}

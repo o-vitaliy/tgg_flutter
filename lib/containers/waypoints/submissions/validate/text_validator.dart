@@ -12,7 +12,9 @@ class TextValidator extends Validator {
 
   @override
   String validate(input, {variants}) {
-    return ((variants == null) ? _emptyValidator : _variantValidator)
-        .validate(input, variants: variants);
+    return _emptyValidator?.validate(input) ??
+        (variants != null
+            ? _variantValidator?.validate(input, variants: variants)
+            : null);
   }
 }

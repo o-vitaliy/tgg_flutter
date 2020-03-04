@@ -25,7 +25,7 @@ main() {
       final result = WaypointStep.fromJsonMap(map);
       expect(result.id, "5e25ff4bd71f10001e0e455b");
       expect(result.missionId, isNotNull);
-      expect(result.behavior.id, "multiple_choice");
+      expect(result.behavior.type.type, "multiple_choice");
       expect(result.behavior.submissionType.first.type, "choice");
 
       final choices = result.behavior.submissionType.first.choices;

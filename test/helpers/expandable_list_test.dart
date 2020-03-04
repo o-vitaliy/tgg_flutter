@@ -35,4 +35,21 @@ main() {
       expect(result, isNull);
     });
   });
+
+  group("group by", () {
+    test("test1", () {
+      final list = [
+        {"key": "key_1", "value": 1},
+        {"key": "key_1", "value": 2},
+        {"key": "key_2", "value": 3},
+      ];
+
+      final Map grouped = groupBy(list, (e) => e["key"]);
+      expect(grouped.length, 2);
+      expect(grouped.keys, ["key_1", "key_2"]);
+      expect(grouped["key_1"][0]["value"], 1);
+      expect(grouped["key_1"][1]["value"], 2);
+      expect(grouped["key_2"][0]["value"], 3);
+    });
+  });
 }

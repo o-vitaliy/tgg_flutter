@@ -14,3 +14,12 @@ extension ExtendedIterable<E> on Iterable<E> {
     return firstWhere(test, orElse: () => null);
   }
 }
+
+Map<T, List<E>> groupBy<E, T>(Iterable<E> values, T key(E element)) {
+  var map = <T, List<E>>{};
+  for (var element in values) {
+    var list = map.putIfAbsent(key(element), () => []);
+    list.add(element);
+  }
+  return map;
+}

@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:tgg/containers/waypoints/submissions/submission_types.dart';
+import 'package:tgg/models/waypoints/waypoint_behavior.dart';
 import 'package:tgg/models/waypoints/waypoint_step.dart';
 
 final _mockedWithGallery = """
@@ -39,6 +42,18 @@ final _mockedYesChoice = """
 """;
 final _mockedMultiChoice = """
 {"id":"5e4af86fd71f10001fb8fa59","title":"Profile multi choice","instructions":"Profile multi choice","position":4,"mission_id":"5e42b069d71f1000102ca16a","behavior":{"id":"profile_multiple_choice","title":"Profile: Multiple Choice","description":"Choose one from a multiple of choices, some of which may be correct. The answer is saved to the team profile.","submission_type":{"type":"choice","choices":"content.choices_with_values"}},"content":{"choices_with_values":[{"text":"choice 1","value":"1"},{"text":"choice 2","value":"2"}],"field_name":"Profile multi choice field"},"scoring":0}
+""";
+
+final _mockedCodeCustom = """
+{"id":"5e5e1cb4d71f100021a0c4b1","title":"Code custom","instructions":"Guess a code, asshole","position":0,"mission_id":"5e5e1c4fd71f100021a0c4b0","behavior":{"id":"code_custom","title":"Code Custom","description":"Determine your own codes! Bottom-most code gets full points, top-most gets the least.","fields":[{"name":"codes","type":"list:text","label":"Valid codes, in increasing order of value","required":true},{"name":"success_message","type":"text","label":"Success message","required":false},{"name":"timelimit","type":"int","label":"Time limit","default":null,"required":false,"placeholder":"Time limit (in minutes)"},{"name":"presentation_text","type":"text:long","label":"Presentation text","required":false,"placeholder":"Presentation Text"},{"name":"presentation_image","type":"upload","label":"Presentation image","required":false,"placeholder":"Image key","object_key":"media_key","s3":{"bucket":"gogame-breadcrumb-display-media","folder":"GameShow"}},{"name":"presentation_title","type":"text","label":"Presentation title","required":false,"placeholder":"Presentation Title (overrides mission step title)"},{"name":"display_answer","type":"text","label":"GGP Display answer","required":false,"placeholder":"Correct display answer. Will display on screen view"},{"name":"question_type","type":"text","label":"GGP Question type","required":false,"placeholder":"Question type"},{"name":"timer","type":"int","label":"GGP Timer","required":false},{"name":"stop_auto_play","type":"bool","default":false,"label":"GGP Stop autoplay","required":false},{"name":"is_one_time_mission","type":"bool","default":false,"label":"Is Mission available only once per playthrough","required":false}],"submission_type":"text"},"content":{"codes":["1","2","3","4"]},"scoring":0}
+""";
+
+final _mockedPlainScoreHighest = """
+{"id":"5e5e471ad71f100021a0c4d5","title":"Highest wins","instructions":"Actors enter a number into the phone along with a password to verify. The team with the highest number gets the most points.","position":0,"mission_id":"5e5e46dad71f100021a0c4d4","behavior":{"id":"plant_score_highest","title":"Plant Score: Highest wins","description":"Actors enter a number into the phone along with a password to verify. The team with the highest number gets the most points.","fields":[{"name":"plant_password","type":"text","label":"Plant password","placeholder":"Plant password to verify no cheating","required":true},{"name":"success_message","type":"text","label":"Success message","required":false},{"name":"timelimit","type":"int","label":"Time limit","default":null,"required":false,"placeholder":"Time limit (in minutes)"},{"name":"presentation_text","type":"text:long","label":"Presentation text","required":false,"placeholder":"Presentation Text"},{"name":"presentation_image","type":"upload","label":"Presentation image","required":false,"placeholder":"Image key","object_key":"media_key","s3":{"bucket":"gogame-breadcrumb-display-media","folder":"GameShow"}},{"name":"presentation_title","type":"text","label":"Presentation title","required":false,"placeholder":"Presentation Title (overrides mission step title)"},{"name":"display_answer","type":"text","label":"GGP Display answer","required":false,"placeholder":"Correct display answer. Will display on screen view"},{"name":"question_type","type":"text","label":"GGP Question type","required":false,"placeholder":"Question type"},{"name":"timer","type":"int","label":"GGP Timer","required":false},{"name":"stop_auto_play","type":"bool","default":false,"label":"GGP Stop autoplay","required":false},{"name":"is_one_time_mission","type":"bool","default":false,"label":"Is Mission available only once per playthrough","required":false}],"submission_type":[{"type":"number","placeholder":"Score"},{"type":"text","placeholder":"Password"}]},"content":{"plant_password":"1111"},"scoring":0}
+""";
+
+final _mockedCOrrectNumber = """
+{"id":"5e331ef2d71f100020fd24d4","title":"Number answer","instructions":"A number submission, checked for correctness by the game.Type 100","position":7,"mission_id":"5e331e72d71f100020fd24d1","behavior":{"id":"number_answer","title":"Number Answer","description":"A number submission, checked for correctness by the game.","fields":[{"name":"correct_number","type":"int","label":"Correct number","required":true},{"name":"hints","type":"list:text","label":"Hints","required":false},{"name":"success_message","type":"text","label":"Success message","required":false},{"name":"failure_message","type":"text","label":"Fail message","required":false},{"name":"timelimit","type":"int","label":"Time limit","default":null,"required":false,"placeholder":"Time limit (in minutes)"},{"name":"num_attempts","type":"int","default":3,"label":"Number of attempts","required":false,"placeholder":"Number of attempts allowed"},{"name":"presentation_text","type":"text:long","label":"Presentation text","required":false,"placeholder":"Presentation Text"},{"name":"presentation_image","type":"upload","label":"Presentation image","required":false,"placeholder":"Image key","object_key":"media_key","s3":{"bucket":"gogame-breadcrumb-display-media","folder":"GameShow"}},{"name":"presentation_title","type":"text","label":"Presentation title","required":false,"placeholder":"Presentation Title (overrides mission step title)"},{"name":"display_answer","type":"text","label":"GGP Display answer","required":false,"placeholder":"Correct display answer. Will display on screen view"},{"name":"question_type","type":"text","label":"GGP Question type","required":false,"placeholder":"Question type"},{"name":"timer","type":"int","label":"GGP Timer","required":false},{"name":"stop_auto_play","type":"bool","default":false,"label":"GGP Stop autoplay","required":false},{"name":"is_one_time_mission","type":"bool","default":false,"label":"Is Mission available only once per playthrough","required":false}],"submission_type":"number"},"content":{"correct_number":"100"},"scoring":0}
 """;
 
 main() {
@@ -84,7 +99,7 @@ main() {
       expect(result.behavior.submissionType[0].videoParams.quality, "med");
     });
   });
-  group("video lenght ", () {
+  group("video length ", () {
     test("preseted", () {
       final map = json.decode(_mockedVideo);
       final result = WaypointStep.fromJsonMap(map);
@@ -155,6 +170,59 @@ main() {
       expect(submission.choices[0].value, "1");
       expect(submission.choices[1].text, "choice 2");
       expect(submission.choices[1].value, "2");
+    });
+    test("code custom", () {
+      final map = json.decode(_mockedCodeCustom);
+      final result = WaypointStep.fromJsonMap(map);
+      final submission = result.behavior.submissionType[0];
+
+      expect(submission.choices, isNotNull);
+      expect(submission.choices.length, 4);
+      expect(submission.choices[0], "1");
+      expect(submission.choices[3], "4");
+    });
+
+    test("plain score", () {
+      final map = json.decode(_mockedPlainScoreHighest);
+      final result = WaypointStep.fromJsonMap(map);
+      final submission = result.behavior.submissionType[0];
+
+      expect(submission.choices, isNotNull);
+      expect(submission.choices.length, 1);
+      expect(submission.choices[0], "1111");
+    });
+
+    test("correct_number", () {
+      final map = json.decode(_mockedCOrrectNumber);
+      final result = WaypointStep.fromJsonMap(map);
+      final submission = result.behavior.submissionType[0];
+
+      expect(submission.choices, isNotNull);
+      expect(submission.choices.length, 1);
+      expect(submission.choices[0], "100");
+    });
+  });
+
+  group("All type", (){
+    test("All types", () {
+      final behaviorJson =
+      File("test/data/mocks/behavior.json").readAsStringSync();
+      final map = json.decode(behaviorJson);
+      final behaviors = map["results"];
+
+      final list = List<String>();
+      behaviors.forEach((w) {
+        final waypoint = WaypointBehavior.fromJsonMap(w, {});
+        waypoint.submissionType.forEach((element) {
+          try {
+            SubmissionTypeHelper.fromString(element.type);
+          } catch (e) {
+            list.add(element.type);
+          }
+        });
+      });
+
+      expect(list, []);
     });
   });
 }
