@@ -76,3 +76,11 @@ class WaypointTable extends Table {
 
   BoolColumn get synced => boolean().withDefault(const Constant(false))();
 }
+
+class PointsTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+
+  TextColumn get waypointId => text().customConstraint('UNIQUE')();
+
+  RealColumn get points => real()();
+}

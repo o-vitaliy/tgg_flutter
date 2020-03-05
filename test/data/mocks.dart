@@ -1,13 +1,17 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mockito/mockito.dart';
+import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart';
 import 'package:tgg/data/providers/api_provider.dart';
 import 'package:tgg/data/providers/location_provider.dart';
 import 'package:tgg/data/providers/prefs_provider.dart';
 import 'package:tgg/data/providers/providers.dart';
+import 'package:tgg/helpers/expandable_list.dart';
+import 'package:tgg/models/waypoints/waypoint.dart';
 import 'package:tgg/models/waypoints/waypoint_mode.dart';
 
 class MockedApiProvider extends Mock implements ApiProvider {}
@@ -101,4 +105,40 @@ void initLoginMock() {
   //team
   when(mockedApiProvider.team(teamId: anyNamed("teamId")))
       .thenAnswer((_) => Future.value(mockedTeam));
+}
+
+/// waypoints
+List __waypointsMap;
+
+List get waypointsMap {
+  if (__waypointsMap == null) {
+    __waypointsMap = json.decode(mockedActiveWaypoints)
+      ..addAll(json.decode(
+          File("test/data/mocks/activewaypoints.json").readAsStringSync()))
+      ..addAll(json.decode(File("test/data/mocks/activeWaypointAllModes.json")
+          .readAsStringSync()));
+  }
+  return __waypointsMap;
+}
+
+Waypoint getWaypoint(final String type) {
+  final w = waypointsMap.firstOrNull((w1) {
+    try {
+      return w1["step"]["behavior"]["id"] == type;
+    } catch (e) {
+      print(w1);
+      return false;
+    }
+  });
+  return Waypoint.fromJsonMap(w);
+}
+
+
+List<WaypointSubmissionItem> getItems(final String type, List answers) {
+  final w = getWaypoint(type);
+  final sTypes = w.step.behavior.submissionType;
+  final mapped = sTypes.mapIndex((s, i) {
+    return WaypointSubmissionItem(id: i, submission: s, answer: answers[i]);
+  }).toList();
+  return mapped;
 }

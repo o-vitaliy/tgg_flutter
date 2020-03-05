@@ -7,6 +7,7 @@ import 'package:tgg/containers/h2h/h2h_reducer.dart';
 import 'package:tgg/containers/login/login_reducer.dart';
 import 'package:tgg/containers/mission/anytime/anytime_reducer.dart';
 import 'package:tgg/containers/mission/bonus/bonus_reducer.dart';
+import 'package:tgg/containers/points/points_reducer.dart';
 import 'package:tgg/containers/team/team_reducer.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_reducer.dart';
 import 'package:tgg/containers/waypoints/waypoints_reducer.dart';
@@ -29,5 +30,6 @@ AppState appReducer(AppState state, action) {
     anytime: anytimeReducer(state.anytime, action),
     bonus: bonusReducer(state.bonus, action),
     h2h: h2hReducer(state.h2h, action),
+    points: pointsReducer(state.points, action),
   );
 }

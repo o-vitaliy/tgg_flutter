@@ -1,10 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:tgg/containers/waypoints/submissions/submit_button_helper.dart';
 import 'package:tgg/containers/waypoints/waypoint/behavior/behavior.dart';
+import 'package:tgg/containers/waypoints/waypoint/waypoint_calculation.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart';
 import 'package:tgg/models/waypoints/waypoint.dart';
-
-const double hintPenalty = 0.25;
 
 @immutable
 class WaypointItemState {
@@ -18,16 +17,10 @@ class WaypointItemState {
       ? waypoint.step.behavior.numAttempts - attemptsUsed
       : 1;
 
-  int get _hintsCount => (waypoint.step.behavior.hints?.length ?? 0);
+  int get hintRemained =>
+      (waypoint.step.behavior.hints?.length ?? 0) - hintsUsed;
 
-  int get hintRemained => _hintsCount - hintsUsed;
-
-  int get hintPrice {
-    if (_hintsCount > 0)
-      return (waypoint.points / _hintsCount * hintPenalty).floor();
-    else
-      return 0;
-  }
+  int get hintPrice => WaypointCalculation.hintPrice(waypoint).toInt();
 
   bool get isVisible {
     final BaseBehaviorType type = waypoint.step.behavior.type;
@@ -41,7 +34,7 @@ class WaypointItemState {
   WaypointItemState({
     @required this.waypoint,
     @required this.items,
-    @required this.hint,
+    this.hint,
     @required this.hintsUsed,
     @required this.attemptsUsed,
   });

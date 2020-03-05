@@ -8,6 +8,7 @@ import 'package:redux/redux.dart';
 import 'package:redux_logging/redux_logging.dart';
 import 'package:tgg/common/flavor/flavor_midlleware.dart';
 import 'package:tgg/containers/camera/camera_page.dart';
+import 'package:tgg/containers/points/points_middleware.dart';
 
 import 'common/dialog/dialog_middleware.dart';
 import 'common/messaging/firebase_message.dart';
@@ -53,6 +54,7 @@ class ReduxApp extends StatelessWidget {
         ..addAll(createTeamMiddleware())
         ..addAll(createRoutingMiddleware())
         ..addAll(createFlavorMiddleware())
+        ..addAll(createPointsMiddleware())
         ..add(LoggingMiddleware.printer())
         ..add(NavigationMiddleware<AppState>())
         ..add(DialogMiddleware<AppState>()));

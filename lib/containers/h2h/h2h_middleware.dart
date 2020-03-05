@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
-import 'package:tgg/common/routing/route_actions.dart';
 import 'package:tgg/common/dialog/dialog_action.dart';
 import 'package:tgg/common/dialog/dialog_helper.dart';
+import 'package:tgg/common/routing/route_actions.dart';
 import 'package:tgg/containers/h2h/h2h_dialogs.dart';
+import 'package:tgg/containers/points/points_actions.dart';
 import 'package:tgg/containers/team/team_actions.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_actions.dart';
 import 'package:tgg/containers/waypoints/waypoints_actions.dart';
@@ -176,6 +177,9 @@ Middleware<AppState> _result() {
               store.dispatch(WaypointRemoveAction(waypointId));
             },
           )));
+
+      store.dispatch(
+          PointsAddChallengeAction(waypointId, result.points.toDouble()));
     }
     next(action);
   };

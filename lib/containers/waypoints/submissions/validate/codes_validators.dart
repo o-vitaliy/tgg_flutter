@@ -1,4 +1,5 @@
 import 'package:tgg/containers/waypoints/submissions/validate/validator.dart';
+import 'package:tgg/containers/waypoints/waypoint/behavior/behaviors.dart';
 
 const _defaultError = "Incorrect value";
 
@@ -15,14 +16,6 @@ class CodeCustomValidator extends Validator {
 }
 
 class CodeStandardValidator extends Validator {
-  final codes = [
-    "6111",
-    "5111",
-    "4111",
-    "3111",
-    "2111",
-    "1111",
-  ];
 
   final CodeCustomValidator codeCustomValidator;
 
@@ -31,5 +24,5 @@ class CodeStandardValidator extends Validator {
 
   @override
   String validate(input, {variants}) =>
-      codeCustomValidator.validate(input, variants: codes);
+      codeCustomValidator.validate(input, variants: CodeCustomBehaviorType.codes);
 }

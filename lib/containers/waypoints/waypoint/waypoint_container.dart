@@ -3,13 +3,15 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/common/flavor/flavor.dart';
+import 'package:tgg/common/theme/theme_config.dart';
+import 'package:tgg/common/theme/themed_buttons.dart';
+import 'package:tgg/containers/points/points_container.dart';
 import 'package:tgg/containers/waypoints/submissions/widget/value_widget.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_actions.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_item_state.dart';
+import 'package:tgg/helpers/expandable_list.dart';
 import 'package:tgg/models/waypoints/waypoint.dart';
 import 'package:tgg/redux_model/app_state.dart';
-import 'package:tgg/common/theme/theme_config.dart';
-import 'package:tgg/common/theme/themed_buttons.dart';
 
 import '../submissions/widget/submissions_builder.dart';
 
@@ -38,6 +40,7 @@ class WaypointContainer extends StatelessWidget {
               textAlign: TextAlign.center,
               style: headerTextStyle,
             ),
+            const PointsContainer(),
             MarkdownBody(data: vm.text),
           ]
             ..addAll(vm.builder(context))
@@ -49,10 +52,12 @@ class WaypointContainer extends StatelessWidget {
                     onPressed: vm.isSubmitEnabled ? () => vm.onSubmit() : null,
                   )
                 : SizedBox.shrink());
-          final items = list
-              .map((item) =>
-                  Padding(padding: EdgeInsets.only(top: 8), child: item))
-              .toList();
+          final items = list.mapIndex((item, index) {
+            if (index == 0)
+              return item;
+            else
+              return Padding(padding: const EdgeInsets.only(top: 8), child: item);
+          }).toList();
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

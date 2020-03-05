@@ -4,6 +4,7 @@ import 'package:tgg/data/bonus_repo.dart';
 import 'package:tgg/data/dao/dao_answer.dart';
 import 'package:tgg/data/dao/dao_hints.dart';
 import 'package:tgg/data/dao/dao_media.dart';
+import 'package:tgg/data/dao/dao_points.dart';
 import 'package:tgg/data/dao/dao_submission.dart';
 import 'package:tgg/data/dao/dao_waypoints.dart';
 import 'package:tgg/data/dao/db.dart';
@@ -35,6 +36,7 @@ final DaoMedia daoMedia = DaoMedia(database);
 final DaoHint daoHint = DaoHint(database);
 final DaoAnswer daoAnswer = DaoAnswer(database);
 final DaoWaypoint daoWaypoint = DaoWaypoint(database);
+final DaoPoints daoPoints = DaoPoints(database);
 
 // repos
 final StaticRepo staticRepo = StaticRepo(apiProvider: apiProvider);

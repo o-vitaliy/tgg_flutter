@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tgg/common/flavor/flavor.dart';
+import 'package:tgg/containers/points/points_container.dart';
 import 'package:tgg/models/modes.dart';
 import 'package:tgg/ui/tabs/route_button.dart';
 
@@ -18,7 +19,10 @@ class HomeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final buttons = modes.map(buildButton).toList()..add(logoutButton(context));
+    final buttons = List<Widget>()
+      ..add(const PointsContainer())
+      ..addAll(modes.map(buildButton))
+      ..add(logoutButton(context));
     return Column(
       children: buttons,
     );
@@ -28,7 +32,8 @@ class HomeTab extends StatelessWidget {
     return RaisedButton(
         onPressed: logout,
         child: Padding(
-            padding: EdgeInsets.only(left: 8, right: 8), child: Text("Logout")),
+            padding: const EdgeInsets.only(left: 8, right: 8),
+            child: const Text("Logout")),
         textColor: Colors.white);
   }
 

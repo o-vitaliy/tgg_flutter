@@ -13,7 +13,8 @@ main() {
         final waypoint = Waypoint.fromJsonMap(w);
         expect(waypoint.id, isNotNull);
         expect(waypoint.step, isNotNull);
-        expect(waypoint.points, isNotNull);
+        expect(waypoint.missionPoints, isNotNull);
+        expect(waypoint.missionStepsCount, isNotNull);
         expect(waypoint.mode, isNotNull);
       });
     });
@@ -23,7 +24,8 @@ main() {
         final waypoint = Waypoint.fromJsonMap(w);
         expect(waypoint.id, isNotNull);
         expect(waypoint.step, isNotNull);
-        expect(waypoint.points, isNotNull);
+        expect(waypoint.missionPoints, isNotNull);
+        expect(waypoint.missionStepsCount, isNotNull);
         expect(waypoint.mode, isNotNull);
       });
     });

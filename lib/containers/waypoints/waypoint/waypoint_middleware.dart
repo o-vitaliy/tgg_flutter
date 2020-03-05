@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/common/dialog/dialog_action.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_action.dart';
+import 'package:tgg/containers/points/points_actions.dart';
 import 'package:tgg/containers/waypoints/submissions/submission_types.dart';
 import 'package:tgg/containers/waypoints/waypoint/behavior/behavior.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_actions.dart';
@@ -45,6 +46,7 @@ Middleware<AppState> _submit() {
   return (Store<AppState> store, action, NextDispatcher next) async {
     if (action is WaypointSubmit) {
       final String waypointId = action.waypointId;
+      store.dispatch(WaypointIncrementAttemptAction(waypointId));
       final WaypointItemState waypoint =
           store.state.waypointsPassingState[waypointId];
       final BaseBehaviorType behaviorType =
@@ -78,6 +80,7 @@ Middleware<AppState> _submit() {
             );
           };
           store.dispatch(DialogAction(dialogBuilder));
+          store.dispatch(PointsWaypointSubmittedAction(waypoint));
           await waypointsRepo.submitAnswer(waypointId);
         } else {
           final dialogBuilder = (context) {
@@ -90,10 +93,10 @@ Middleware<AppState> _submit() {
               },
             );
           };
-          store.dispatch(WaypointIncrementAttemptAction(waypointId));
           store.dispatch(DialogAction(dialogBuilder));
         }
       } else {
+        store.dispatch(PointsWaypointSubmittedAction(waypoint));
         waypointsRepo.submitAnswer(waypointId).then((_) {});
       }
     }

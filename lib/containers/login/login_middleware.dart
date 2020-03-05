@@ -5,6 +5,7 @@ import 'package:tgg/common/blueprint/blueprint_actions.dart';
 import 'package:tgg/common/flavor/flavor_actions.dart';
 import 'package:tgg/common/routing/route_actions.dart';
 import 'package:tgg/containers/login/login_actions.dart';
+import 'package:tgg/containers/points/points_actions.dart';
 import 'package:tgg/containers/waypoints/waypoints_actions.dart';
 import 'package:tgg/data/providers.dart';
 import 'package:tgg/models/login_response.dart';
@@ -82,6 +83,8 @@ void doAfterLogin(
   store.dispatch(
       new LogInSuccessful(loginResponse: response, playthrough: playthrough));
 
+  store.dispatch(
+      PointsRemoteUpdateAction(response.team.pointsTotal.toDouble()));
   store.dispatch(UpdateBlueprint(playthrough.game.blueprint));
   store.dispatch(RouteLoadAction(playthrough.game.id, playthrough.startedAt));
   store.dispatch(NavigateToAction.replace(HomePage.routeName));

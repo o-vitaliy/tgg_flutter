@@ -1872,6 +1872,206 @@ class $WaypointTableTable extends WaypointTable
   }
 }
 
+class PointsTableData extends DataClass implements Insertable<PointsTableData> {
+  final int id;
+  final String waypointId;
+  final double points;
+  PointsTableData(
+      {@required this.id, @required this.waypointId, @required this.points});
+  factory PointsTableData.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    final doubleType = db.typeSystem.forDartType<double>();
+    return PointsTableData(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      waypointId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}waypoint_id']),
+      points:
+          doubleType.mapFromDatabaseResponse(data['${effectivePrefix}points']),
+    );
+  }
+  factory PointsTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return PointsTableData(
+      id: serializer.fromJson<int>(json['id']),
+      waypointId: serializer.fromJson<String>(json['waypointId']),
+      points: serializer.fromJson<double>(json['points']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'waypointId': serializer.toJson<String>(waypointId),
+      'points': serializer.toJson<double>(points),
+    };
+  }
+
+  @override
+  PointsTableCompanion createCompanion(bool nullToAbsent) {
+    return PointsTableCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      waypointId: waypointId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(waypointId),
+      points:
+          points == null && nullToAbsent ? const Value.absent() : Value(points),
+    );
+  }
+
+  PointsTableData copyWith({int id, String waypointId, double points}) =>
+      PointsTableData(
+        id: id ?? this.id,
+        waypointId: waypointId ?? this.waypointId,
+        points: points ?? this.points,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('PointsTableData(')
+          ..write('id: $id, ')
+          ..write('waypointId: $waypointId, ')
+          ..write('points: $points')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(id.hashCode, $mrjc(waypointId.hashCode, points.hashCode)));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is PointsTableData &&
+          other.id == this.id &&
+          other.waypointId == this.waypointId &&
+          other.points == this.points);
+}
+
+class PointsTableCompanion extends UpdateCompanion<PointsTableData> {
+  final Value<int> id;
+  final Value<String> waypointId;
+  final Value<double> points;
+  const PointsTableCompanion({
+    this.id = const Value.absent(),
+    this.waypointId = const Value.absent(),
+    this.points = const Value.absent(),
+  });
+  PointsTableCompanion.insert({
+    this.id = const Value.absent(),
+    @required String waypointId,
+    @required double points,
+  })  : waypointId = Value(waypointId),
+        points = Value(points);
+  PointsTableCompanion copyWith(
+      {Value<int> id, Value<String> waypointId, Value<double> points}) {
+    return PointsTableCompanion(
+      id: id ?? this.id,
+      waypointId: waypointId ?? this.waypointId,
+      points: points ?? this.points,
+    );
+  }
+}
+
+class $PointsTableTable extends PointsTable
+    with TableInfo<$PointsTableTable, PointsTableData> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $PointsTableTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _waypointIdMeta = const VerificationMeta('waypointId');
+  GeneratedTextColumn _waypointId;
+  @override
+  GeneratedTextColumn get waypointId => _waypointId ??= _constructWaypointId();
+  GeneratedTextColumn _constructWaypointId() {
+    return GeneratedTextColumn('waypoint_id', $tableName, false,
+        $customConstraints: 'UNIQUE');
+  }
+
+  final VerificationMeta _pointsMeta = const VerificationMeta('points');
+  GeneratedRealColumn _points;
+  @override
+  GeneratedRealColumn get points => _points ??= _constructPoints();
+  GeneratedRealColumn _constructPoints() {
+    return GeneratedRealColumn(
+      'points',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, waypointId, points];
+  @override
+  $PointsTableTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'points_table';
+  @override
+  final String actualTableName = 'points_table';
+  @override
+  VerificationContext validateIntegrity(PointsTableCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
+    }
+    if (d.waypointId.present) {
+      context.handle(_waypointIdMeta,
+          waypointId.isAcceptableValue(d.waypointId.value, _waypointIdMeta));
+    } else if (waypointId.isRequired && isInserting) {
+      context.missing(_waypointIdMeta);
+    }
+    if (d.points.present) {
+      context.handle(
+          _pointsMeta, points.isAcceptableValue(d.points.value, _pointsMeta));
+    } else if (points.isRequired && isInserting) {
+      context.missing(_pointsMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PointsTableData map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return PointsTableData.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(PointsTableCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.waypointId.present) {
+      map['waypoint_id'] = Variable<String, StringType>(d.waypointId.value);
+    }
+    if (d.points.present) {
+      map['points'] = Variable<double, RealType>(d.points.value);
+    }
+    return map;
+  }
+
+  @override
+  $PointsTableTable createAlias(String alias) {
+    return $PointsTableTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $SubmissionsTableTable _submissionsTable;
@@ -1889,6 +2089,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $WaypointTableTable _waypointTable;
   $WaypointTableTable get waypointTable =>
       _waypointTable ??= $WaypointTableTable(this);
+  $PointsTableTable _pointsTable;
+  $PointsTableTable get pointsTable => _pointsTable ??= $PointsTableTable(this);
   @override
   List<TableInfo> get allTables => [
         submissionsTable,
@@ -1896,6 +2098,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         mediaTable,
         hintsTable,
         answerTable,
-        waypointTable
+        waypointTable,
+        pointsTable
       ];
 }

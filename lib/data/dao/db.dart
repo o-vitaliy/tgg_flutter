@@ -25,16 +25,16 @@ LazyDatabase _openConnection() {
   MediaTable,
   HintsTable,
   AnswerTable,
-  WaypointTable
+  WaypointTable,
+  PointsTable
 ])
 class AppDatabase extends _$AppDatabase {
   // we tell the database where to store the data with this constructor
   AppDatabase({QueryExecutor executor}) : super(executor ?? _openConnection());
 
-  // you should bump this number whenever you change or add a table definition. Migrations
-  // are covered later in this readme.
+  // you should bump this number whenever you change or add a table definition.
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   SimpleSelectStatement<MediaTable, MediaTableData> get selectMediaTable =>
       select(mediaTable);
@@ -75,4 +75,12 @@ class AppDatabase extends _$AppDatabase {
 
   UpdateStatement<WaypointTable, WaypointTableData> get updateWaypointTable =>
       update(waypointTable);
+
+  SimpleSelectStatement<PointsTable, PointsTableData> get selectPointsTable =>
+      select(pointsTable);
+
+  InsertStatement<PointsTableData> get intoPointsTable => into(pointsTable);
+
+  DeleteStatement<PointsTable, PointsTableData> get deletePointTable =>
+      delete(pointsTable);
 }

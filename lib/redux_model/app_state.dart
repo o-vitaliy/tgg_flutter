@@ -9,6 +9,7 @@ import 'package:tgg/containers/h2h/h2h_state.dart';
 import 'package:tgg/containers/login/login_state.dart';
 import 'package:tgg/containers/mission/anytime/anytime_state.dart';
 import 'package:tgg/containers/mission/bonus/bonus_state.dart';
+import 'package:tgg/containers/points/points_state.dart';
 import 'package:tgg/containers/waypoints/waypoint/waypoint_state.dart';
 import 'package:tgg/containers/waypoints/waypoints_state.dart';
 import 'package:tgg/models/blueprint_model.dart';
@@ -30,6 +31,7 @@ class AppState {
   final AnytimeState anytime;
   final BonusState bonus;
   final H2HState h2h;
+  final PointsState points;
 
   AppState({
     @required this.isLoading,
@@ -46,6 +48,7 @@ class AppState {
     @required this.anytime,
     @required this.bonus,
     @required this.h2h,
+    @required this.points,
   });
 
   factory AppState.initial() {
@@ -64,6 +67,7 @@ class AppState {
       anytime: AnytimeState.initial(),
       bonus: BonusState.initial(),
       h2h: H2HState.initial(),
+      points: PointsState.initial(),
     );
   }
 
@@ -84,6 +88,7 @@ class AppState {
       anytime: anytime ?? this.anytime,
       bonus: bonus ?? this.bonus,
       h2h: h2h ?? this.h2h,
+      points: points ?? this.points,
     );
   }
 }
