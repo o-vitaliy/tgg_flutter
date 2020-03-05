@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tgg/common/flavor/flavor.dart';
 
-Widget createSuccessDialog(int attempts, Flavor flavor, Function onPressed) =>
+Widget createSuccessDialog(
+        String message, int attempts, Flavor flavor, Function onPressed) =>
     _createDialog(
       attempts: attempts,
       flavor: flavor,
@@ -10,9 +11,10 @@ Widget createSuccessDialog(int attempts, Flavor flavor, Function onPressed) =>
       imageTemplate: missionCorrectImage,
     );
 
-Widget createErrorDialog(
-        String answer, int attempts, Flavor flavor, Function onPressed) =>
+Widget createErrorDialog(String message, String answer, int attempts,
+        Flavor flavor, Function onPressed) =>
     _createDialog(
+        message: message,
         attempts: attempts,
         flavor: flavor,
         onPressed: onPressed,
@@ -21,7 +23,8 @@ Widget createErrorDialog(
         textTemplateParams: {"given": answer});
 
 Widget _createDialog(
-        {int attempts,
+        {String message,
+        int attempts,
         Flavor flavor,
         Function onPressed,
         String textTemplate,
@@ -34,8 +37,9 @@ Widget _createDialog(
           loadingBuilder: loadingBuilder,
           excludeFromSemantics: true,
         ),
-        Text(flavor.iterable(textTemplate, attempts,
-            params: textTemplateParams)),
+        Text(message ??
+            flavor.iterable(textTemplate, attempts,
+                params: textTemplateParams)),
       ]),
       actions: [
         RaisedButton(

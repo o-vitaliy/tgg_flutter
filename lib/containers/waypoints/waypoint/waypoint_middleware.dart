@@ -70,6 +70,7 @@ Middleware<AppState> _submit() {
         if (validationResult?.isValid ?? true) {
           final dialogBuilder = (context) {
             return createSuccessDialog(
+              waypoint.waypoint.step.behavior.successMessage,
               waypoint.attemptsUsed,
               store.state.flavor,
               () {
@@ -85,6 +86,7 @@ Middleware<AppState> _submit() {
         } else {
           final dialogBuilder = (context) {
             return createErrorDialog(
+              waypoint.waypoint.step.behavior.failureMessage,
               validationResult?.incorrectAnswer,
               waypoint.attemptsUsed,
               store.state.flavor,

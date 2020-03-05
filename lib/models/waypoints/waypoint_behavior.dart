@@ -10,25 +10,39 @@ class WaypointBehavior {
   final List<WaypointSubmission> submissionType;
   final int numAttempts;
   final List<String> hints;
+  final String failureMessage;
+  final String successMessage;
 
   WaypointBehavior.fromJsonMap(
       Map<String, dynamic> map, Map<String, dynamic> step)
       : this.type = BehaviorTypeHelper.fromString(map["id"]),
         this.title = map["title"],
         this.description = map["description"],
-        this.numAttempts = getNumAttempts(step),
-        this.hints = getHints(step),
+        this.numAttempts = _getNumAttempts(step),
+        this.successMessage = _getSuccessMessage(step),
+        this.failureMessage = _getFailureMessage(step),
+        this.hints = _getHints(step),
         this.submissionType = WaypointSubmission.from(
           map["submission_type"],
           step: step,
         );
 
-  static int getNumAttempts(step) {
+  static int _getNumAttempts(step) {
     final key = "num_attempts";
     return getIntValue(step, key);
   }
 
-  static List<String> getHints(step) {
+  static String _getSuccessMessage(step) {
+    final key = "success_message";
+    return getStringValue(step, key);
+  }
+
+  static String _getFailureMessage(step) {
+    final key = "failure_message";
+    return getStringValue(step, key);
+  }
+
+  static List<String> _getHints(step) {
     final value = getAt(step, "content.hints");
     return value != null ? List<String>.from(value) : null;
   }
