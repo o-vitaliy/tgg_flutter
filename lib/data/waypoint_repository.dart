@@ -146,6 +146,7 @@ class WaypointsRepo {
     final result = grouped.keys.map((key) {
       final value = grouped[key];
       final List submission = value
+          .where((e) => e.submissionType != null)
           .map((e) => {
                 _getSubmitType(e.submissionType): answersToMedia[e.answer] ??
                     _getAnswerValue(e.submissionType, e.answer)
