@@ -29,7 +29,10 @@ class MediaLauncher {
       CameraCaptureMode.PHOTO,
       galleryEnabled,
     );
-    return _startMediaPicking(context, entry.key, entry.value, videoParams);
+    if (entry != null)
+      return _startMediaPicking(context, entry.key, entry.value, videoParams);
+    else
+      return Future.value();
   }
 
   static Future<String> startVideo(
@@ -42,7 +45,10 @@ class MediaLauncher {
       CameraCaptureMode.VIDEO,
       galleryEnabled,
     );
-    return _startMediaPicking(context, entry.key, entry.value, videoParams);
+    if (entry != null)
+      return _startMediaPicking(context, entry.key, entry.value, videoParams);
+    else
+      return Future.value();
   }
 
   static Future<CameraCaptureMode> _selectCaptureMode(BuildContext context) {

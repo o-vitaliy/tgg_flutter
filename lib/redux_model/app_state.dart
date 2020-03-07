@@ -5,6 +5,7 @@ import 'package:tgg/common/flavor/flavor.dart';
 import 'package:tgg/common/playthrought/playthrought_state.dart';
 import 'package:tgg/common/routing/routing_state.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_state.dart';
+import 'package:tgg/containers/connectivity/connectivity_state.dart';
 import 'package:tgg/containers/h2h/h2h_state.dart';
 import 'package:tgg/containers/login/login_state.dart';
 import 'package:tgg/containers/mission/anytime/anytime_state.dart';
@@ -32,6 +33,7 @@ class AppState {
   final BonusState bonus;
   final H2HState h2h;
   final PointsState points;
+  final ConnectivityState connectivity;
 
   AppState({
     @required this.isLoading,
@@ -49,6 +51,7 @@ class AppState {
     @required this.bonus,
     @required this.h2h,
     @required this.points,
+    @required this.connectivity,
   });
 
   factory AppState.initial() {
@@ -68,6 +71,7 @@ class AppState {
       bonus: BonusState.initial(),
       h2h: H2HState.initial(),
       points: PointsState.initial(),
+      connectivity: ConnectivityState.initial(),
     );
   }
 
@@ -89,6 +93,7 @@ class AppState {
       bonus: bonus ?? this.bonus,
       h2h: h2h ?? this.h2h,
       points: points ?? this.points,
+      connectivity: connectivity ?? this.connectivity,
     );
   }
 }

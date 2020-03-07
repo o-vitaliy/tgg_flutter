@@ -10,9 +10,18 @@ class AnytimeLoadedAction {
   AnytimeLoadedAction(this.missions);
 }
 
-class AnytimeStartLoadAction extends MissionStartLoadAction {
-  AnytimeStartLoadAction(List<Waypoint> waypoints) : super(waypoints);
+@immutable
+class AnytimeUpdatePreviewAction {
+  final List<Mission> missions;
+
+  AnytimeUpdatePreviewAction(this.missions);
 }
+
+class AnytimeStartLoadAction extends MissionStartLoadAction {
+  AnytimeStartLoadAction() : super();
+}
+
+class AnytimeRebuildListAction {}
 
 class AnytimeLoadWaypointAction extends LoadMissionWaypointAction {
   AnytimeLoadWaypointAction(String missionId) : super(missionId);

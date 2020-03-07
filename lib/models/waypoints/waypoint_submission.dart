@@ -1,10 +1,12 @@
-import 'package:flutter/cupertino.dart';
+import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:tgg/helpers/map_utils.dart';
 import 'package:tgg/models/waypoints/submission_choice.dart';
 import 'package:tgg/models/waypoints/video_params.dart';
 import 'package:tgg/models/waypoints/waypoint_parser_utils.dart';
 
-class WaypointSubmission {
+@immutable
+class WaypointSubmission extends Equatable {
   final String type;
   final String placeholder;
   final choices;
@@ -129,13 +131,12 @@ class WaypointSubmission {
   }
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is WaypointSubmission &&
-          runtimeType == other.runtimeType &&
-          type == other.type &&
-          placeholder == other.placeholder;
-
-  @override
-  int get hashCode => type.hashCode ^ type.hashCode ^ placeholder.hashCode;
+  List<Object> get props => [
+        type,
+        placeholder,
+        choices,
+        galleryEnabled,
+        optional,
+        videoParams,
+      ];
 }

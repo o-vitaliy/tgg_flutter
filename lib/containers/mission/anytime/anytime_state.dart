@@ -6,32 +6,34 @@ import 'package:tgg/models/mission.dart';
 class AnytimeState {
   final bool listLoading;
   final bool waypointLoading;
-  final List<Mission> missions;
+  final List<Mission> missionPreviewList;
+  final List<Mission> missionList;
 
   bool get isLoading => listLoading || waypointLoading;
 
   AnytimeState._({
     this.listLoading,
     this.waypointLoading,
-    this.missions,
+    this.missionPreviewList,
+    this.missionList,
   });
 
   factory AnytimeState.initial() => AnytimeState._(
-        listLoading: true,
-        waypointLoading: false,
-      );
+      listLoading: true, waypointLoading: false, missionPreviewList: []);
 
   AnytimeState copy({
     Value<bool> listLoading,
     Value<bool> waypointLoading,
-    List<Mission> anytimeMission,
+    List<Mission> missionPreviewList,
+    List<Mission> missionList,
   }) {
     return AnytimeState._(
       listLoading: listLoading != null ? listLoading.value : this.listLoading,
       waypointLoading: waypointLoading != null
           ? waypointLoading.value
           : this.waypointLoading,
-      missions: anytimeMission ?? this.missions,
+      missionList: missionList ?? this.missionList,
+      missionPreviewList: missionPreviewList ?? this.missionPreviewList,
     );
   }
 }

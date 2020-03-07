@@ -251,10 +251,18 @@ main() {
               .readAsStringSync()));
 
       final waypoints = await repo.getActiveWaypoints();
-      expect(waypoints.where((w) => w.mode == Mode.main), isNotEmpty);
-      expect(waypoints.where((w) => w.mode == Mode.head_to_head), isNotEmpty);
-      expect(waypoints.where((w) => w.mode == Mode.camera), isNotEmpty);
-      expect(waypoints.where((w) => w.mode == Mode.anytime), isNotEmpty);
+      expect(waypoints.where((w) => w.mode.name == Mode.main), isNotEmpty);
+      expect(waypoints.where((w) => w.mode.name == Mode.h2h), isNotEmpty);
+      expect(waypoints.where((w) => w.mode.name == Mode.camera), isNotEmpty);
+      expect(waypoints.where((w) => w.mode.name == Mode.anytime), isNotEmpty);
+    });
+  });
+
+  group("from local storage", () {
+    test("check fetching from local storage", () async {
+      final waypoint = (await repo.getActiveWaypoints()).first;
+      final localWaypoint = (await repo.getLocalActiveWaypoints()).first;
+      expect(localWaypoint, waypoint);
     });
   });
 }

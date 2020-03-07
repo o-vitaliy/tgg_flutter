@@ -1,7 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-class VideoParams {
+class VideoParams extends Equatable {
   final String quality;
   final int length;
   final bool pauseRecord;
@@ -13,8 +14,8 @@ class VideoParams {
   });
 
   static VideoParams defaults() =>
-      VideoParams(
-          quality: "med", length: 30, pauseRecord: false
-      );
+      VideoParams(quality: "med", length: 30, pauseRecord: false);
 
+  @override
+  List<Object> get props => [quality, length, pauseRecord];
 }

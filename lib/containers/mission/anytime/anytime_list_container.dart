@@ -21,6 +21,7 @@ class AnytimeListContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
         converter: _ViewModel.fromStore,
+        onInit: (store) => store.dispatch(AnytimeRebuildListAction()),
         builder: (BuildContext context, _ViewModel vm) {
           if (vm.isLoading)
             return LoadingIndicator();
@@ -75,9 +76,9 @@ class _ViewModel {
         (waypointId) => store.dispatch(WaypointRemoveAction(waypointId));
     return _ViewModel(
       isLoading: state.isLoading,
-      missions: state.missions,
+      missions: state.missionPreviewList,
       waypointId: store.state.waypointsPassingState
-          .getWaypointForType(Mode.anytime)
+          .getWaypointForType(AnytimeMode())
           ?.id,
       onSelect: onSelect,
       onRemoveWaypoint: onRemoveWaypoint,

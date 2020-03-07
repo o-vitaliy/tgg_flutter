@@ -12,10 +12,8 @@ class WaypointState {
   WaypointItemState operator [](String key) => _map[key];
 
   void operator []=(String key, WaypointItemState state) {
-    if (ModeHelper.removeOnDuplicatedInState(state.waypoint.mode)) {
-      _map.removeWhere(
-          (key, value) => value.waypoint.mode == state.waypoint.mode);
-    }
+    _map.removeWhere(
+        (key, value) => value.waypoint.mode == state.waypoint.mode);
     _map[key] = state;
   }
 

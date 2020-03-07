@@ -3,9 +3,7 @@ import 'package:tgg/models/waypoints/waypoint.dart';
 
 @immutable
 abstract class MissionStartLoadAction {
-  final List<Waypoint> waypoints;
-
-  MissionStartLoadAction(this.waypoints);
+  MissionStartLoadAction();
 }
 
 @immutable

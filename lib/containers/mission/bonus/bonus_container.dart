@@ -38,8 +38,9 @@ class _ViewModel {
     final BonusState state = store.state.bonus;
     return _ViewModel(
       isLoading: state.isLoading,
-      waypointId:
-          store.state.waypointsPassingState.getWaypointForType(Mode.camera)?.id,
+      waypointId: store.state.waypointsPassingState
+          .getWaypointForType(CameraMode())
+          ?.id,
     );
   }
 }

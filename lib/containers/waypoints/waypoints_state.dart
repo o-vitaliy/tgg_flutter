@@ -1,14 +1,8 @@
 import 'package:tgg/models/waypoints/waypoint.dart';
-import 'package:tgg/models/waypoints/waypoint_mode.dart';
 
 class WaypointsState {
   final bool isLoading;
   final List<Waypoint> activeWaypoints;
-
-  bool hasGameForMode(Mode mode) =>
-      activeWaypoints
-          ?.where((w) => w.mode == mode)
-          ?.isNotEmpty ?? false;
 
   WaypointsState({this.isLoading, this.activeWaypoints});
 

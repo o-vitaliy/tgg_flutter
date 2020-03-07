@@ -11,7 +11,6 @@ import 'package:tgg/data/providers/api_provider.dart';
 import 'package:tgg/data/providers/location_provider.dart';
 import 'package:tgg/helpers/expandable_list.dart';
 import 'package:tgg/models/waypoints/waypoint.dart';
-import 'package:tgg/models/waypoints/waypoint_mode.dart';
 
 import 'dao/dao_submission.dart';
 import 'dao/db.dart';
@@ -34,6 +33,14 @@ class WaypointsRepo {
     @required this.daoWaypoint,
     @required this.locationProvider,
   });
+
+  Future<List<Waypoint>> getLocalActiveWaypoints() async {
+    final jsons = await daoWaypoint.getActive();
+    final decoded = jsons.map((e) => json.decode(e));
+    final mapped = decoded.map((e) => Waypoint.fromJsonMap(e));
+
+    return List<Waypoint>.from(mapped, growable: false);
+  }
 
   Future<List<Waypoint>> getActiveWaypoints() async {
     final response = await apiProvider.activeWaypoints();
@@ -115,8 +122,7 @@ class WaypointsRepo {
   }
 
   Future _saveWaypoint(Waypoint waypoint, Map map) async {
-    await daoWaypoint.insert(
-        waypoint.id, ModeHelper.to(waypoint.mode), json.encode(map));
+    await daoWaypoint.insert(waypoint.id, waypoint.mode.name, json.encode(map));
   }
 
   Future<List<String>> _getMedias(String waypointId) async {

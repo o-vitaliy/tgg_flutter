@@ -146,7 +146,7 @@ Middleware<AppState> _reactInvite() {
 
 void _reloadActivePointsAndOpenH2H(Store<AppState> store) {
   store.dispatch(WaypointsStartLoadAction());
-  final route = store.state.homePageState.findMode(Mode.head_to_head);
+  final route = store.state.homePageState.findMode(H2HMode());
   store.dispatch(RouteChangeCurrentModeAction(route));
 }
 
@@ -164,9 +164,8 @@ Middleware<AppState> _result() {
       } else {
         message = "mission:linked:disagreed";
       }
-      final waypointId = store.state.waypointsPassingState
-          .getWaypointForType(Mode.head_to_head)
-          .id;
+      final waypointId =
+          store.state.waypointsPassingState.getWaypointForType(H2HMode()).id;
       store.dispatch(DialogAction((c) => createResultDialog(
             flavor,
             message,

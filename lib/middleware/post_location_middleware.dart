@@ -44,7 +44,7 @@ Middleware<AppState> _createStopPostingMiddleware() {
 }
 
 Middleware<AppState> _createPostMiddleware() {
-  return (Store store, action, NextDispatcher next) async {
+  return (Store<AppState> store, action, NextDispatcher next) async {
     if (action is PostLocation) {
       locationRepo.sendLocation();
     }

@@ -3,6 +3,7 @@ import 'package:tgg/common/flavor/flavor_reducer.dart';
 import 'package:tgg/common/playthrought/playthrought_reducer.dart';
 import 'package:tgg/common/routing/routing_reducer.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_reducer.dart';
+import 'package:tgg/containers/connectivity/connectivity_reducer.dart';
 import 'package:tgg/containers/h2h/h2h_reducer.dart';
 import 'package:tgg/containers/login/login_reducer.dart';
 import 'package:tgg/containers/mission/anytime/anytime_reducer.dart';
@@ -31,5 +32,6 @@ AppState appReducer(AppState state, action) {
     bonus: bonusReducer(state.bonus, action),
     h2h: h2hReducer(state.h2h, action),
     points: pointsReducer(state.points, action),
+    connectivity: connectivityReducer(state.connectivity, action),
   );
 }

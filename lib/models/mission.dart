@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:tgg/models/waypoints/waypoint.dart';
 
-class Mission {
+class Mission extends Equatable {
   final String id;
   final String name;
 
@@ -13,4 +14,7 @@ class Mission {
   Mission.fromWaypoint(Waypoint waypoint)
       : id = waypoint.step.missionId,
         name = waypoint.step.title;
+
+  @override
+  List<Object> get props => [id, name];
 }

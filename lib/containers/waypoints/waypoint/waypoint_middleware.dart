@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
-import 'package:tgg/common/dialog/dialog_action.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_action.dart';
 import 'package:tgg/containers/points/points_actions.dart';
 import 'package:tgg/containers/waypoints/submissions/submission_types.dart';
@@ -22,6 +20,7 @@ List<Middleware<AppState>> createWaypointMiddleware() {
     new TypedMiddleware<AppState, WaypointsSelectCurrentAction>(
         _initWaypoint()),
     new TypedMiddleware<AppState, WaypointSubmit>(_submit()),
+    new TypedMiddleware<AppState, WaypointSwitchToNextAction>(_goNext()),
     new TypedMiddleware<AppState, WaypointShowHintAction>(_showHint()),
     new TypedMiddleware<AppState, WaypointStarted>(_trackStarted()),
     new TypedMiddleware<AppState, WaypointUpdateAnswer>(_updateAnswer()),
@@ -37,6 +36,26 @@ Middleware<AppState> _initWaypoint() {
               (item, index) => WaypointSubmissionItem.initial(index, item))
           .toList();
       store.dispatch(WaypointInit(waypoint.id, waypoint, items));
+    }
+    next(action);
+  };
+}
+
+Middleware<AppState> _goNext() {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    if (action is WaypointSwitchToNextAction) {
+      final waypoints = await waypointsRepo.getLocalActiveWaypoints();
+
+      final waypoint = waypoints.firstOrNull((e) => e.mode == action.mode);
+      if (waypoint != null) {
+        store.dispatch(WaypointsSelectCurrentAction(waypoint));
+      } else {
+        final toRemove =
+            store.state.waypointsPassingState.getWaypointForType(action.mode);
+        if (toRemove != null) {
+          store.dispatch(WaypointRemoveAction(toRemove.id));
+        }
+      }
     }
     next(action);
   };
@@ -67,37 +86,23 @@ Middleware<AppState> _submit() {
           : null;
 
       if (!behaviorType.postponedResult) {
+        final attemptsUsed = waypoint.attemptsUsed;
+        final flavor = store.state.flavor;
         if (validationResult?.isValid ?? true) {
-          final dialogBuilder = (context) {
-            return createSuccessDialog(
-              waypoint.attemptsUsed,
-              store.state.flavor,
-              () {
-                Navigator.pop(context);
-                store.dispatch(WaypointsStartLoadAction());
-                store.dispatch(WaypointRemoveAction(waypointId));
-              },
-            );
-          };
-          store.dispatch(DialogAction(dialogBuilder));
+          createSuccessDialog(attemptsUsed, flavor).then((value) {
+            final actions =
+                waypoint.waypoint.mode.getAfterSubmitActions(waypoint.waypoint);
+            actions.forEach((element) => store.dispatch(element));
+          });
           store.dispatch(PointsWaypointSubmittedAction(waypoint));
-          await waypointsRepo.submitAnswer(waypointId);
+          waypointsRepo.submitAnswer(waypointId);
         } else {
-          final dialogBuilder = (context) {
-            return createErrorDialog(
-              validationResult?.incorrectAnswer,
-              waypoint.attemptsUsed,
-              store.state.flavor,
-              () {
-                Navigator.pop(context);
-              },
-            );
-          };
-          store.dispatch(DialogAction(dialogBuilder));
+          createErrorDialog(validationResult?.incorrectAnswer,
+              waypoint.attemptsUsed, store.state.flavor);
         }
       } else {
         store.dispatch(PointsWaypointSubmittedAction(waypoint));
-        waypointsRepo.submitAnswer(waypointId).then((_) {});
+        waypointsRepo.submitAnswer(waypointId);
       }
     }
     next(action);
@@ -123,10 +128,7 @@ Middleware<AppState> _updateAnswer() {
           state.waypointsPassingState[waypointId].waypoint;
       dynamic answer = action.answer;
       if (SubmissionTypeHelper.isMediaFromString(action.submission.type)) {
-        String key = mediaRepo.getKey(
-            action.answer, state.playthrough.playthrough, state.team, waypoint);
-
-        store.dispatch(AddFileToUploadAction(action.answer, key));
+        store.dispatch(AwsAddFileAction(action.answer, waypoint));
       }
       store.dispatch(WaypointSaveAnswer(
           waypointId, action.itemId, answer, action.submission));

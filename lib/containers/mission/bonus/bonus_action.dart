@@ -11,7 +11,7 @@ class BonusLoadedAction {
 }
 
 class BonusStartLoadAction extends MissionStartLoadAction {
-  BonusStartLoadAction(List<Waypoint> waypoints) : super(waypoints);
+  BonusStartLoadAction() : super();
 }
 
 class BonusLoadWaypointAction extends LoadMissionWaypointAction {

@@ -11,5 +11,5 @@ class AnytimeRepo extends BaseMissionRepo {
   }) : super(apiProvider: apiProvider, waypointsRepo: waypointsRepo);
 
   @override
-  Mode get mode => Mode.anytime;
+  Mode get mode => AnytimeMode();
 }

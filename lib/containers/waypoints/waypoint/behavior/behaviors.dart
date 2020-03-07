@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:tgg/containers/waypoints/submissions/validate/choice_validator.dart';
 import 'package:tgg/containers/waypoints/submissions/validate/codes_validators.dart';
 import 'package:tgg/containers/waypoints/submissions/validate/plain_score_validator.dart';
@@ -8,7 +9,7 @@ import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart'
 import 'success_coefficient.dart';
 import 'validation_result.dart';
 
-abstract class BaseBehaviorType {
+abstract class BaseBehaviorType extends Equatable {
   String get type;
 
   bool get autoSubmit => false;
@@ -24,6 +25,9 @@ abstract class BaseBehaviorType {
   DateTime generateCompletedAt() => DateTime.now();
 
   SuccessCoefficient get successCoefficient;
+
+  @override
+  List<Object> get props => [type];
 }
 
 class TextAnswerBehaviorType extends BaseBehaviorType {

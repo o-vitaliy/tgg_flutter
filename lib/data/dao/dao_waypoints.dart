@@ -23,6 +23,25 @@ class DaoWaypoint {
         .getSingle();
   }
 
+  Future<Iterable<String>> getActive() async {
+    final Iterable<WaypointTableData> list =
+        await (_appDatabase.selectWaypointTable
+              ..where((a) => a.passed.equals(false)))
+            .get();
+
+    return list.map((e) => e.waypointJson);
+  }
+
+  Future<Iterable<String>> getNotSynced() async {
+    final Iterable<WaypointTableData> list =
+        await (_appDatabase.selectWaypointTable
+              ..where((a) => a.passed.equals(true))
+              ..where((a) => a.synced.equals(false)))
+            .get();
+
+    return list.map((e) => e.waypointJson);
+  }
+
   Future savePassed(String waypointId) async {
     return (_appDatabase.updateWaypointTable
           ..where((t) => t.waypointId.equals(waypointId)))

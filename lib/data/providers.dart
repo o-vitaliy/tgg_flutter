@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:tgg/data/bonus_repo.dart';
+import 'package:tgg/data/connectivity_repo.dart';
 import 'package:tgg/data/dao/dao_answer.dart';
 import 'package:tgg/data/dao/dao_hints.dart';
 import 'package:tgg/data/dao/dao_media.dart';
@@ -39,6 +40,7 @@ final DaoWaypoint daoWaypoint = DaoWaypoint(database);
 final DaoPoints daoPoints = DaoPoints(database);
 
 // repos
+final ConnectivityRepo connectivityRepo = ConnectivityRepo();
 final StaticRepo staticRepo = StaticRepo(apiProvider: apiProvider);
 final LoginRepo loginRepo =
     LoginRepo(apiProvider: apiProvider, prefs: prefsProvider);

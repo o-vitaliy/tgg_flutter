@@ -1,5 +1,6 @@
 import 'package:tgg/containers/waypoints/waypoint/waypoint_submission_item.dart';
 import 'package:tgg/models/waypoints/waypoint.dart';
+import 'package:tgg/models/waypoints/waypoint_mode.dart';
 import 'package:tgg/models/waypoints/waypoint_submission.dart';
 
 class WaypointInit {
@@ -14,6 +15,12 @@ class WaypointRemoveAction {
   final String waypointId;
 
   WaypointRemoveAction(this.waypointId);
+}
+
+class WaypointSwitchToNextAction {
+  final Mode mode;
+
+  WaypointSwitchToNextAction(this.mode);
 }
 
 class WaypointStarted {

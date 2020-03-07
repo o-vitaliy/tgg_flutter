@@ -1,19 +1,28 @@
-class AddFileToUploadAction {
+import 'package:tgg/models/waypoints/waypoint.dart';
+
+class AwsAddFileAction {
+  final String url;
+  final Waypoint waypoint;
+
+  AwsAddFileAction(this.url, this.waypoint);
+}
+
+class AwsStartFileUpload {
   final String url;
   final String key;
 
-  AddFileToUploadAction(this.url, this.key);
+  AwsStartFileUpload(this.url, this.key);
 }
 
-class ChangeFileUploadProgressAction {
+class AwsProgressChangedAction {
   final String url;
   final double progress;
 
-  ChangeFileUploadProgressAction(this.url, this.progress);
+  AwsProgressChangedAction(this.url, this.progress);
 }
 
-class RemoveFileUpload{
+class AwsRemoveFileUploadAction {
   final String url;
 
-  RemoveFileUpload(this.url);
+  AwsRemoveFileUploadAction(this.url);
 }

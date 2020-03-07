@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:tgg/common/flavor/flavor.dart';
+import 'package:tgg/common/theme/theme_config.dart';
+import 'package:tgg/common/theme/themed_buttons.dart';
 import 'package:tgg/containers/h2h/h2h_widget_helper.dart';
 import 'package:tgg/models/challenge.dart';
 import 'package:tgg/models/waypoints/waypoint_mode.dart';
 import 'package:tgg/redux_model/app_state.dart';
-import 'package:tgg/common/theme/theme_config.dart';
-import 'package:tgg/common/theme/themed_buttons.dart';
 
 import '../h2h_actions.dart';
 
@@ -154,7 +154,7 @@ class _ViewModel {
     final Function(bool) acceptInvite = (accepted) => store
         .dispatch(H2HReactInviteAction(challengeReceived.teamId, accepted));
     final int challengesLeft =
-        state.homePageState.findMode(Mode.head_to_head).maxTotal -
+        state.homePageState.findMode(H2HMode()).maxTotal -
             state.team.challenges.where((c) => c.state == null).length;
     return _ViewModel(
       flavor: state.flavor,

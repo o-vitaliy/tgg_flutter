@@ -1,29 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:tgg/common/dialog/dialog_helper.dart';
 import 'package:tgg/common/flavor/flavor.dart';
 
-Widget createSuccessDialog(int attempts, Flavor flavor, Function onPressed) =>
-    _createDialog(
-      attempts: attempts,
-      flavor: flavor,
-      onPressed: onPressed,
-      textTemplate: missionCorrectText,
-      imageTemplate: missionCorrectImage,
-    );
+Future createSuccessDialog(int attempts, Flavor flavor) => showDialog(
+    context: DialogHelper.findContext(),
+    builder: (context) => _createDialog(
+          context: context,
+          attempts: attempts,
+          flavor: flavor,
+          textTemplate: missionCorrectText,
+          imageTemplate: missionCorrectImage,
+        ));
 
-Widget createErrorDialog(
-        String answer, int attempts, Flavor flavor, Function onPressed) =>
-    _createDialog(
-        attempts: attempts,
-        flavor: flavor,
-        onPressed: onPressed,
-        textTemplate: tryAgainText,
-        imageTemplate: tryAgainImage,
-        textTemplateParams: {"given": answer});
+Future createErrorDialog(String answer, int attempts, Flavor flavor) =>
+    showDialog(
+        context: DialogHelper.findContext(),
+        builder: (context) => _createDialog(
+            context: context,
+            attempts: attempts,
+            flavor: flavor,
+            textTemplate: tryAgainText,
+            imageTemplate: tryAgainImage,
+            textTemplateParams: {"given": answer}));
 
 Widget _createDialog(
-        {int attempts,
+        {BuildContext context,
+        int attempts,
         Flavor flavor,
-        Function onPressed,
         String textTemplate,
         String imageTemplate,
         Map<String, dynamic> textTemplateParams}) =>
@@ -40,7 +43,7 @@ Widget _createDialog(
       actions: [
         RaisedButton(
           child: Text(flavor.get(messageOk)),
-          onPressed: onPressed,
+          onPressed: () => Navigator.pop(context),
         )
       ],
     );
