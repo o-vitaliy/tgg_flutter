@@ -41,9 +41,10 @@ Middleware<AppState> _loadMissions() {
 Middleware<AppState> _startMission() {
   return (Store store, action, NextDispatcher next) async {
     if (action is BonusLoadWaypointAction) {
+      final teamId = store.state.team.id;
       store.dispatch(BonusChangeWaipointLoadingStateAction(true));
       LoadMissionMiddlewareHelper.getWaypointByMissionId(
-              store, action.missionId)
+              teamId, action.missionId)
           .then((result) {
         store.dispatch(WaypointsSelectCurrentAction(result));
         store.dispatch(BonusChangeWaipointLoadingStateAction(false));

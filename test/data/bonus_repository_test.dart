@@ -17,7 +17,7 @@ main() {
   setUp(() {
     initLoginMock();
 
-    when(waypointsRepo.getActiveWaypoints()).thenAnswer((_) =>
+    when(waypointsRepo.getActiveWaypoints("team_id")).thenAnswer((_) =>
         json.decode(mockedActiveWaypoints).map((w) => Waypoint.fromJsonMap(w)));
 
     repo = BonusRepo(

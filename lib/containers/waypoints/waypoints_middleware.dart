@@ -19,7 +19,8 @@ Middleware<AppState> _createLoadWaypointMiddleware() {
   return (Store store, action, NextDispatcher next) async {
     if (action is WaypointsStartLoadAction) {
       store.dispatch(WaypointsStartedLoadingAction());
-      waypointsRepo.getActiveWaypoints().then((waypoints) {
+      final teamId = store.state.team.id;
+      waypointsRepo.getActiveWaypoints(teamId).then((waypoints) {
         final selectedMain =
             waypoints.firstOrNull((w) => w.mode.name == Mode.main);
         if (selectedMain != null) {

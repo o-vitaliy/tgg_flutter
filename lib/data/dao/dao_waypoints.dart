@@ -7,10 +7,12 @@ class DaoWaypoint {
 
   DaoWaypoint(this._appDatabase);
 
-  Future<int> insert(String waypointId, String mode, String waypointJson) {
+  Future<int> insert(
+      String waypointId, String teamId, String mode, String waypointJson) {
     return _appDatabase.intoWaypointTable.insert(
         WaypointTableCompanion.insert(
           waypointId: waypointId,
+          teamId: Value(teamId),
           mode: mode,
           waypointJson: waypointJson,
         ),
@@ -23,18 +25,20 @@ class DaoWaypoint {
         .getSingle();
   }
 
-  Future<Iterable<String>> getActive() async {
+  Future<Iterable<String>> getActive(String teamId) async {
     final Iterable<WaypointTableData> list =
         await (_appDatabase.selectWaypointTable
+              ..where((a) => a.teamId.equals(teamId))
               ..where((a) => a.passed.equals(false)))
             .get();
 
     return list.map((e) => e.waypointJson);
   }
 
-  Future<Iterable<String>> getNotSynced() async {
+  Future<Iterable<String>> getNotSynced(String teamId) async {
     final Iterable<WaypointTableData> list =
         await (_appDatabase.selectWaypointTable
+              ..where((a) => a.teamId.equals(teamId))
               ..where((a) => a.passed.equals(true))
               ..where((a) => a.synced.equals(false)))
             .get();

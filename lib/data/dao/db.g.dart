@@ -1548,6 +1548,7 @@ class $AnswerTableTable extends AnswerTable
 class WaypointTableData extends DataClass
     implements Insertable<WaypointTableData> {
   final int id;
+  final String teamId;
   final String waypointId;
   final String mode;
   final String waypointJson;
@@ -1555,6 +1556,7 @@ class WaypointTableData extends DataClass
   final bool synced;
   WaypointTableData(
       {@required this.id,
+      @required this.teamId,
       @required this.waypointId,
       @required this.mode,
       @required this.waypointJson,
@@ -1569,6 +1571,8 @@ class WaypointTableData extends DataClass
     final boolType = db.typeSystem.forDartType<bool>();
     return WaypointTableData(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      teamId:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}team_id']),
       waypointId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}waypoint_id']),
       mode: stringType.mapFromDatabaseResponse(data['${effectivePrefix}mode']),
@@ -1584,6 +1588,7 @@ class WaypointTableData extends DataClass
       {ValueSerializer serializer = const ValueSerializer.defaults()}) {
     return WaypointTableData(
       id: serializer.fromJson<int>(json['id']),
+      teamId: serializer.fromJson<String>(json['teamId']),
       waypointId: serializer.fromJson<String>(json['waypointId']),
       mode: serializer.fromJson<String>(json['mode']),
       waypointJson: serializer.fromJson<String>(json['waypointJson']),
@@ -1596,6 +1601,7 @@ class WaypointTableData extends DataClass
       {ValueSerializer serializer = const ValueSerializer.defaults()}) {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'teamId': serializer.toJson<String>(teamId),
       'waypointId': serializer.toJson<String>(waypointId),
       'mode': serializer.toJson<String>(mode),
       'waypointJson': serializer.toJson<String>(waypointJson),
@@ -1608,6 +1614,8 @@ class WaypointTableData extends DataClass
   WaypointTableCompanion createCompanion(bool nullToAbsent) {
     return WaypointTableCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      teamId:
+          teamId == null && nullToAbsent ? const Value.absent() : Value(teamId),
       waypointId: waypointId == null && nullToAbsent
           ? const Value.absent()
           : Value(waypointId),
@@ -1624,6 +1632,7 @@ class WaypointTableData extends DataClass
 
   WaypointTableData copyWith(
           {int id,
+          String teamId,
           String waypointId,
           String mode,
           String waypointJson,
@@ -1631,6 +1640,7 @@ class WaypointTableData extends DataClass
           bool synced}) =>
       WaypointTableData(
         id: id ?? this.id,
+        teamId: teamId ?? this.teamId,
         waypointId: waypointId ?? this.waypointId,
         mode: mode ?? this.mode,
         waypointJson: waypointJson ?? this.waypointJson,
@@ -1641,6 +1651,7 @@ class WaypointTableData extends DataClass
   String toString() {
     return (StringBuffer('WaypointTableData(')
           ..write('id: $id, ')
+          ..write('teamId: $teamId, ')
           ..write('waypointId: $waypointId, ')
           ..write('mode: $mode, ')
           ..write('waypointJson: $waypointJson, ')
@@ -1654,16 +1665,19 @@ class WaypointTableData extends DataClass
   int get hashCode => $mrjf($mrjc(
       id.hashCode,
       $mrjc(
-          waypointId.hashCode,
+          teamId.hashCode,
           $mrjc(
-              mode.hashCode,
-              $mrjc(waypointJson.hashCode,
-                  $mrjc(passed.hashCode, synced.hashCode))))));
+              waypointId.hashCode,
+              $mrjc(
+                  mode.hashCode,
+                  $mrjc(waypointJson.hashCode,
+                      $mrjc(passed.hashCode, synced.hashCode)))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is WaypointTableData &&
           other.id == this.id &&
+          other.teamId == this.teamId &&
           other.waypointId == this.waypointId &&
           other.mode == this.mode &&
           other.waypointJson == this.waypointJson &&
@@ -1673,6 +1687,7 @@ class WaypointTableData extends DataClass
 
 class WaypointTableCompanion extends UpdateCompanion<WaypointTableData> {
   final Value<int> id;
+  final Value<String> teamId;
   final Value<String> waypointId;
   final Value<String> mode;
   final Value<String> waypointJson;
@@ -1680,6 +1695,7 @@ class WaypointTableCompanion extends UpdateCompanion<WaypointTableData> {
   final Value<bool> synced;
   const WaypointTableCompanion({
     this.id = const Value.absent(),
+    this.teamId = const Value.absent(),
     this.waypointId = const Value.absent(),
     this.mode = const Value.absent(),
     this.waypointJson = const Value.absent(),
@@ -1688,6 +1704,7 @@ class WaypointTableCompanion extends UpdateCompanion<WaypointTableData> {
   });
   WaypointTableCompanion.insert({
     this.id = const Value.absent(),
+    this.teamId = const Value.absent(),
     @required String waypointId,
     @required String mode,
     @required String waypointJson,
@@ -1698,6 +1715,7 @@ class WaypointTableCompanion extends UpdateCompanion<WaypointTableData> {
         waypointJson = Value(waypointJson);
   WaypointTableCompanion copyWith(
       {Value<int> id,
+      Value<String> teamId,
       Value<String> waypointId,
       Value<String> mode,
       Value<String> waypointJson,
@@ -1705,6 +1723,7 @@ class WaypointTableCompanion extends UpdateCompanion<WaypointTableData> {
       Value<bool> synced}) {
     return WaypointTableCompanion(
       id: id ?? this.id,
+      teamId: teamId ?? this.teamId,
       waypointId: waypointId ?? this.waypointId,
       mode: mode ?? this.mode,
       waypointJson: waypointJson ?? this.waypointJson,
@@ -1726,6 +1745,15 @@ class $WaypointTableTable extends WaypointTable
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _teamIdMeta = const VerificationMeta('teamId');
+  GeneratedTextColumn _teamId;
+  @override
+  GeneratedTextColumn get teamId => _teamId ??= _constructTeamId();
+  GeneratedTextColumn _constructTeamId() {
+    return GeneratedTextColumn('team_id', $tableName, false,
+        defaultValue: const Constant(""));
   }
 
   final VerificationMeta _waypointIdMeta = const VerificationMeta('waypointId');
@@ -1783,7 +1811,7 @@ class $WaypointTableTable extends WaypointTable
 
   @override
   List<GeneratedColumn> get $columns =>
-      [id, waypointId, mode, waypointJson, passed, synced];
+      [id, teamId, waypointId, mode, waypointJson, passed, synced];
   @override
   $WaypointTableTable get asDslTable => this;
   @override
@@ -1798,6 +1826,12 @@ class $WaypointTableTable extends WaypointTable
       context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
     } else if (id.isRequired && isInserting) {
       context.missing(_idMeta);
+    }
+    if (d.teamId.present) {
+      context.handle(
+          _teamIdMeta, teamId.isAcceptableValue(d.teamId.value, _teamIdMeta));
+    } else if (teamId.isRequired && isInserting) {
+      context.missing(_teamIdMeta);
     }
     if (d.waypointId.present) {
       context.handle(_waypointIdMeta,
@@ -1847,6 +1881,9 @@ class $WaypointTableTable extends WaypointTable
     final map = <String, Variable>{};
     if (d.id.present) {
       map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.teamId.present) {
+      map['team_id'] = Variable<String, StringType>(d.teamId.value);
     }
     if (d.waypointId.present) {
       map['waypoint_id'] = Variable<String, StringType>(d.waypointId.value);

@@ -28,6 +28,7 @@ main() {
 
   WaypointsRepo repo;
 
+  final teamId = "team_id";
   final waypointId = "waypointId";
   final lat = 1.0;
   final lng = 2.0;
@@ -66,7 +67,7 @@ main() {
   });
   group("waypoints", () {
     test("active_waypoints", () async {
-      final waypoints = await repo.getActiveWaypoints();
+      final waypoints = await repo.getActiveWaypoints(teamId);
 
       waypoints.forEach((wp) {
         wp.step.behavior.submissionType.forEach((s) {
@@ -76,7 +77,7 @@ main() {
     });
 
     test("check all waypoints in database", () async {
-      final waypoints = await repo.getActiveWaypoints();
+      final waypoints = await repo.getActiveWaypoints(teamId);
 
       waypoints.forEach((wp) async {
         final waypointId = wp.id;
@@ -107,7 +108,7 @@ main() {
       when(mockedLocationProvider.getLocation())
           .thenAnswer((_) => Future.value(position));
 
-      final waypoints = await repo.getActiveWaypoints();
+      final waypoints = await repo.getActiveWaypoints(teamId);
       final waypointId = waypoints.first.id;
 
       daoHint.getUsedHints(waypointId);
@@ -130,7 +131,7 @@ main() {
       when(mockedLocationProvider.getLocation())
           .thenAnswer((_) => Future.value(position));
 
-      final waypoints = await repo.getActiveWaypoints();
+      final waypoints = await repo.getActiveWaypoints(teamId);
       final waypointId = waypoints.first.id;
 
       final date1 = DateTime.now();
@@ -166,7 +167,7 @@ main() {
       when(mockedLocationProvider.getLocation())
           .thenAnswer((_) => Future.value(position));
 
-      final waypoints = await repo.getActiveWaypoints();
+      final waypoints = await repo.getActiveWaypoints(teamId);
       final waypointId = waypoints.first.id;
 
       final date = DateTime.now();
@@ -193,7 +194,7 @@ main() {
       )).called(1);
     });
     test("sumbit answer with media", () async {
-      final waypoints = await repo.getActiveWaypoints();
+      final waypoints = await repo.getActiveWaypoints(teamId);
       final waypointId = waypoints.first.id;
 
       await daoMedia.insert("mediaId", "url", "key");
@@ -211,7 +212,7 @@ main() {
       ));
     });
     test("sumbit answer checkbox", () async {
-      final waypoints = await repo.getActiveWaypoints();
+      final waypoints = await repo.getActiveWaypoints(teamId);
       final waypointId = waypoints.first.id;
 
       daoAnswer.insert(waypointId, "checkboxes", "a1,a2", DateTime.now());
@@ -229,7 +230,7 @@ main() {
     });
 
     test("sumbit passed and sync flags", () async {
-      final waypointId = (await repo.getActiveWaypoints()).first.id;
+      final waypointId = (await repo.getActiveWaypoints(teamId)).first.id;
 
       daoAnswer.insert(waypointId, "checkboxes", "a1,a2", DateTime.now());
 
@@ -241,8 +242,8 @@ main() {
     });
 
     test("sumbit getActiveWaypoints twice", () async {
-      await repo.getActiveWaypoints();
-      await repo.getActiveWaypoints();
+      await repo.getActiveWaypoints(teamId);
+      await repo.getActiveWaypoints(teamId);
     });
 
     test("all modes", () async {
@@ -250,7 +251,7 @@ main() {
           File("test/data/mocks/activeWaypointAllModes.json")
               .readAsStringSync()));
 
-      final waypoints = await repo.getActiveWaypoints();
+      final waypoints = await repo.getActiveWaypoints(teamId);
       expect(waypoints.where((w) => w.mode.name == Mode.main), isNotEmpty);
       expect(waypoints.where((w) => w.mode.name == Mode.h2h), isNotEmpty);
       expect(waypoints.where((w) => w.mode.name == Mode.camera), isNotEmpty);
@@ -260,8 +261,8 @@ main() {
 
   group("from local storage", () {
     test("check fetching from local storage", () async {
-      final waypoint = (await repo.getActiveWaypoints()).first;
-      final localWaypoint = (await repo.getLocalActiveWaypoints()).first;
+      final waypoint = (await repo.getActiveWaypoints(teamId)).first;
+      final localWaypoint = (await repo.getLocalActiveWaypoints(teamId)).first;
       expect(localWaypoint, waypoint);
     });
   });

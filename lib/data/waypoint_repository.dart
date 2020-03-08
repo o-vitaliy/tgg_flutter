@@ -34,21 +34,21 @@ class WaypointsRepo {
     @required this.locationProvider,
   });
 
-  Future<List<Waypoint>> getLocalActiveWaypoints() async {
-    final jsons = await daoWaypoint.getActive();
+  Future<List<Waypoint>> getLocalActiveWaypoints(String teamId) async {
+    final jsons = await daoWaypoint.getActive(teamId);
     final decoded = jsons.map((e) => json.decode(e));
     final mapped = decoded.map((e) => Waypoint.fromJsonMap(e));
 
     return List<Waypoint>.from(mapped, growable: false);
   }
 
-  Future<List<Waypoint>> getActiveWaypoints() async {
+  Future<List<Waypoint>> getActiveWaypoints(String teamId) async {
     final response = await apiProvider.activeWaypoints();
     final map = json.decode(response);
     final mapped = map.map((w) => Waypoint.fromJsonMap(w)).toList();
 
     for (int i = 0; i < map.length; i++) {
-      await _saveWaypoint(mapped[i], map[i]);
+      await _saveWaypoint(teamId, mapped[i], map[i]);
     }
     return List<Waypoint>.from(mapped, growable: false);
   }
@@ -121,8 +121,9 @@ class WaypointsRepo {
         .transform(answer);
   }
 
-  Future _saveWaypoint(Waypoint waypoint, Map map) async {
-    await daoWaypoint.insert(waypoint.id, waypoint.mode.name, json.encode(map));
+  Future _saveWaypoint(String teamId, Waypoint waypoint, Map map) async {
+    await daoWaypoint.insert(
+        waypoint.id, teamId, waypoint.mode.name, json.encode(map));
   }
 
   Future<List<String>> _getMedias(String waypointId) async {

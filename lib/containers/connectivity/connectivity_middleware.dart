@@ -56,7 +56,8 @@ Middleware<AppState> _unsubscribe() {
 }
 
 void _resumeWaypointSync(Store<AppState> store) async {
-  final waypointJsons = await daoWaypoint.getNotSynced();
+  final teamId = store.state.team.id;
+  final waypointJsons = await daoWaypoint.getNotSynced(teamId);
   final waypoints = waypointJsons
       .map((e) => json.decode(e))
       .map((e) => Waypoint.fromJsonMap(e));

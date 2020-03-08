@@ -32,12 +32,14 @@ Middleware<AppState> _loadMissions() {
 Middleware<AppState> _rebuildMission() {
   return (Store<AppState> store, action, NextDispatcher next) async {
     if (action is AnytimeRebuildListAction) {
+      final teamId = store.state.team.id;
       store.dispatch(AnytimeChangeListLoadingStateAction(true));
 
       final anytime = store.state.anytime.missionList ?? [];
-      final fromWaypoints = (await waypointsRepo.getLocalActiveWaypoints())
-          .where((w) => w.mode.name == Mode.anytime)
-          .map((w) => Mission.fromWaypoint(w));
+      final fromWaypoints =
+          (await waypointsRepo.getLocalActiveWaypoints(teamId))
+              .where((w) => w.mode.name == Mode.anytime)
+              .map((w) => Mission.fromWaypoint(w));
       final result = anytime.toList()..addAll(fromWaypoints);
       store.dispatch(AnytimeUpdatePreviewAction(result));
       store.dispatch(AnytimeChangeListLoadingStateAction(false));
@@ -49,9 +51,10 @@ Middleware<AppState> _rebuildMission() {
 Middleware<AppState> _startMission() {
   return (Store store, action, NextDispatcher next) async {
     if (action is AnytimeLoadWaypointAction) {
+      final teamId = store.state.team.id;
       store.dispatch(AnytimeChangeWaipointLoadingStateAction(true));
       LoadMissionMiddlewareHelper.getWaypointByMissionId(
-        store,
+        teamId,
         action.missionId,
       ).then((result) {
         store.dispatch(WaypointsSelectCurrentAction(result));

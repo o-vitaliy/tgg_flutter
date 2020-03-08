@@ -44,8 +44,8 @@ Middleware<AppState> _initWaypoint() {
 Middleware<AppState> _goNext() {
   return (Store<AppState> store, action, NextDispatcher next) async {
     if (action is WaypointSwitchToNextAction) {
-      final waypoints = await waypointsRepo.getLocalActiveWaypoints();
-
+      final teamId = store.state.team.id;
+      final waypoints = await waypointsRepo.getLocalActiveWaypoints(teamId);
       final waypoint = waypoints.firstOrNull((e) => e.mode == action.mode);
       if (waypoint != null) {
         store.dispatch(WaypointsSelectCurrentAction(waypoint));

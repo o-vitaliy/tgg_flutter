@@ -34,7 +34,17 @@ class AppDatabase extends _$AppDatabase {
 
   // you should bump this number whenever you change or add a table definition.
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
+        return m.createAll();
+      }, onUpgrade: (Migrator m, int from, int to) async {
+        if (from == 2) {
+          // added the teamId property in the change from version 2
+          await m.addColumn(waypointTable, waypointTable.teamId);
+        }
+      });
 
   SimpleSelectStatement<MediaTable, MediaTableData> get selectMediaTable =>
       select(mediaTable);
