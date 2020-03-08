@@ -15,7 +15,7 @@ List<Middleware<AppState>> createRoutingMiddleware() {
   return [
     new TypedMiddleware<AppState, RouteLoadAction>(_load()),
     new TypedMiddleware<AppState, RouteUpdateModesAction>(_update()),
-    new TypedMiddleware<AppState, AnytimeLoadedAction>(
+    new TypedMiddleware<AppState, AnytimeUpdatePreviewAction>(
         _updateAfterAnyTimeChange()),
     new TypedMiddleware<AppState, WaypointsCompletedLoadingAction>(
         _updateAfterWaypointReload()),
@@ -56,9 +56,9 @@ Middleware<AppState> _update() {
 
 Middleware<AppState> _updateAfterAnyTimeChange() {
   return (Store<AppState> store, action, NextDispatcher next) async {
-    if (action is AnytimeLoadedAction) {
+    if (action is AnytimeUpdatePreviewAction) {
       final bonus =
-          store.state.waypointsPassingState?.getWaypointForType(Mode.camera);
+          store.state.waypointsPassingState?.getWaypointForType(CameraMode());
       _missionChange(store, action.missions, bonus);
     }
     next(action);
@@ -68,8 +68,9 @@ Middleware<AppState> _updateAfterAnyTimeChange() {
 Middleware<AppState> _updateAfterWaypointReload() {
   return (Store<AppState> store, action, NextDispatcher next) async {
     if (action is WaypointsCompletedLoadingAction) {
-      final missions = store.state.anytime?.missions;
-      final bonus = action.waypoints.firstOrNull((w) => w.mode == Mode.camera);
+      final missions = store.state.anytime?.missionPreviewList;
+      final bonus =
+          action.waypoints.firstOrNull((w) => w.mode.name == Mode.camera);
       _missionChange(store, missions, bonus);
     }
     next(action);

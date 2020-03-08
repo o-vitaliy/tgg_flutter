@@ -38,7 +38,7 @@ class H2HRepo {
         await apiProvider.teamTriggerAction(teamId: teamId, values: {
       "name": "challenge",
       "params": {
-        "mode_name": ModeHelper.to(Mode.head_to_head),
+        "mode_name": Mode.h2h,
         "team_id": opponentPin,
         "action": "send",
         "location_fix": locationFix
@@ -55,7 +55,7 @@ class H2HRepo {
         await apiProvider.teamTriggerAction(teamId: teamId, values: {
       "name": "challenge",
       "params": {
-        "mode_name": ModeHelper.to(Mode.head_to_head),
+        "mode_name": Mode.h2h,
         "team_id": opponentTeamId,
         "action": accepted ? "accept" : "decline"
       }

@@ -20,7 +20,7 @@ abstract class BaseMissionRepo {
   Future<List<Mission>> getMissions(String teamId) async {
     final response = await apiProvider.availableMissions(
       teamId,
-      ModeHelper.to(mode),
+      mode.name,
     );
     final map = json.decode(response);
     final mapped = map.map((w) => Mission.fromJsonMap(w)).toList();

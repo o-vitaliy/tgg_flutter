@@ -1,29 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:tgg/common/dialog/dialog_helper.dart';
 import 'package:tgg/common/flavor/flavor.dart';
 
-Widget createSuccessDialog(
-        String message, int attempts, Flavor flavor, Function onPressed) =>
-    _createDialog(
-      attempts: attempts,
-      flavor: flavor,
-      onPressed: onPressed,
-      textTemplate: missionCorrectText,
-      imageTemplate: missionCorrectImage,
-    );
+Future createSuccessDialog(String message, int attempts, Flavor flavor) =>
+    showDialog(
+        context: DialogHelper.findContext(),
+        builder: (context) => _createDialog(
+              context: context,
+              message: message,
+              attempts: attempts,
+              flavor: flavor,
+              textTemplate: missionCorrectText,
+              imageTemplate: missionCorrectImage,
+            ));
 
-Widget createErrorDialog(String message, String answer, int attempts,
-        Flavor flavor, Function onPressed) =>
-    _createDialog(
-        message: message,
-        attempts: attempts,
-        flavor: flavor,
-        onPressed: onPressed,
-        textTemplate: tryAgainText,
-        imageTemplate: tryAgainImage,
-        textTemplateParams: {"given": answer});
+Future createErrorDialog(
+        String message, String answer, int attempts, Flavor flavor) =>
+    showDialog(
+        context: DialogHelper.findContext(),
+        builder: (context) => _createDialog(
+            context: context,
+            message: message,
+            attempts: attempts,
+            flavor: flavor,
+            textTemplate: tryAgainText,
+            imageTemplate: tryAgainImage,
+            textTemplateParams: {"given": answer}));
 
 Widget _createDialog(
-        {String message,
+        {BuildContext context,
+        String message,
         int attempts,
         Flavor flavor,
         Function onPressed,
@@ -44,7 +50,7 @@ Widget _createDialog(
       actions: [
         RaisedButton(
           child: Text(flavor.get(messageOk)),
-          onPressed: onPressed,
+          onPressed: () => Navigator.pop(context),
         )
       ],
     );

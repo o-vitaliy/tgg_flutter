@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tgg/common/flavor/flavor.dart';
 import 'package:tgg/common/routing/routing_middleware.dart';
+import 'package:tgg/common/theme/theme_config.dart';
+import 'package:tgg/common/theme/themed_buttons.dart';
 import 'package:tgg/models/modes.dart';
 import 'package:tgg/models/waypoints/waypoint_mode.dart';
-import 'package:tgg/common/theme/theme_config.dart';
 import 'package:tgg/ui/helpers/icon_mapper.dart';
-import 'package:tgg/common/theme/themed_buttons.dart';
 
 class RouteButton extends StatefulWidget {
   final Flavor flavor;
@@ -35,7 +35,7 @@ class _RouteButtonState extends State<RouteButton> {
 
   bool get isTimerActive => isTimerRunning(widget.startTime, mode.delay);
 
-  bool get isMain => mode.name == ModeHelper.to(Mode.main);
+  bool get isMain => mode.name == Mode.main;
 
   @override
   void initState() {

@@ -16,6 +16,7 @@ class LocationRepo {
   });
 
   void sendLocation() async {
+    //TODO refactor this
     Observable.zip2(
         Observable.fromFuture(locationProvider.getLocation()),
         Observable.fromFuture(loginRepo.getLoginResponse())

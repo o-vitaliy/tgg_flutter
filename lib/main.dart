@@ -15,6 +15,7 @@ import 'common/messaging/firebase_message.dart';
 import 'common/routing/routing_middleware.dart';
 import 'common/theme/themed_app.dart';
 import 'containers/aws_uploader/aws_upload_middleware.dart';
+import 'containers/connectivity/connectivity_middleware.dart';
 import 'containers/h2h/h2h_middleware.dart';
 import 'containers/login/login_middleware.dart';
 import 'containers/login/login_page.dart';
@@ -55,6 +56,7 @@ class ReduxApp extends StatelessWidget {
         ..addAll(createRoutingMiddleware())
         ..addAll(createFlavorMiddleware())
         ..addAll(createPointsMiddleware())
+        ..addAll(createConnectivityMiddleware())
         ..add(LoggingMiddleware.printer())
         ..add(NavigationMiddleware<AppState>())
         ..add(DialogMiddleware<AppState>()));

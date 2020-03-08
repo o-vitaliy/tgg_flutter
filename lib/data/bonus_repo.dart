@@ -11,5 +11,5 @@ class BonusRepo extends BaseMissionRepo {
   }) : super(apiProvider: apiProvider, waypointsRepo: waypointsRepo);
 
   @override
-  Mode get mode => Mode.camera;
+  Mode get mode => CameraMode();
 }

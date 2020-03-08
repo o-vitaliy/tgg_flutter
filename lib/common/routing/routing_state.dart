@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:moor/moor.dart';
 import 'package:quiver/core.dart';
+import 'package:tgg/helpers/expandable_list.dart';
 import 'package:tgg/models/modes.dart';
 import 'package:tgg/models/waypoints/waypoint_mode.dart';
 
@@ -22,17 +23,16 @@ class RoutingState {
       @required this.timers});
 
   RouteMode findMode(Mode mode) {
-    return modes.firstWhere((m) => m.name == ModeHelper.to(mode),
-        orElse: () => null);
+    return modes.firstOrNull((m) => m.name == mode.name);
   }
 
   List<RouteMode> get activeModes {
     final filtered = modes.toList();
     if (hasAnytimes == null || !hasAnytimes) {
-      filtered.removeWhere((m) => m.name == ModeHelper.to(Mode.anytime));
+      filtered.removeWhere((m) => m.name == Mode.anytime);
     }
     if (hasBonus == null || !hasBonus) {
-      filtered.removeWhere((m) => m.name == ModeHelper.to(Mode.camera));
+      filtered.removeWhere((m) => m.name == Mode.camera);
     }
 
     filtered.removeWhere((m) => !m.enabled);

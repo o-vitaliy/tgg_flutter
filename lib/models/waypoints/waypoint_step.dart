@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:tgg/models/waypoints/waypoint_behavior.dart';
 
-class WaypointStep {
+class WaypointStep extends Equatable {
   final String id;
   final String title;
   final String instructions;
@@ -17,4 +18,8 @@ class WaypointStep {
         this.position = map["position"],
         this.scoring = map["scoring"],
         this.behavior = WaypointBehavior.fromJsonMap(map["behavior"], map);
+
+  @override
+  List<Object> get props =>
+      [id, title, instructions, missionId, position, behavior, scoring];
 }

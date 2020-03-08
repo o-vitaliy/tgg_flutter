@@ -6,6 +6,7 @@ import 'package:tgg/common/flavor/flavor.dart';
 import 'package:tgg/common/routing/route_actions.dart';
 import 'package:tgg/common/theme/theme_config.dart';
 import 'package:tgg/containers/aws_uploader/aws_upload_container.dart';
+import 'package:tgg/containers/connectivity/connectivity_container.dart';
 import 'package:tgg/containers/home/post_location_container.dart';
 import 'package:tgg/models/modes.dart';
 import 'package:tgg/redux_model/app_state.dart';
@@ -39,6 +40,7 @@ class _HomePageContent extends StatefulWidget {
 }
 
 class _HomeStateContent extends State<_HomePageContent> {
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
@@ -58,6 +60,7 @@ class _HomeStateContent extends State<_HomePageContent> {
     return Column(children: <Widget>[
       themeConfig.navHeaderImage ?? SizedBox.shrink(),
       HomeToolbar(vm.flavor, vm.changeMode, vm.modes, vm.selectedMode),
+      ConnectivityContainer(),
       UploadContainer(),
       Expanded(
         child: SingleChildScrollView(

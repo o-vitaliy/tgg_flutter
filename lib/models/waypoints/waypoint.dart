@@ -1,7 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:tgg/models/waypoints/waypoint_mode.dart';
 import 'package:tgg/models/waypoints/waypoint_step.dart';
 
-class Waypoint {
+class Waypoint extends Equatable {
   final String id;
   final WaypointStep step;
   final int missionPoints;
@@ -16,4 +17,7 @@ class Waypoint {
         this.missionStepsCount =
             map.containsKey("steps_count") ? map["steps_count"] : 1,
         this.mode = ModeHelper.fromString(map["mode_name"]);
+
+  @override
+  List<Object> get props => [id, step, missionPoints, missionStepsCount, mode];
 }

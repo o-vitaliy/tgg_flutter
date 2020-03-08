@@ -13,17 +13,38 @@ import 'aws_upload_status.dart';
 StreamSubscription _subscription;
 
 List<Middleware<AppState>> createUploadMiddleware() {
-  /* final logIn = _createLogInMiddleware();*/
-  final startUpload = _createAddFileToUploadMiddleware();
-
   return [
-    new TypedMiddleware<AppState, AddFileToUploadAction>(startUpload),
+    new TypedMiddleware<AppState, AwsAddFileAction>(
+        _createKeyMiddleware()),
+    new TypedMiddleware<AppState, AwsStartFileUpload>(_runUploadMiddleware()),
   ];
 }
 
-Middleware<AppState> _createAddFileToUploadMiddleware() {
+Middleware<AppState> _createKeyMiddleware() {
   return (Store store, action, NextDispatcher next) async {
-    if (action is AddFileToUploadAction) {
+    if (action is AwsAddFileAction) {
+      final AppState state = store.state;
+      final url = action.url;
+      final String key = mediaRepo.getKey(action.url,
+          state.playthrough.playthrough, state.team, action.waypoint);
+
+      final Config config = new Config();
+      final bucketId = await config.awsBucketId;
+
+      final mediaId = await mediaRepo.createMedia(url, key, bucketId);
+      await daoMedia.insert(mediaId, url, key);
+
+      store.dispatch(AwsStartFileUpload(url, key));
+    }
+    next(action);
+  };
+}
+
+Middleware<AppState> _runUploadMiddleware() {
+  return (Store store, action, NextDispatcher next) async {
+    if (action is AwsStartFileUpload) {
+      final url = action.url;
+      final key = action.key;
       if (_subscription == null) {
         final s = await nativeProvider.getEventStream();
 
@@ -34,26 +55,18 @@ Middleware<AppState> _createAddFileToUploadMiddleware() {
             .listen((data) => processProgress(store, data));
       }
 
-      _runUpload(store, action.url, action.key);
+      final Config config = new Config();
+      final accessKeyId = await config.awsAccessKey;
+      final secretAccessKey = await config.awsSecretAccessKey;
+      final bucketId = await config.awsBucketId;
+      nativeProvider
+          .upload(accessKeyId, secretAccessKey, bucketId, url, key)
+          .then((_) {
+        store.dispatch(AwsProgressChangedAction(url, 0));
+      });
     }
     next(action);
   };
-}
-
-void _runUpload(Store store, String url, String key) async {
-  final Config config = new Config();
-  final accessKeyId = await config.awsAccessKey;
-  final secretAccessKey = await config.awsSecretAccessKey;
-  final bucketId = await config.awsBucketId;
-
-  final mediaId = await mediaRepo.createMedia(url, key, bucketId);
-  await daoMedia.insert(mediaId, url, key);
-
-  nativeProvider
-      .upload(accessKeyId, secretAccessKey, bucketId, url, key)
-      .then((_) {
-    store.dispatch(ChangeFileUploadProgressAction(url, 0));
-  });
 }
 
 void _runOnComplete(String url) async {
@@ -67,14 +80,14 @@ void _runOnComplete(String url) async {
 void processProgress(Store store, AwsUploadStatus status) {
   if (status is ProgressAwsUpload) {
     store.dispatch(
-        ChangeFileUploadProgressAction(status.fileName, status.progress));
+        AwsProgressChangedAction(status.fileName, status.progress));
   } else if (status is CompleteAwsUpload) {
     Fluttertoast.showToast(msg: "completed upload url ${status.fileName}");
-    store.dispatch(ChangeFileUploadProgressAction(status.fileName, 1));
+    store.dispatch(AwsProgressChangedAction(status.fileName, 1));
     _runOnComplete(status.fileName);
   } else if (status is FailAwsUpload) {
     Fluttertoast.showToast(msg: "failed upload url ${status.fileName}");
-    store.dispatch(RemoveFileUpload(status.fileName));
+    store.dispatch(AwsRemoveFileUploadAction(status.fileName));
   }
 
   if ((store.state as AppState).uploadFilesState.progress == 1) {

@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:tgg/containers/waypoints/waypoint/behavior/behavior.dart';
 import 'package:tgg/helpers/map_utils.dart';
 import 'package:tgg/models/waypoints/waypoint_parser_utils.dart';
 import 'package:tgg/models/waypoints/waypoint_submission.dart';
 
-class WaypointBehavior {
+class WaypointBehavior extends Equatable {
   final BaseBehaviorType type;
   final String title;
   final String description;
@@ -46,4 +47,8 @@ class WaypointBehavior {
     final value = getAt(step, "content.hints");
     return value != null ? List<String>.from(value) : null;
   }
+
+  @override
+  List<Object> get props =>
+      [type, title, description, submissionType, numAttempts, hints];
 }

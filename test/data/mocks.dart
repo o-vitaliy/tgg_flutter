@@ -93,9 +93,9 @@ void initLoginMock() {
       .thenAnswer((_) => Future.value(position));
 
   // anytime
-  when(mockedApiProvider.availableMissions(any, ModeHelper.to(Mode.camera)))
+  when(mockedApiProvider.availableMissions(any, Mode.camera))
       .thenAnswer((_) => Future.value(mockedAnytime));
-  when(mockedApiProvider.availableMissions(any, ModeHelper.to(Mode.anytime)))
+  when(mockedApiProvider.availableMissions(any, Mode.anytime))
       .thenAnswer((_) => Future.value(mockedAnytime));
 
   //firebase

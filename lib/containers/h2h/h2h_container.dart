@@ -32,8 +32,7 @@ class _ViewModel {
   static _ViewModel fromStore(final Store<AppState> store) {
     final AppState state = store.state;
     return _ViewModel(
-      waypointId:
-          state.waypointsPassingState.getWaypointForType(Mode.head_to_head)?.id,
+      waypointId: state.waypointsPassingState.getWaypointForType(H2HMode())?.id,
     );
   }
 }

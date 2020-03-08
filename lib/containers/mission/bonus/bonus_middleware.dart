@@ -15,22 +15,24 @@ List<Middleware<AppState>> createBonusMiddleware() {
 }
 
 Middleware<AppState> _loadMissions() {
-  return (Store store, action, NextDispatcher next) async {
+  return (Store<AppState> store, action, NextDispatcher next) async {
     if (action is BonusStartLoadAction) {
-      store.dispatch(BonusChangeListLoadingStateAction(false));
-      LoadMissionMiddlewareHelper.loadMission(
-        store,
-        bonusRepo,
-        action.waypoints,
-        Mode.camera,
-      ).then((result) {
-        store.dispatch(BonusLoadedAction(result));
+      final waypoint =
+          store.state.waypointsPassingState.getWaypointForType(CameraMode());
+
+      if (waypoint == null) {
+        store.dispatch(BonusChangeListLoadingStateAction(true));
+
+        final teamId = store.state.team.id;
+        final missions = store.state.bonus.bonusMissions ??
+            await bonusRepo.getMissions(teamId);
+
+        store.dispatch(BonusLoadedAction(missions));
         store.dispatch(BonusChangeListLoadingStateAction(false));
-        return result;
-      }).then((result) {
-        if (result != null && result.isNotEmpty)
-          store.dispatch(BonusLoadWaypointAction(result.first.id));
-      });
+
+        if (missions != null && missions.isNotEmpty)
+          store.dispatch(BonusLoadWaypointAction(missions.first.id));
+      }
     }
     next(action);
   };
@@ -39,9 +41,10 @@ Middleware<AppState> _loadMissions() {
 Middleware<AppState> _startMission() {
   return (Store store, action, NextDispatcher next) async {
     if (action is BonusLoadWaypointAction) {
+      final teamId = store.state.team.id;
       store.dispatch(BonusChangeWaipointLoadingStateAction(true));
       LoadMissionMiddlewareHelper.getWaypointByMissionId(
-              store, action.missionId)
+              teamId, action.missionId)
           .then((result) {
         store.dispatch(WaypointsSelectCurrentAction(result));
         store.dispatch(BonusChangeWaipointLoadingStateAction(false));

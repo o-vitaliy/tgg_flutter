@@ -17,7 +17,7 @@ class BonusState {
   });
 
   factory BonusState.initial() => BonusState._(
-        listLoading: true,
+        listLoading: false,
         waypointLoading: false,
       );
 

@@ -10,16 +10,16 @@ extension ExtendedIterable<E> on Iterable<E> {
     this.forEach((e) => f(e, i++));
   }
 
-  E firstOrNull(bool test(E element)) {
+  E firstOrNull(bool test(E e)) {
     return firstWhere(test, orElse: () => null);
   }
 }
 
-Map<T, List<E>> groupBy<E, T>(Iterable<E> values, T key(E element)) {
+Map<T, List<E>> groupBy<E, T>(Iterable<E> values, T key(E e)) {
   var map = <T, List<E>>{};
-  for (var element in values) {
-    var list = map.putIfAbsent(key(element), () => []);
-    list.add(element);
+  for (var e in values) {
+    var list = map.putIfAbsent(key(e), () => []);
+    list.add(e);
   }
   return map;
 }

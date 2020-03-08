@@ -66,6 +66,8 @@ class AnswerTable extends Table {
 class WaypointTable extends Table {
   IntColumn get id => integer().autoIncrement()();
 
+  TextColumn get teamId => text().withDefault(const Constant(""))();
+
   TextColumn get waypointId => text().customConstraint('UNIQUE')();
 
   TextColumn get mode => text()();

@@ -13,7 +13,7 @@ main() {
     test("find route", () {
       final routing = Routing.fromJsonMap(json.decode(mockRoutingAllEnabled));
       final RoutingState state = RoutingState.initial(routing.modes);
-      expect(state.findMode(Mode.head_to_head).title, "H2H");
+      expect(state.findMode(H2HMode()).title, "H2H");
     });
 
     test("has all routes", () {
@@ -21,21 +21,14 @@ main() {
       final RoutingState state = RoutingState.initial(routing.modes)
           .copyWith(hasAnytimes: m.Value(true), hasBonus: m.Value(true));
       final modes = state.activeModes;
-      expect(
-          modes.firstWhere((m) => m.name == ModeHelper.to(Mode.main),
-              orElse: () => null),
+      expect(modes.firstWhere((m) => m.name == Mode.main, orElse: () => null),
+          isNotNull);
+      expect(modes.firstWhere((m) => m.name == Mode.h2h, orElse: () => null),
+          isNotNull);
+      expect(modes.firstWhere((m) => m.name == Mode.camera, orElse: () => null),
           isNotNull);
       expect(
-          modes.firstWhere((m) => m.name == ModeHelper.to(Mode.head_to_head),
-              orElse: () => null),
-          isNotNull);
-      expect(
-          modes.firstWhere((m) => m.name == ModeHelper.to(Mode.camera),
-              orElse: () => null),
-          isNotNull);
-      expect(
-          modes.firstWhere((m) => m.name == ModeHelper.to(Mode.anytime),
-              orElse: () => null),
+          modes.firstWhere((m) => m.name == Mode.anytime, orElse: () => null),
           isNotNull);
     });
 
@@ -45,8 +38,7 @@ main() {
           .copyWith(hasAnytimes: m.Value(true), hasBonus: m.Value(false));
       final modes = state.activeModes;
       expect(
-          modes.firstWhere((m) => m.name == ModeHelper.to(Mode.anytime),
-              orElse: () => null),
+          modes.firstWhere((m) => m.name == Mode.anytime, orElse: () => null),
           isNotNull);
     });
     test("has not any time", () {
@@ -55,8 +47,7 @@ main() {
           .copyWith(hasAnytimes: m.Value(false), hasBonus: m.Value(false));
       final modes = state.activeModes;
       expect(
-          modes.firstWhere((m) => m.name == ModeHelper.to(Mode.anytime),
-              orElse: () => null),
+          modes.firstWhere((m) => m.name == Mode.anytime, orElse: () => null),
           isNull);
     });
     test("has bonus", () {
@@ -64,9 +55,7 @@ main() {
       final RoutingState state = RoutingState.initial(routing.modes)
           .copyWith(hasAnytimes: m.Value(true), hasBonus: m.Value(true));
       final modes = state.activeModes;
-      expect(
-          modes.firstWhere((m) => m.name == ModeHelper.to(Mode.camera),
-              orElse: () => null),
+      expect(modes.firstWhere((m) => m.name == Mode.camera, orElse: () => null),
           isNotNull);
     });
     test("has not bonus", () {
@@ -74,9 +63,7 @@ main() {
       final RoutingState state = RoutingState.initial(routing.modes)
           .copyWith(hasAnytimes: m.Value(false), hasBonus: m.Value(false));
       final modes = state.activeModes;
-      expect(
-          modes.firstWhere((m) => m.name == ModeHelper.to(Mode.camera),
-              orElse: () => null),
+      expect(modes.firstWhere((m) => m.name == Mode.camera, orElse: () => null),
           isNull);
     });
 
@@ -86,8 +73,7 @@ main() {
           .copyWith(hasAnytimes: m.Value(true), hasBonus: m.Value(true));
       final modes = state.activeModes;
       expect(
-          modes.firstWhere((m) => m.name == ModeHelper.to(Mode.anytime),
-              orElse: () => null),
+          modes.firstWhere((m) => m.name == Mode.anytime, orElse: () => null),
           isNull);
     });
   });

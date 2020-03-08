@@ -38,10 +38,12 @@ class _ViewModel {
 
   static _ViewModel fromStore(Store<AppState> store) {
     final WaypointsState state = store.state.waypointsState;
+    final waypoint =
+        store.state.waypointsPassingState.getWaypointForType(MainMode());
     return _ViewModel(
       isLoading: state.isLoading,
-      hasMoreGames: store.state.waypointsState.hasGameForMode(Mode.main),
-      waypointId: store.state.waypointsPassingState.getWaypointForType(Mode.main)?.id,
+      hasMoreGames: waypoint != null,
+      waypointId: waypoint?.id,
     );
   }
 

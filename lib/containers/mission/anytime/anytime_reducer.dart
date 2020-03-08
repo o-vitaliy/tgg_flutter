@@ -6,6 +6,7 @@ import 'anytime_state.dart';
 
 final anytimeReducer = combineReducers<AnytimeState>([
   new TypedReducer<AnytimeState, AnytimeLoadedAction>(_loaded),
+  new TypedReducer<AnytimeState, AnytimeUpdatePreviewAction>(_updatePreview),
   new TypedReducer<AnytimeState, AnytimeLoadedWaypointAction>(
       _waypointSelected),
   new TypedReducer<AnytimeState, AnytimeChangeListLoadingStateAction>(
@@ -16,7 +17,12 @@ final anytimeReducer = combineReducers<AnytimeState>([
 
 AnytimeState _loaded(AnytimeState state, action) {
   final missions = (action as AnytimeLoadedAction).missions;
-  return state.copy(anytimeMission: missions);
+  return state.copy(missionList: missions);
+}
+
+AnytimeState _updatePreview(AnytimeState state, action) {
+  final missions = (action as AnytimeUpdatePreviewAction).missions;
+  return state.copy(missionPreviewList: missions);
 }
 
 AnytimeState _waypointSelected(AnytimeState state, action) {
